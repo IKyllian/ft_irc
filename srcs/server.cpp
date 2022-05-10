@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     if (listen(socketFD, 0) == -1)
         std::cout << "Error listen" << std::endl;
 
-    socketFDNew = accept(socketFD, (struct sockaddr *)&socketaddr, (socklen_t *)&socketaddr);
+    socketFDNew = accept(socketFD, (struct sockaddr *)&socketaddr, (socklen_t *)&socketaddr);*/
 
     return (0);
 }
