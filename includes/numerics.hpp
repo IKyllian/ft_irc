@@ -32,7 +32,7 @@
 #define RPL_WHOREPLY (channel, username, host, server, nick, flags, hopcount, realname)(" " + channel + " " + username + " " + host + " " + server + " " + nick + " " + flags + " :" + hopcount + " " + realname + "\n")		// 352
 #define RPL_ENDOFWHO (mask)(" " + mask + " :End of WHO list" + "\n")																																							// 315
 #define RPL_WHOISREGNICK (nick)(" " + nick + " :has identified for this nick" + "\n")																																			// 307
-#define RPL_WHOISUSER (nick, usernane, host, realname)(" " + nick + " " + username + " " + host + " * :" + realname + "\n")																										// 311
+#define RPL_WHOISUSER (nick, username, host, realname)(" " + nick + " " + username + " " + host + " * :" + realname + "\n")																										// 311
 #define RPL_WHOISSERVER (nick, server, server_info)(" " + nick + " " + server + " :" + server_info + "\n")																														// 312
 #define RPL_WHOISOPERATOR (nick)(" " + nick + " :is an IRC operator" + "\n")																																					// 313
 #define RPL_WHOWASUSER (nick, username, host, realname)(" " + nick + " " + username + " " + host + " * :" + realname + "\n")																									// 314
