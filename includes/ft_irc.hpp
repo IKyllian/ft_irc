@@ -7,6 +7,8 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <istream>
+
 #include <poll.h>					// N'existe pas pour Windows, il faut utiliser select pour Windows...
 //#include <winsock2.h>				//Pour Windows, ça fonctionne pas D:
 //#include <ws2def.h>				//Pour Windows, ça fonctionne pas D:
@@ -18,5 +20,5 @@
 
 #include <iostream>
 #include <string>
-
+#include <cerrno>
 #endif

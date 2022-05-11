@@ -14,6 +14,7 @@ int main(int argc, char **argv)
         return(-1);
     }
     int socketFDNew;
+    char buffer[512];
 
     argv = &argv[1]; // ARGV[0] = port, ARGV[1] = password
 
@@ -41,13 +42,32 @@ int main(int argc, char **argv)
     socketaddr.sin_addr.s_addr = INADDR_ANY;
     socketaddr.sin_port = htons(atoi(argv[0]));
 
-    if (bind(socketFD, (struct sockaddr *)&socketaddr, sizeof(socketaddr)) == -1)
-        std::cout << "Error bind" << std::endl;
+    if (bind(socketFD, (struct sockaddr *)&socketaddr, sizeof(socketaddr)) == -1) {
+        std::cout << "Error bind" << errno << std::endl;
+        close(socketFD);
+        // freeaddrinfo(&socketaddr);
+        return(0);
+    }
 
     if (listen(socketFD, 0) == -1)
         std::cout << "Error listen" << std::endl;
 
     socketFDNew = accept(socketFD, (struct sockaddr *)&socketaddr, (socklen_t *)&socketaddr);
-
+    int size;
+    // send(socketFDNew, "Ceci est un test", 5, 0);
+    for (;  (size = recv(socketFDNew, buffer, 512, 0)) != 0; ) {
+        std::cout << socketFDNew << " - " << size << " - " << buffer << std::endl;
+    }
+    std::cout << "After for = " << size << std::endl;
+    // size = recv(socketFDNew, buffer, 512, 0);
+    // // send(socketFD, "test", 5, 0);
+    // // read(socketFDNew, buffer, buffer.size());
+    // std::cout << "COUCOU " << socketFDNew << " - " << size << " - " << buffer << std::endl;
+    // size = recv(socketFDNew, buffer, 512, 0);
+    // std::cout << "COUCOU 2 " << socketFDNew << " - " << size << " - " << buffer << std::endl;
+    // size = recv(socketFDNew, buffer, 512, 0);
+    // std::cout << "COUCOU 3 " << socketFDNew << " - " << size << " - " << buffer << std::endl;
+    close(socketFD);
+    close(socketFDNew);
     return (0);
 }
