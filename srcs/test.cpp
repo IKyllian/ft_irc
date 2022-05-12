@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:50:38 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/05/12 16:56:01 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/05/12 17:36:56 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int main(int ac, char **av)
 	bool						end_server = FALSE;
 	bool						close_conn = FALSE;
 	char						buffer[2048];
+	unsigned long				i;
 
 	if (ac < 2 || ac > 3)
 	{
@@ -84,8 +85,6 @@ int main(int ac, char **av)
 		return(-1);
 	}
 
-
-
  // Set the listen back log
 
 	//second arg (32) is size of the listen backlog
@@ -106,14 +105,8 @@ int main(int ac, char **av)
 	timeout = (3 * 60 * 1000); // 3 mins
 
 
-
-/*************************************************************/
-  /* Loop waiting for incoming connects or for incoming data   */
-  /* on any of the connected sockets.                          */
-  /*************************************************************/
 	do
 	{
-		// printf("Waiting on poll()...\n");
 		std::cout << "Waiting on poll()..." << std::endl;
 		ret = poll(&(fds[0]), fds.size(), timeout);
 		if (ret < 0)
@@ -128,13 +121,14 @@ int main(int ac, char **av)
 			break;
 		}
 
-		for (int i = 0; i < fds.size(); i++)
+		for (i = 0; i < fds.size(); i++)
 		{
 			if(fds[i].revents == 0)
 				continue;
 
 			if(fds[i].revents != POLLIN)
 			{
+// Error! revents = 17
 				std::cerr << "Error! revents = " << fds[i].revents << std::endl;
 				end_server = TRUE;
 				break;
@@ -167,7 +161,6 @@ int main(int ac, char **av)
 					/* Add the new incoming connection to the            */
 					/* pollfd structure                                  */
 					/*****************************************************/
-					//printf("  New incoming connection - %d\n", new_sd);
 					std::cout << "New incomig connection: " << clientFD << std::endl;
 
 					fd.fd = clientFD;
@@ -185,7 +178,6 @@ int main(int ac, char **av)
 			}
 			else
 			{
-				//printf("  Descriptor %d is readable\n", fds[i].fd);
 				std::cout << "Descriptor " << fds[i].fd << " is readable" << std::endl;
 				close_conn = FALSE;
 				/*******************************************************/
@@ -202,6 +194,9 @@ int main(int ac, char **av)
 					/* connection.                                       */
 					/*****************************************************/
 					ret = recv(fds[i].fd, buffer, sizeof(buffer), 0);
+
+std::cout << "received: " << buffer << std::endl;
+
 					if (ret < 0)
 					{
 						if (errno != EWOULDBLOCK)
@@ -218,7 +213,7 @@ int main(int ac, char **av)
 					/*****************************************************/
 					if (ret == 0)
 					{
-						printf("  Connection closed\n");
+						std::cout << "Connection closed " << std::endl;
 						close_conn = TRUE;
 						break;
 					}
@@ -233,22 +228,16 @@ int main(int ac, char **av)
 
 
 
-
-
-
-
-
-					//change that part ?
-					/*****************************************************/
-					/* Echo the data back to the client                  */
-					/*****************************************************/
-					ret = send(fds[i].fd, buffer, len, 0);
-					if (ret < 0)
-					{
-						perror("  send() failed");
-						close_conn = TRUE;
-						break;
-					}
+					// /*****************************************************/
+					// /* Echo the data back to the client                  */
+					// /*****************************************************/
+					// ret = send(fds[i].fd, buffer, len, 0);
+					// if (ret < 0)
+					// {
+					// 	perror("  send() failed");
+					// 	close_conn = TRUE;
+					// 	break;
+					// }
 
 
 
@@ -284,68 +273,21 @@ int main(int ac, char **av)
 		/* be POLLIN in this case, and revents is output.          */
 		/***********************************************************/
 
-			for (int i = 0; i < fds.size(); i++)
+			for (i = 0; i < fds.size(); i++)
 			{
 				if (fds[i].fd == -1)
 				{
 					fds.erase(fds.begin() + i);
 				}
 			}
-		//}
-
 		} while (end_server == FALSE); /* End of serving running.    */
 
 		/*************************************************************/
 		/* Clean up all of the sockets that are open                 */
 		/*************************************************************/
-		for (int i = 0; i < fds.size(); i++)
+		for (i = 0; i < fds.size(); i++)
 		{
 			if(fds[i].fd >= 0)
 				close(fds[i].fd);
 		}
 }
-
-
-
-
-
-
-
-
-//std::vector<struct pollfd> fds;
-//int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
-//}
-
-/*
-
-The following calls are used in the example:
-
-    The socket() API returns a socket descriptor, which represents an endpoint. The statement also identifies that the AF_INET6 (Internet Protocol version 6) address family with the TCP transport (SOCK_STREAM) is used for this socket.
-    
-	The setsockopt() API allows the application to reuse the local address when the server is restarted before the required wait time expires.
-   
-    The ioctl() API sets the socket to be nonblocking. All of the sockets for the incoming connections are also nonblocking because they inherit that state from the listening socket.
-    
-	After the socket descriptor is created, the bind() API gets a unique name for the socket.
-    
-	The listen() API call allows the server to accept incoming client connections.
-    
-	The poll() API allows the process to wait for an event to occur and to wake up the process when the event occurs. The poll() API might return one of the following values.
-
-		0
-			Indicates that the process times out. In this example, the timeout is set for 3 minutes (in milliseconds).
-		-1
-			Indicates that the process has failed.
-		1
-			Indicates only one descriptor is ready to be processed, which is processed only if it is the listening socket.
-		1++
-			Indicates that multiple descriptors are waiting to be processed. The poll() API allows simultaneous connection with all descriptors in the queue on the listening socket.
-
-    The accept() and recv() APIs are completed when the EWOULDBLOCK is returned.
-    
-	The send() API echoes the data back to the client.
-    
-	The close() API closes any open socket descriptors.
-
-
-*/
