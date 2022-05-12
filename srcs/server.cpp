@@ -32,6 +32,7 @@ int main(int argc, char **argv)
     */
     struct sockaddr_in socketaddr; // sockaddr_in = Socket Internet
 
+    ft_message(1);
     if (argc < 2 || argc > 3)
     {
         std::cout << "Wrong number of Arguments" << std::endl;
