@@ -2,6 +2,7 @@
 # define    NUMERICS_HPP
 
 #define NETWORK_NAME "KIKIKAKARORO"
+#define STRINGIFY(x) #x
 
 //												RPL MESSAGES												//
 
@@ -22,7 +23,7 @@
 #define RPL_ADMINLOC1(info)(" :" + info + "\n")																																												// 257
 #define RPL_ADMINLOC2(info)(" :" + info + "\n")																																												// 258
 #define RPL_ADMINEMAIL(info)(" :" + info + "\n")																																												// 259
-#define RPL_TRYAGAIN(command)(" " + command + " :Please wait a while and try again." + "\n")																																	// 263
+#define RPL_TRYAGAIN(command)(" " + command + " :Please wait a while and try again." + "\n")													////////																		// 263
 #define RPL_LOCALUSERS(u, m)(" " + u + " " + m + " :Current local users " + u + ", max " + m + "\n")																															// 265
 #define RPL_GLOBALUSERS(u, m)(" " + u + " " + m + " :Current global users " + u + ", max " + m + "\n")																															// 266
 #define RPL_WHOISCERTFP(nick, fingerprint)(" " + nick + " :has client certificate fingerprint " + fingerprint + "\n")																											// 276
@@ -53,6 +54,7 @@
 #define RPL_TOPICWHOTIME(channel, nick, setat)(" " + channel + " " + nick + " " + setat + "\n")																																// 333
 #define RPL_INVITELIST(channel)(" " + channel + "\n")																																											// 336
 #define RPL_ENDOFINVITELIST()(" :End of /INVITE list" + "\n")																																									// 337
+//338 ???
 #define RPL_INVITING(nick, channel)(" " + nick + " " + channel + "\n")																																							// 341
 #define RPL_INVEXLIST(channel, mask)(" " + channel + " " + mask + "\n")																																						// 346
 #define RPL_ENDOFINVEXLIST(channel)(" " + channel + " :End of Channel Invite Exception List" + "\n")																															// 347
