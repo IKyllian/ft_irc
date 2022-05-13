@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:50:38 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/05/12 17:36:56 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/05/13 15:02:45 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,10 +193,11 @@ int main(int ac, char **av)
 					/* failure occurs, we will close the                 */
 					/* connection.                                       */
 					/*****************************************************/
+					memset(&buffer, 0, sizeof(buffer));
 					ret = recv(fds[i].fd, buffer, sizeof(buffer), 0);
 
-std::cout << "received: " << buffer << std::endl;
-
+std::cout << "received: " << buffer;
+//TODO faire des choses
 					if (ret < 0)
 					{
 						if (errno != EWOULDBLOCK)
@@ -223,6 +224,8 @@ std::cout << "received: " << buffer << std::endl;
 					/*****************************************************/
 					len = ret;
 					std::cout << len << " bytes received " << std::endl;
+					std::cout << "----------------" << std::endl;
+					std::cout << std::endl;
 
 
 
