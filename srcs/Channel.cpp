@@ -5,6 +5,7 @@ Channel(std::string &name) : name(name) {}
 Channel(const Channel &channel) : name(channel.name) {
 	users.clear();
 	users.insert(channel.users.begin(), channel.users.end());
+	channel_modes = channel.channel_modes;
 }
 
 ~Channel() {
