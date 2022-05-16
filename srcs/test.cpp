@@ -6,24 +6,59 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:50:38 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/05/13 15:02:45 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/05/16 18:23:57 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "../includes/ft_irc.hpp"
-
+#include "../includes/Client.hpp"
 #include <fcntl.h>
 #include <vector>
+#include <map>
 #include <cstdio>
 
 #define TRUE             1
 #define FALSE            0
 
+// int do_recv(int fd, char* buffer)
+// {
+// 	int		ret = 0;
+	
+// 	memset(&buffer, 0, sizeof(buffer));
+// 	ret = recv(fd, buffer, sizeof(buffer), 0);
+
+// 	if (ret < 0)
+// 	{
+// 		if (errno != EWOULDBLOCK)
+// 		{
+// 			perror("  recv() failed");
+// 		}
+// 		return ret;
+// 	}
+
+// 	if (ret == 0)
+// 	{
+// 		std::cout << "Connection closed " << std::endl;
+// 		return 0;
+// 	}
+// 	return ret;
+// }
+
+// int initial_dialog(std::vector<Client>& clients, )
+// {
+// 	// char						buffer[2048];
+
+// 	// memset(&buffer, 0, sizeof(buffer));
+// 	// ret = recv(fds[i].fd, buffer, sizeof(buffer), 0);
+// }
+
+
 int main(int ac, char **av)
 {
 
+//var for basic commucation
 	int							socketFD, clientFD, timeout;
 	int							len, on, ret = 1;
 	struct sockaddr_in			addr;
@@ -33,13 +68,16 @@ int main(int ac, char **av)
 	bool						close_conn = FALSE;
 	char						buffer[2048];
 	unsigned long				i;
+//var for client
+	//std::map<int, Client>		m_fd_client;
+	std::vector<Client>			clients;
 
 	if (ac < 2 || ac > 3)
 	{
 		std::cout << "Wrong number of Arguments" << std::endl;
 		return (0);
 	}
-// Create an AF_INET stream socket to receive incoming connections on  
+// Create an AF_INET (ipv4)stream socket to receive incoming connections on  
 	socketFD = socket(AF_INET, SOCK_STREAM, 0);
 	if (socketFD < 0)
 	{
@@ -195,9 +233,27 @@ int main(int ac, char **av)
 					/*****************************************************/
 					memset(&buffer, 0, sizeof(buffer));
 					ret = recv(fds[i].fd, buffer, sizeof(buffer), 0);
-
+					//ret = do_recv(fds[i].fd, buffer);
+					// if (ret <= 0)
+					// {
+					// 	if (errno != EWOULDBLOCK && ret < 0)
+					// 	{
+					// 		close_conn = TRUE;
+					// 	}
+					// }
 std::cout << "received: " << buffer;
+
+	//std::map<int, Client>		m_fd_client;
+	//std::vector<Client>			clients;
 //TODO faire des choses
+// if fds[i].fd n'est PAS une key du map m_fd_client --> nouvelle connection
+// 			-> handle initial stuff()
+//			
+//if fds[i].fd est une key du map m_fd_client --> client existant
+// 			-> parse?()
+//
+
+
 					if (ret < 0)
 					{
 						if (errno != EWOULDBLOCK)
