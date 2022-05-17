@@ -6,15 +6,34 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:50:38 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/05/16 18:23:57 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/05/17 15:18:43 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef TEST_HPP
+#define TEST_HPP
 
 
-#include "../includes/ft_irc.hpp"
 #include "../includes/Client.hpp"
+
+#include <string.h> //linux
+#include <stdlib.h> //linux
+
+//#include "../includes/ft_irc.hpp"
+//from ft_irc_hpp
+#include <sys/socket.h>	
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <istream>
+#include <poll.h>	
+#include <sys/types.h>
+#include <unistd.h>
 #include <fcntl.h>
+#include <iostream>
+#include <string>
+#include <cerrno>
+
 #include <vector>
 #include <map>
 #include <cstdio>
@@ -22,37 +41,72 @@
 #define TRUE             1
 #define FALSE            0
 
-// int do_recv(int fd, char* buffer)
-// {
-// 	int		ret = 0;
-	
-// 	memset(&buffer, 0, sizeof(buffer));
-// 	ret = recv(fd, buffer, sizeof(buffer), 0);
+//class Client;
 
-// 	if (ret < 0)
-// 	{
-// 		if (errno != EWOULDBLOCK)
-// 		{
-// 			perror("  recv() failed");
-// 		}
-// 		return ret;
-// 	}
+bool add_new_client(std::vector<Client>& clients, int fd, char* buffer, size_t size)
+{
+	(void) clients;
+	(void) fd;
+	//(void) buffer;
+	(void) size;
+	// char						buffer[2048];
+//	int		ret;
+	Client	new_client;
 
-// 	if (ret == 0)
-// 	{
-// 		std::cout << "Connection closed " << std::endl;
-// 		return 0;
-// 	}
-// 	return ret;
-// }
+	new_client.set_fd(fd);
+	std::cout << "received a message from a new client, fd " << new_client.get_fd() << std::endl;
+	std::cout << "buffer is: " << buffer << std::endl;
+	//nickname
+	//username
+	//usermod ??
 
-// int initial_dialog(std::vector<Client>& clients, )
-// {
-// 	// char						buffer[2048];
 
-// 	// memset(&buffer, 0, sizeof(buffer));
-// 	// ret = recv(fds[i].fd, buffer, sizeof(buffer), 0);
-// }
+	// loop initial dialog
+
+	// memset(&buffer, 0, sizeof(buffer));
+	// ret = recv(fd, buffer, sizeof(buffer), 0);
+
+	// if (ret < 0)
+	// {
+	// 	if (errno != EWOULDBLOCK)
+	// 	{
+	// 		perror("  recv() failed");
+	// 	}
+	// 	return FALSE;
+	// }
+
+	// if (ret == 0)
+	// {
+	// 	std::cout << "Connection closed " << std::endl;
+	// 	return FALSE;
+	// }
+
+
+
+
+
+	// if (ret > 0)
+	// {
+
+	//clients.push_back(new_client);
+	// }
+
+
+
+	return TRUE;
+}
+
+
+
+bool handle_incoming_message(Client &client, char *buffer, size_t size)
+{
+	//(void)client;
+	//(void)buffer;
+	(void)size;
+	std::cout << "received a message from a known client, fd " << client.get_fd() <<std::endl;
+	std::cout << "buffer is: " << buffer << std::endl;
+	return TRUE;
+}
 
 
 int main(int ac, char **av)
@@ -67,7 +121,8 @@ int main(int ac, char **av)
 	bool						end_server = FALSE;
 	bool						close_conn = FALSE;
 	char						buffer[2048];
-	unsigned long				i;
+	unsigned long				i, j;
+	(void) j;
 //var for client
 	//std::map<int, Client>		m_fd_client;
 	std::vector<Client>			clients;
@@ -233,17 +288,9 @@ int main(int ac, char **av)
 					/*****************************************************/
 					memset(&buffer, 0, sizeof(buffer));
 					ret = recv(fds[i].fd, buffer, sizeof(buffer), 0);
-					//ret = do_recv(fds[i].fd, buffer);
-					// if (ret <= 0)
-					// {
-					// 	if (errno != EWOULDBLOCK && ret < 0)
-					// 	{
-					// 		close_conn = TRUE;
-					// 	}
-					// }
+
 std::cout << "received: " << buffer;
 
-	//std::map<int, Client>		m_fd_client;
 	//std::vector<Client>			clients;
 //TODO faire des choses
 // if fds[i].fd n'est PAS une key du map m_fd_client --> nouvelle connection
@@ -251,7 +298,38 @@ std::cout << "received: " << buffer;
 //			
 //if fds[i].fd est une key du map m_fd_client --> client existant
 // 			-> parse?()
-//
+//					
+
+					//j = 0;
+					// for (j = 0; j < clients.size(); j++)
+					// {
+					// 	if (fds[i].fd == clients[j].get_fd())
+					// 	{
+					// 		//found
+							
+					// 		if (!handle_incoming_message(clients[j], buffer, sizeof(buffer)))
+					// 		{
+					// 			std::cerr << "Failed to handle incoming message" << std::endl;
+					// 			close_conn = TRUE;
+					// 			//break;
+					// 		}
+					// 		break;
+					// 	}
+					// }
+
+					// if (j == clients.size())
+					// {
+					// 	//not found
+
+					// 	if (!add_new_client(clients, fds[i].fd, buffer, sizeof(buffer)))
+					// 	{
+					// 		std::cerr << "Couldn't add new client" << std::endl;
+					// 		close_conn = TRUE;
+					// 		break;
+					// 	}
+					// }
+
+
 
 
 					if (ret < 0)
@@ -315,6 +393,7 @@ std::cout << "received: " << buffer;
 				/*******************************************************/
 				if (close_conn)
 				{
+std::cout << "Closing fd " << fds[i].fd << std::endl;
 					close(fds[i].fd);
 					fds[i].fd = -1;
 				//	compress_array = TRUE;
@@ -350,3 +429,5 @@ std::cout << "received: " << buffer;
 				close(fds[i].fd);
 		}
 }
+
+#endif
