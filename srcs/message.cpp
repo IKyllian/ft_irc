@@ -16,6 +16,8 @@ void ft_message(/*User &user, Server &server, Channel &channel, Message &message
     std::string hopcount = "5";                                 //nb of intermediate server 
     std::string sec_away = "353";                        // seconds since last active
     std::string sign_on = "666";                         // unix timestamp, when joined the network
+//UPDATE 16/05
+	std::string privilege = "Oper priv";
 
     //              SERVER VAR              //
     std::string network_name = NETWORK_NAME;
@@ -36,13 +38,14 @@ void ft_message(/*User &user, Server &server, Channel &channel, Message &message
     std::string server_connected = "6";
     std::string nb_channel = "6";
     std::string datetime = "20/05/2022";
-    //PAS DANS LA CLASSE
     std::string max_user = "53";
     std::string local_user = "10";
     std::string global_user = "23";
     std::string comment = "loul";
     std::string motd = "Bonjour";           //MESSAGE OF THE DAY
     std::string Rehashing_message = "Rehash";
+	// Update 16/05
+	std::string SASL_mechanisms = "Oui non Oui";
 
 
     //              CHAN VAR                //
@@ -65,14 +68,22 @@ void ft_message(/*User &user, Server &server, Channel &channel, Message &message
     std::string ban_timeSet = "22222";
 
     //              MESSAGE VAR             //
-        std::string command = "NICK";
-        std::string command_info = "Error Info of NICK";        //:example.com 400 dan!~d@n PACK :Could not process multiple invalid parameters
+    std::string command = "NICK";
+    std::string command_info = "Error Info of NICK";        //:example.com 400 dan!~d@n PACK :Could not process multiple invalid parameters
     std::string mask = "channel";
-    std::string mode_string = "+a";             //cf: https://modern.ircdocs.horse/#mode-message        Je sais pas si c'est dans message
+	std::string mode_string = "+a";             //cf: https://modern.ircdocs.horse/#mode-message        Je sais pas si c'est dans message
     std::string mode_arguments = "mode arguments";   //??? Je sais pas c'est quoi...                    Je sais pas si c'est dans message
+	//	update 16/05
+	std::string subject = "sujet";
+	std::string target = "target";
+	std::string	mode_char = "modechar";
+	std::string	parameter = "Parametre du modechar";
 
     //              OTHERS                  //
     std::string actual_time = "22";             //Le temps actuel (Potentiellement a faire en dehors de la classe server)
+	//update 16/05
+	std::string	help_msg = "Help me";			//May differ if it's the start/mid/end of the help section
+	std::string description = "Description";
 
     switch (nb_message)
     {
@@ -287,11 +298,164 @@ void ft_message(/*User &user, Server &server, Channel &channel, Message &message
     case 391:
         std::cout << username << RPL_TIME(servername, actual_time);
         break;
-    case 400:
+	case 670:
+		std::cout << username << STRINGIFY(STARTTLS());
+		break;
+	case 671:
+		std::cout << username << RPL_WHOISSECURE(user_nick);
+		break;
+	case 704:
+		std::cout << username << RPL_HELPSTART(subject, help_msg);
+		break;
+	case 705:
+		std::cout << username << RPL_HELPTXT(subject, help_msg);
+		break;
+	case 706:
+		std::cout << username << RPL_ENDOFHELP(subject, help_msg);
+		break;
+	case 900:
+		std::cout << username << RPL_LOGGEDIN(user_nick, username, hostname, user_account, username);		// User = username ???
+		break;
+	case 901:
+		std::cout << username << RPL_LOGGEDOUT(user_nick, username, hostname, user_account);
+		break;
+	case 903:
+		std::cout << username << STRINGIFY(RPL_SASLSUCCESS());
+		break;
+	case 908:
+		std::cout << username << RPL_SASLMECHS(SASL_mechanisms);
+		break;
+	case 400:
         std::cout << username << ERR_UNKNOWNERROR(command, command_info);
         break;
+	case 401:
+		std::cout << username << ERR_NOSUCHNICK(user_nick);
+		break;
+	case 402:
+		std::cout << username << ERR_NOSUCHSERVER(servername);
+		break;
+	case 403:
+		std::cout << username << ERR_NOSUCHCHANNEL(channel_name);
+		break;
+	case 404:
+		std::cout << username << ERR_CANNOTSENDTOCHAN(channel_name);
+		break;
+	case 405:
+		std::cout << username << ERR_TOOMANYCHANNELS(channel_name);
+		break;
+	case 406:
+		std::cout << username << STRINGIFY(ERR_WASNOSUCHNICK());
+		break;
+	case 409:
+		std::cout << username << STRINGIFY(ERR_NOORIGIN());
+		break;
+	case 417:
+		std::cout << username << STRINGIFY(ERR_INPUTTOOLONG());
+		break;
+	case 421:
+		std::cout << username << ERR_UNKNOWNCOMMAND(command);
+		break;
+	case 422:
+		std::cout << username << STRINGIFY(ERR_NOMOTD());
+		break;
+	case 432:
+		std::cout << username << ERR_ERRONEUSNICKNAME(user_nick);
+		break;
+	case 433:
+		std::cout << username << ERR_NICKNAMEINUSE(user_nick);
+		break;
+	case 441:
+		std::cout << username << ERR_USERNOTINCHANNEL(user_nick, channel_name);
+		break;
+	case 442:
+		std::cout << username << ERR_NOTONCHANNEL(channel_name);
+		break;
+	case 443:
+        std::cout << username << ERR_UNKNOWNERROR(command, command_info);
+        break;
+	case 451:
+		std::cout << username << ERR_NOTREGISTERED();
+		break;
+	case 461:
+		std::cout << username << ERR_NEEDMOREPARAMS(command);
+		break;
+	case 462:
+		std::cout << username << ERR_ALREADYREGISTERED(user_nick);
+		break;
+	case 464:
+		std::cout << username << STRINGIFY(ERR_PASSWDMISMATCH());
+		break;
+	case 465:
+		std::cout << username << STRINGIFY(ERR_YOUREBANNEDCREEP());
+		break;
+	case 471:
+		std::cout << username << ERR_CHANNELISFULL(channel_name);
+		break;
+	case 472:
+		std::cout << username << ERR_UNKNOWNMODE(mode_char);
+		break;
+	case 473:
+		std::cout << username << ERR_INVITEONLYCHAN(channel_name);
+		break;
+	case 474:
+		std::cout << username << ERR_BANNEDFROMCHAN(channel_name);
+		break;
+	case 475:
+		std::cout << username << ERR_BADCHANNELKEY(channel_name);
+		break;
+	case 476:
+		std::cout << username << ERR_BADCHANMASK(channel_name);
+		break;
+	case 481:
+		std::cout << username << STRINGIFY(ERR_NOPRIVILEGES());
+		break;
+	case 482:
+		std::cout << username << ERR_CHANOPRIVSNEEDED(channel_name);
+		break;
+	case 483:
+		std::cout << username << STRINGIFY(ERR_CANTKILLSERVER());
+		break;
+	case 491:
+		std::cout << username << STRINGIFY(ERR_NOOPERHOST());
+		break;
+	case 501:
+		std::cout << username << STRINGIFY(ERR_UMODEUNKNOWNFLAG());
+		break;
+	case 502:
+		std::cout << username << STRINGIFY(ERR_USERSDONTMATCH());
+		break;
+	case 524:
+		std::cout << username << ERR_HELPNOTFOUND(subject);
+		break;
+	case 525:
+		std::cout << username << ERR_INVALIDKEY(target);
+		break;
+	case 691:
+		std::cout << username << STRINGIFY(ERR_STARTTLS());
+		break;
+	case 696:
+		std::cout << username << ERR_INVALIDMODEPARAM(target, mode_char, parameter, description);
+		break;
+	case 723:
+		std::cout << username << ERR_NOPRIVS(privilege);
+		break;
+	case 902:
+		std::cout << username << STRINGIFY(ERR_NICKLOCKED());
+		break;
+	case 904:
+		std::cout << username << STRINGIFY(ERR_SASLFAIL());
+		break;
+	case 905:
+		std::cout << username << STRINGIFY(ERR_SASLTOOLONG());
+		break;
+	case 906:
+		std::cout << username << STRINGIFY(ERR_SASLABORTED());
+		break;
+	case 907:
+		std::cout << username << STRINGIFY(ERR_SASLALREADY());
+		break;
 
-    default:
+	default:
         break;
     }
 }

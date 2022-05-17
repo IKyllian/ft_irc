@@ -1,74 +1,92 @@
-#include "../includes/ft_irc.hpp"
+#include "../includes/Server.hpp"
 
-int main(int argc, char **argv)
-{
-    //												SERVER SIDE												//
-    // socket(domain, type, protocol)
-    // domain: AF_INET = IPV4, AF_INET6 = IPV6
-    // type:	SOCK_STREAM = TCP, SOCK_DGRAM = UDP
-    // protocol: Internet Protocol ou 0	(man protocols, http://web.deu.edu.tr/doc/oreily/networking/tcpip/ch02_07.htm)
-    int socketFD = socket(AF_INET, SOCK_STREAM, 0);
-    if (socketFD < 0)
-    {
-        perror("socket() failed");
-        return(-1);
-    }
-    int socketFDNew;
-    char buffer[512];
+std::string get_network_name() const { return (network_name); }
+std::string get_hostname() const { return (hostname); }
+std::string get_port() const { return (port); }
+std::string get_infoServer() const { return (infoServer); }
+std::string get_servername() const { return (servername); }
+std::string get_locationServer() const { return (locationServer); }
+std::string get_hostInfo() const { return (hostInfo); }
+std::string get_hostMail() const { return (hostMail); }
+std::string get_version() const { return (version); }
+std::string get_token() const { return (token); }
+std::string get_connexion() const { return (connexion); }
+std::string get_nb_user() const { return (nb_user); }
+std::string get_nb_clients() const { return (nb_clients); }
+std::string get_nb_operator() const { return (nb_operator); }
+std::string get_invisible_user() const { return (invisible_user); }
+std::string get_server_connected() const { return (server_connected); }
+std::string get_nb_channel() const { return (nb_channel); }
+std::string get_datetime() const { return (datetime); }
 
-    argv = &argv[1]; // ARGV[0] = port, ARGV[1] = password
+void set_network_name(std::string &val) {
+	network_name = val;
+}
 
-    /*
-    La structure sockaddr_in:
+void set_hostname(std::string &val) {
+	hostname = val;
+}
 
-    struct sockaddr_in
-    {
-        short sin_family;
-        u_short sin_port;
-        struct in_addr sin_addr;
-        char sin_zero[8];
-    };
+void set_port(std::string &val) {
+	port = val;
+}
 
-    */
-    struct sockaddr_in socketaddr; // sockaddr_in = Socket Internet
+void set_infoServer(std::string &val) {
+	infoServer = val;
+}
 
-    ft_message(1);
-    if (argc < 2 || argc > 3)
-    {
-        std::cout << "Wrong number of Arguments" << std::endl;
-        return (0);
-    }
+void set_servername(std::string &val) {
+	servername = val;
+}
 
-    socketaddr.sin_family = AF_INET;
-    socketaddr.sin_addr.s_addr = INADDR_ANY;
-    socketaddr.sin_port = htons(atoi(argv[0]));
+void set_locationServer(std::string &val) {
+	locationServer = val;
+}
 
-    if (bind(socketFD, (struct sockaddr *)&socketaddr, sizeof(socketaddr)) == -1) {
-        std::cout << "Error bind" << errno << std::endl;
-        close(socketFD);
-        // freeaddrinfo(&socketaddr);
-        return(0);
-    }
+void set_hostInfo(std::string &val) {
+	hostInfo = val;
+}
 
-    if (listen(socketFD, 0) == -1)
-        std::cout << "Error listen" << std::endl;
+void set_hostMail(std::string &val) {
+	hostMail = val;
+}
 
-    socketFDNew = accept(socketFD, (struct sockaddr *)&socketaddr, (socklen_t *)&socketaddr);
-    int size;
-    // send(socketFDNew, "Ceci est un test", 5, 0);
-    for (;  (size = recv(socketFDNew, buffer, 512, 0)) != 0; ) {
-        std::cout << socketFDNew << " - " << size << " - " << buffer << std::endl;
-    }
-    std::cout << "After for = " << size << std::endl;
-    // size = recv(socketFDNew, buffer, 512, 0);
-    // // send(socketFD, "test", 5, 0);
-    // // read(socketFDNew, buffer, buffer.size());
-    // std::cout << "COUCOU " << socketFDNew << " - " << size << " - " << buffer << std::endl;
-    // size = recv(socketFDNew, buffer, 512, 0);
-    // std::cout << "COUCOU 2 " << socketFDNew << " - " << size << " - " << buffer << std::endl;
-    // size = recv(socketFDNew, buffer, 512, 0);
-    // std::cout << "COUCOU 3 " << socketFDNew << " - " << size << " - " << buffer << std::endl;
-    close(socketFD);
-    close(socketFDNew);
-    return (0);
+void set_version(std::string &val) {
+	version = val;
+}
+
+void set_token(std::string &val) {
+	token = val;
+}
+
+void set_connexion(std::string &val) {
+	onnexion = val;
+}
+
+void set_nb_user(std::string &val) {
+	nb_user = val;
+}
+
+void set_nb_clients(std::string &val) {
+	nb_clients = val;
+}
+
+void set_nb_operator(std::string &val) {
+	nb_operator = val;
+}
+
+void set_invisible_user(std::string &val) {
+	invisible_user = val;
+}
+
+void set_server_connected(std::string &val) {
+	server_connected = val;
+}
+
+void set_nb_channel(std::string &val) {
+	nb_channel = val;
+}
+
+void set_datetime(std::string &val) {
+	datetime = val;
 }

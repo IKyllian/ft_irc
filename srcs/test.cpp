@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   test.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: rozhou <rozhou@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:50:38 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/05/12 17:36:56 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/05/15 11:47:29 by rozhou           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "../includes/ft_irc.hpp"
 

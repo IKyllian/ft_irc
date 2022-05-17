@@ -78,7 +78,7 @@
 #define RPL_YOUREOPER()(" :You are now an IRC operator" + "\n")																																								// 381
 #define RPL_REHASHING(config_file)(" " + config_file + " :Rehashing" + "\n")																																					// 382
 #define RPL_TIME(server, time)(" " + server + " :" + time + "\n")																																								// 391
-#define RPL_STARTTLS()(" :STARTTLS successful, proceed with TLS handshake" + "\n")																																				// 670									
+#define RPL_STARTTLS()(" :STARTTLS successful, proceed with TLS handshake" + "\n")			//Ici																																	// 670									
 #define RPL_WHOISSECURE(nick)(" " + nick + " :is using a secure connection" + "\n")																																			// 671						
 #define RPL_HELPSTART(subject, str)(" " + subject + " :" + str + "\n")																																							// 704
 #define RPL_HELPTXT(subject, str)(" " + subject + " :" + str + "\n")																																							// 705
@@ -125,7 +125,7 @@
 #define ERR_USERSDONTMATCH ()(" :Cant change mode for other users" + "\n")																																						// 502					
 #define ERR_HELPNOTFOUND (subject)(" " + subject + " :No help available on this topic" + "\n")																																	// 524										
 #define ERR_INVALIDKEY (target_chan)(" " + target_chan + " :Key is not well-formed" + "\n")																																		// 525									
-#define ERR_STARTTLS (cannel)(" :STARTTLS failed (Wrong moon phase)" + "\n")																																					// 691						
+#define ERR_STARTTLS ()(" :STARTTLS failed (Wrong moon phase)" + "\n")																																					// 691						
 #define ERR_INVALIDMODEPARAM (target, mode, parameter, description)(" " + target, " " + mode + " " + parameter + " :" + description + "\n")																						// 696																					
 #define ERR_NOPRIVS (priv)(" " + priv + " :Insufficient oper privileges." + "\n")																																				// 723							
 #define ERR_NICKLOCKED ()(" :You must use a nick assigned to you" + "\n")																																						// 902					
