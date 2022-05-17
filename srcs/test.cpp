@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:50:38 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/05/17 15:18:43 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/05/17 18:21:31 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #include <string.h> //linux
 #include <stdlib.h> //linux
-
+//#include <iomanip>//test cpp 14
 //#include "../includes/ft_irc.hpp"
 //from ft_irc_hpp
 #include <sys/socket.h>	
@@ -34,6 +34,7 @@
 #include <string>
 #include <cerrno>
 
+
 #include <vector>
 #include <map>
 #include <cstdio>
@@ -45,21 +46,58 @@
 
 bool add_new_client(std::vector<Client>& clients, int fd, char* buffer, size_t size)
 {
-	(void) clients;
+	//(void) clients;
 	(void) fd;
 	//(void) buffer;
 	(void) size;
 	// char						buffer[2048];
-//	int		ret;
+	int		ret = 1;
 	Client	new_client;
+//	bool	complete = FALSE;
+//	std::string str = buffer;
+	int i = 0;
 
 	new_client.set_fd(fd);
 	std::cout << "received a message from a new client, fd " << new_client.get_fd() << std::endl;
-	std::cout << "buffer is: " << buffer << std::endl;
+//	std::cout << "buffer is: " << str << std::endl;
+	std::cout << "buff pre loop: " << std::endl << buffer << std::endl;
 	//nickname
 	//username
 	//usermod ??
 
+
+	// ret = fcntl(fd, F_SETFL, O_NONBLOCK);
+	// if (ret == -1)
+	// {
+	// 	perror("fcntl() failed");
+	// 	close(fd);
+	// 	return(false);
+	// }
+
+	
+	ret = 1;
+	while(ret > 0)
+	{
+		while(buffer[i])
+			i++;
+		std::cout << "i = " << i << std::endl;
+		ret = recv(fd, buffer + i, sizeof(buffer - i), 0);
+		std::cout << "ret " << ret << std::endl;
+		std::cout << "TMPbuff: " << std::endl << buffer << std::endl << std::flush;
+	}
+
+	std::cout << "FINALbuff: " << std::endl << buffer << std::endl << std::flush;
+//CAP LS 302
+//PASS 123456
+//NICK karim 
+//USER karim 0* :realname 
+
+	// while (!complete)
+	// {
+
+
+
+	// }
 
 	// loop initial dialog
 
@@ -88,7 +126,7 @@ bool add_new_client(std::vector<Client>& clients, int fd, char* buffer, size_t s
 	// if (ret > 0)
 	// {
 
-	//clients.push_back(new_client);
+	clients.push_back(new_client);
 	// }
 
 
@@ -126,6 +164,16 @@ int main(int ac, char **av)
 //var for client
 	//std::map<int, Client>		m_fd_client;
 	std::vector<Client>			clients;
+
+
+
+    if (__cplusplus == 201703L) std::cout << "C++17\n";
+    else if (__cplusplus == 201402L) std::cout << "C++14\n";
+    else if (__cplusplus == 201103L) std::cout << "C++11\n";
+    else if (__cplusplus == 199711L) std::cout << "C++98\n";
+    else std::cout << "pre-standard C++\n";
+
+
 
 	if (ac < 2 || ac > 3)
 	{
@@ -288,7 +336,7 @@ int main(int ac, char **av)
 					/*****************************************************/
 					memset(&buffer, 0, sizeof(buffer));
 					ret = recv(fds[i].fd, buffer, sizeof(buffer), 0);
-
+std::cout << "##############" << std::endl;
 std::cout << "received: " << buffer;
 
 	//std::vector<Client>			clients;
@@ -299,35 +347,37 @@ std::cout << "received: " << buffer;
 //if fds[i].fd est une key du map m_fd_client --> client existant
 // 			-> parse?()
 //					
-
+std::cout << "clients size " << clients.size() << std::endl;
+std::cout << "----------------" << std::endl;
 					//j = 0;
-					// for (j = 0; j < clients.size(); j++)
-					// {
-					// 	if (fds[i].fd == clients[j].get_fd())
-					// 	{
-					// 		//found
+					for (j = 0; j < clients.size(); j++)
+					{
+						std::cout << "fds[i].fd  " << fds[i].fd  << " clients[j].get_fd() " << clients[j].get_fd() << " j " << j <<  std::endl;
+						if (fds[i].fd == clients[j].get_fd())
+						{
+							//found
 							
-					// 		if (!handle_incoming_message(clients[j], buffer, sizeof(buffer)))
-					// 		{
-					// 			std::cerr << "Failed to handle incoming message" << std::endl;
-					// 			close_conn = TRUE;
-					// 			//break;
-					// 		}
-					// 		break;
-					// 	}
-					// }
+							if (!handle_incoming_message(clients[j], buffer, sizeof(buffer)))
+							{
+								std::cerr << "Failed to handle incoming message" << std::endl;
+								close_conn = TRUE;
+								//break;
+							}
+							break;
+						}
+					}
 
-					// if (j == clients.size())
-					// {
-					// 	//not found
+					if (j == clients.size())
+					{
+						//not found
 
-					// 	if (!add_new_client(clients, fds[i].fd, buffer, sizeof(buffer)))
-					// 	{
-					// 		std::cerr << "Couldn't add new client" << std::endl;
-					// 		close_conn = TRUE;
-					// 		break;
-					// 	}
-					// }
+						if (!add_new_client(clients, fds[i].fd, buffer, sizeof(buffer)))
+						{
+							std::cerr << "Couldn't add new client" << std::endl;
+							close_conn = TRUE;
+							break;
+						}
+					}
 
 
 
@@ -358,7 +408,6 @@ std::cout << "received: " << buffer;
 					/*****************************************************/
 					len = ret;
 					std::cout << len << " bytes received " << std::endl;
-					std::cout << "----------------" << std::endl;
 					std::cout << std::endl;
 
 
@@ -394,6 +443,14 @@ std::cout << "received: " << buffer;
 				if (close_conn)
 				{
 std::cout << "Closing fd " << fds[i].fd << std::endl;
+					for (j = 0; j < clients.size(); j++)
+					{
+						if (fds[i].fd == clients[j].get_fd())
+						{
+							clients.erase(clients.begin() + j);
+							break;
+						}
+					}
 					close(fds[i].fd);
 					fds[i].fd = -1;
 				//	compress_array = TRUE;

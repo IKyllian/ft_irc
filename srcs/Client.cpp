@@ -1,7 +1,7 @@
 #include "../includes/Client.hpp"
 
 Client::Client() {}
-Client::Client(const Client &client) : nickname(client.nickname), username(client.username), user_modes(client.user_modes) {}
+Client::Client(const Client &client) : nickname(client.nickname), username(client.username), user_modes(client.user_modes), fd(client.fd) {}
 Client::~Client() {}
 
 std::string Client::get_nickname() const { return (nickname); }
