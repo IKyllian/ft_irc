@@ -1,21 +1,21 @@
 #include "../includes/Client.hpp"
 
-Client() {}
-Client(const Client &client) : nickname(cleint.nickname), username(client.username), user_modes(client.user_modes) {}
-~Client() {}
+Client::Client() {}
+Client::Client(const Client &client) : nickname(client.nickname), username(client.username), user_modes(client.user_modes) {}
+Client::~Client() {}
 
-std::string get_nickname() const { return (nickname); }
-std::string get_username() const { return (username); }
-std::string get_user_modes() const { return (user_modes); }
+std::string Client::get_nickname() const { return (nickname); }
+std::string Client::get_username() const { return (username); }
+std::string Client::get_user_modes() const { return (user_modes); }
 
-void set_nickname(std::string &val) {
+void Client::set_nickname(std::string &val) {
 	nickname = val;
 }
 
-void set_username(std::string &val) {
+void Client::set_username(std::string &val) {
 	username = val;
 }
 
-void set_user_modes(std::string &val) {
+void Client::set_user_modes(std::string &val) {
 	user_modes = val;
 }
