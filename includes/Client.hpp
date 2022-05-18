@@ -6,9 +6,12 @@
 class Client {
 	public :
 		Client();
+		Client(std::string nickname);
 		Client(const Client &client);
 		Client(int &fd);
 		~Client();
+
+		bool operator==(const Client& lhs, const Client& rhs);
 
 		std::string get_nickname() const;
 		std::string get_username() const;

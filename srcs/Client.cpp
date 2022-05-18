@@ -1,9 +1,14 @@
 #include "../includes/Client.hpp"
 
 Client::Client() : _logged(false){}
+Client::Client(std::string nickname) : _nickname(nickname), _logged(false) {};
 Client::Client(const Client &client) : _nickname(client._nickname), _username(client._username), _user_modes(client._user_modes), _fd(client._fd), _logged(client._logged) {}
 Client::Client(int &fd) : _fd(fd), _logged(false){}
 Client::~Client() {}
+
+bool operator==(const Client& lhs, const Client& rhs) {
+	
+};
 
 std::string Client::get_nickname() const { return (_nickname); }
 std::string Client::get_username() const { return (_username); }
