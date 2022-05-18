@@ -90,48 +90,48 @@
 
 //												ERROR MESSAGES												//
 
-#define ERR_UNKNOWNERROR (command, info)(" " + command + " :" + info + "\n")																																					// 400					
+#define ERR_UNKNOWNERROR(command, info)(" " + command + " :" + info + "\n")																																					// 400					
 #define ERR_NOSUCHNICK(nickname) (" " + nickname + " :No such nick/channel" + "\n")																																				// 401					
 #define ERR_NOSUCHSERVER(server_name)(" " + server_name + " :No such server" + "\n")																																			// 402							
-#define ERR_NOSUCHCHANNEL(channel) (" " + nickname + " :No such channel" + "\n")																																				// 403						
+#define ERR_NOSUCHCHANNEL(channel) (" " + channel + " :No such channel" + "\n")																																				// 403						
 #define ERR_CANNOTSENDTOCHAN(channel)(" " + channel + " :Cannot send to channel" + "\n")																																		// 404								
 #define ERR_TOOMANYCHANNELS(channel)(" " + channel + " :You have joined too many channels" + "\n")																																// 405										
 #define ERR_WASNOSUCHNICK() (" :There was no such nickname" + "\n")																																								// 406		
-#define ERR_NOORIGIN ()(" :No origin specified" + "\n")																																											// 409
+#define ERR_NOORIGIN()(" :No origin specified" + "\n")																																											// 409
 #define ERR_INPUTTOOLONG ()(" :Input line was too long" + "\n")																																									// 417	
-#define ERR_UNKNOWNCOMMAND (command)(" " + command + " :Unknown command" + "\n")																																				// 421							
-#define ERR_NOMOTD ()(" :MOTD File is missing" + "\n")																																											// 422
-#define ERR_ERRONEUSNICKNAME (nickname)(" " + nickname + " :Erroneus nickname" + "\n")																																			// 432								
-#define ERR_NICKNAMEINUSE (nickname)(" " + nickname + " :Nickname is already in use" + "\n")																																	// 433										
-#define ERR_USERNOTINCHANNEL (nickname, channel)(" " + nickname + " " + channel + " :They aren't on that channel" + "\n")																										// 441																	
-#define ERR_NOTONCHANNEL (channel)(" " + channel + " :You're not on that channel" + "\n")																																		// 442									
-#define ERR_USERONCHANNEL (nickname, channel)(" " + nickname + " " + channel + " :is already on channel" + "\n")																												// 443															
-#define ERR_NOTREGISTERED ()(" :You have not registered" + "\n")																																								// 451			
-#define ERR_NEEDMOREPARAMS (command)(" " + command + " :Not enough parameters" + "\n")																																			// 461								
-#define ERR_ALREADYREGISTERED (nickname)(" :You may not reregister" + "\n")																																						// 462					
-#define ERR_PASSWDMISMATCH ()(" :Password incorrect" + "\n")																																									// 464		
-#define ERR_YOUREBANNEDCREEP ()(" :You are banned from this server." + "\n")																																					// 465						
-#define ERR_CHANNELISFULL (channel)(" " + channel + " :Cannot join channel (+l)" + "\n")																																		// 471									
-#define ERR_UNKNOWNMODE (modechar)(" " + modechar + " :is unknown mode char to me" + "\n")																																		// 472									
-#define ERR_INVITEONLYCHAN (channel)(" " + channel + " :Cannot join channel (+i)" + "\n")																																		// 473									
-#define ERR_BANNEDFROMCHAN (channel)(" " + channel + " :Cannot join channel (+b)" + "\n")																																		// 474									
-#define ERR_BADCHANNELKEY (channel)(" " + channel + " :Cannot join channel (+k)" + "\n")																																		// 475									
-#define ERR_BADCHANMASK (channel)(" " + channel + " :Bad Channel Mask" + "\n")																																					// 476						
-#define ERR_NOPRIVILEGES ()(" :Permission Denied- You're not an IRC operator" + "\n")																																			// 481								
-#define ERR_CHANOPRIVSNEEDED (channel)(" " + channel + " :You're not channel operator" + "\n")																																	// 482										
-#define ERR_CANTKILLSERVER ()(" :You cant kill a server!" + "\n")																																								// 483			
-#define ERR_NOOPERHOST ()(" :No O-lines for your host" + "\n")																																									// 491		
-#define ERR_UMODEUNKNOWNFLAG ()(" :Unknown MODE flag" + "\n")																																									// 501		
-#define ERR_USERSDONTMATCH ()(" :Cant change mode for other users" + "\n")																																						// 502					
-#define ERR_HELPNOTFOUND (subject)(" " + subject + " :No help available on this topic" + "\n")																																	// 524										
-#define ERR_INVALIDKEY (target_chan)(" " + target_chan + " :Key is not well-formed" + "\n")																																		// 525									
-#define ERR_STARTTLS ()(" :STARTTLS failed (Wrong moon phase)" + "\n")																																					// 691						
-#define ERR_INVALIDMODEPARAM (target, mode, parameter, description)(" " + target, " " + mode + " " + parameter + " :" + description + "\n")																						// 696																					
-#define ERR_NOPRIVS (priv)(" " + priv + " :Insufficient oper privileges." + "\n")																																				// 723							
-#define ERR_NICKLOCKED ()(" :You must use a nick assigned to you" + "\n")																																						// 902					
-#define ERR_SASLFAIL ()(" :SASL authentication failed" + "\n")																																									// 904		
-#define ERR_SASLTOOLONG ()(" :SASL message too long" + "\n")																																									// 905		
-#define ERR_SASLABORTED ()(" :SASL authentication aborted" + "\n")																																								// 906			
-#define ERR_SASLALREADY ()(" :You have already authenticated using SASL" + "\n")																																				// 907							
+#define ERR_UNKNOWNCOMMAND(command)(" " + command + " :Unknown command" + "\n")																																				// 421							
+#define ERR_NOMOTD()(" :MOTD File is missing" + "\n")																																											// 422
+#define ERR_ERRONEUSNICKNAME(nickname)(" " + nickname + " :Erroneus nickname" + "\n")																																			// 432								
+#define ERR_NICKNAMEINUSE(nickname)(" " + nickname + " :Nickname is already in use" + "\n")																																	// 433										
+#define ERR_USERNOTINCHANNEL(nickname, channel)(" " + nickname + " " + channel + " :They aren't on that channel" + "\n")																										// 441																	
+#define ERR_NOTONCHANNEL(channel)(" " + channel + " :You're not on that channel" + "\n")																																		// 442									
+#define ERR_USERONCHANNEL(nickname, channel)(" " + nickname + " " + channel + " :is already on channel" + "\n")																												// 443															
+#define ERR_NOTREGISTERED()(" :You have not registered" + "\n")																																								// 451			
+#define ERR_NEEDMOREPARAMS(command)(" " + command + " :Not enough parameters" + "\n")																																			// 461								
+#define ERR_ALREADYREGISTERED()(" :You may not reregister" + "\n")																																						// 462					
+#define ERR_PASSWDMISMATCH()(" :Password incorrect" + "\n")																																									// 464		
+#define ERR_YOUREBANNEDCREEP()(" :You are banned from this server." + "\n")																																					// 465						
+#define ERR_CHANNELISFULL(channel)(" " + channel + " :Cannot join channel (+l)" + "\n")																																		// 471									
+#define ERR_UNKNOWNMODE(modechar)(" " + modechar + " :is unknown mode char to me" + "\n")																																		// 472									
+#define ERR_INVITEONLYCHAN(channel)(" " + channel + " :Cannot join channel (+i)" + "\n")																																		// 473									
+#define ERR_BANNEDFROMCHAN(channel)(" " + channel + " :Cannot join channel (+b)" + "\n")																																		// 474									
+#define ERR_BADCHANNELKEY(channel)(" " + channel + " :Cannot join channel (+k)" + "\n")																																		// 475									
+#define ERR_BADCHANMASK(channel)(" " + channel + " :Bad Channel Mask" + "\n")																																					// 476						
+#define ERR_NOPRIVILEGES()(" :Permission Denied- You're not an IRC operator" + "\n")																																			// 481								
+#define ERR_CHANOPRIVSNEEDED(channel)(" " + channel + " :You're not channel operator" + "\n")																																	// 482										
+#define ERR_CANTKILLSERVER()(" :You cant kill a server!" + "\n")																																								// 483			
+#define ERR_NOOPERHOST()(" :No O-lines for your host" + "\n")																																									// 491		
+#define ERR_UMODEUNKNOWNFLAG()(" :Unknown MODE flag" + "\n")																																									// 501		
+#define ERR_USERSDONTMATCH()(" :Cant change mode for other users" + "\n")																																						// 502					
+#define ERR_HELPNOTFOUND(subject)(" " + subject + " :No help available on this topic" + "\n")																																	// 524										
+#define ERR_INVALIDKEY(target_chan)(" " + target_chan + " :Key is not well-formed" + "\n")																																		// 525									
+#define ERR_STARTTLS()(" :STARTTLS failed (Wrong moon phase)" + "\n")																																					// 691						
+#define ERR_INVALIDMODEPARAM(target, mode, parameter, description)(" " + target, " " + mode + " " + parameter + " :" + description + "\n")																						// 696																					
+#define ERR_NOPRIVS(priv)(" " + priv + " :Insufficient oper privileges." + "\n")																																				// 723							
+#define ERR_NICKLOCKED()(" :You must use a nick assigned to you" + "\n")																																						// 902					
+#define ERR_SASLFAIL()(" :SASL authentication failed" + "\n")																																									// 904		
+#define ERR_SASLTOOLONG()(" :SASL message too long" + "\n")																																									// 905		
+#define ERR_SASLABORTED()(" :SASL authentication aborted" + "\n")																																								// 906			
+#define ERR_SASLALREADY()(" :You have already authenticated using SASL" + "\n")																																				// 907							
 
 #endif

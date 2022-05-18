@@ -374,13 +374,13 @@ void ft_message(/*User &user, Server &server, Channel &channel, Message &message
         std::cout << username << ERR_UNKNOWNERROR(command, command_info);
         break;
 	case 451:
-		std::cout << username << ERR_NOTREGISTERED();
+		std::cout << username << STRINGIFY(ERR_NOTREGISTERED());
 		break;
 	case 461:
 		std::cout << username << ERR_NEEDMOREPARAMS(command);
 		break;
 	case 462:
-		std::cout << username << ERR_ALREADYREGISTERED(user_nick);
+		std::cout << username << STRINGIFY(ERR_ALREADYREGISTERED());
 		break;
 	case 464:
 		std::cout << username << STRINGIFY(ERR_PASSWDMISMATCH());
