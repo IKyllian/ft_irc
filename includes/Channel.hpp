@@ -1,5 +1,5 @@
-#ifndef Channel_HPP
-#define Channel_HPP
+#ifndef CHANNEL_HPP
+#define CHANNEL_HPP
 
 #include <set>
 #include <iostream>
