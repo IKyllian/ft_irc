@@ -1,7 +1,8 @@
 SRCS		= srcs/test.cpp \
 				srcs/Channel.cpp \
 				srcs/server.cpp \
-				srcs/Client.cpp
+				srcs/Client.cpp \
+				srcs/message.cpp
 
 OBJS			= $(SRCS:.cpp=.o)
 

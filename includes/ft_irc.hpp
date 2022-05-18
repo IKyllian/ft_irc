@@ -21,4 +21,9 @@
 #include <iostream>
 #include <string>
 #include <cerrno>
+
+#include "numerics.hpp"
+
+void ft_message(/*User &user, Server &server, Channel &channel, */int nb_message);
+
 #endif
