@@ -3,6 +3,10 @@
 
 #include <set>
 #include <iostream>
+#include "Client.hpp"
+#include "Channel.hpp"
+
+
 
 class Server {
 	public :
@@ -28,6 +32,8 @@ class Server {
 		std::string get_server_connected() const;
 		std::string get_nb_channel() const;
 		std::string get_datetime() const;
+		std::vector<Client>		&get_clients() const;
+		std::vector<Channel>	&get_channels() const;
 
 		void set_network_name(std::string &val);
 		void set_hostname(std::string &val);
@@ -67,6 +73,8 @@ class Server {
 		std::string server_connected;
 		std::string nb_channel;
 		std::string datetime;
+		std::vector<Client>		clients;
+		std::vector<Channel>	channels;
 };
 
 #endif

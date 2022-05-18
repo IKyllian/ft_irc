@@ -18,6 +18,8 @@ std::string Server::get_invisible_user() const { return (invisible_user); }
 std::string Server::get_server_connected() const { return (server_connected); }
 std::string Server::get_nb_channel() const { return (nb_channel); }
 std::string Server::get_datetime() const { return (datetime); }
+std::vector<Client>		&Server::get_clients() const { return (clients); }
+std::vector<Channel>	&Server::get_channels() const { return (channels); }
 
 void Server::set_network_name(std::string &val) {
 	network_name = val;
