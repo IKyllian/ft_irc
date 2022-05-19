@@ -6,9 +6,13 @@
 class Client {
 	public :
 		Client();
+		Client(std::string nickname);
 		Client(const Client &client);
 		Client(int &fd);
 		~Client();
+
+		bool operator==(const Client& rhs);
+		bool operator<(const Client &other) const;
 
 		std::string get_nickname() const;
 		std::string get_username() const;
@@ -16,9 +20,9 @@ class Client {
 		int			get_fd() const;
 		bool		get_logged() const;
 
-		void set_nickname(std::string &val);
-		void set_username(std::string &val);
-		void set_user_modes(std::string &val);
+		void set_nickname(std::string val);
+		void set_username(std::string val);
+		void set_user_modes(std::string val);
 		void set_fd(int &val);
 		void set_logged(bool &val);
 
