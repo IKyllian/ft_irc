@@ -52,7 +52,7 @@ void Channel::set_user(Client* client) { // Fonction qui sert a add un user au c
 				invite_list.erase(it2);
 			}
 			else
-				ft_message(473);
+				ft_print_numerics(473);
 		}
 	}
 	//else
@@ -66,7 +66,7 @@ void Channel::set_channel_modes(std::string mode) {
 			for (size_t i = 1; i < mode.size(); i++) {
 				if (modes.find(mode[i]) != std::string::npos) {
 					if (channel_modes.find(mode[i]) != std::string::npos) {
-							ft_message(501);
+							ft_print_numerics(501);
 							continue;
 						}
 					else
@@ -77,7 +77,7 @@ void Channel::set_channel_modes(std::string mode) {
 			for (size_t i = 1; i < mode.size(); i++) {
 				if (modes.find(mode[i]) != std::string::npos) {
 					if (channel_modes.find(mode[i]) == std::string::npos) {
-							ft_message(501);
+							ft_print_numerics(501);
 							continue;
 						}
 					else
@@ -94,14 +94,14 @@ void Channel::set_user_mode(std::string mode, Client *client) {
 	std::string modes = "iswo";
 	std::map<Client*, std::string>::iterator it = users.find(client);
 	if (users.end() == it)
-		ft_message(401);
+		ft_print_numerics(401);
 	else {
 		if (mode.size() > 1) {
 			if (mode[0] == '+') {
 				for (size_t i = 1; i < mode.size(); i++) {
 					if (modes.find(mode[i]) != std::string::npos) {
 						if (it->second.find(mode[i]) != std::string::npos) {
-							ft_message(501);
+							ft_print_numerics(501);
 							continue;
 						}
 						else
@@ -112,7 +112,7 @@ void Channel::set_user_mode(std::string mode, Client *client) {
 				for (size_t i = 1; i < mode.size(); i++) {
 					if (modes.find(mode[i]) != std::string::npos) {
 						if (it->second.find(mode[i]) == std::string::npos) {
-							ft_message(501);
+							ft_print_numerics(501);
 							continue;
 						}
 						else
@@ -138,7 +138,7 @@ void Channel::add_invite(Client *client) {
 void Channel::remove_user(Client *client) {
 	std::map<Client*, std::string>::iterator it = users.find(client);
 	if (users.end() == it)
-		ft_message(442);
+		ft_print_numerics(442);
 	else {
 		users.erase(it);
 		remove_invite(client);

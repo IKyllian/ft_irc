@@ -1,8 +1,14 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+#include "Client.hpp"
+#include "Channel.hpp"
 #include <set>
 #include <iostream>
+
+// class Client;
+// class Channel;
+
 
 class Server {
 	public :
@@ -28,6 +34,8 @@ class Server {
 		std::string get_server_connected() const;
 		std::string get_nb_channel() const;
 		std::string get_datetime() const;
+		// std::vector<Client>		&get_clients() const;
+		// std::vector<Channel>	&get_channels() const;
 
 		void set_network_name(std::string &val);
 		void set_hostname(std::string &val);
@@ -49,24 +57,26 @@ class Server {
 		void set_datetime(std::string &val);
 
 	private :
-		std::string network_name;
-		std::string hostname;
-		std::string port;
-		std::string infoServer;
-		std::string servername;
-		std::string locationServer;
-		std::string hostInfo;
-		std::string hostMail;
-		std::string version;
-		std::string token;
-		std::string connexion;
-		std::string nb_user;
-		std::string nb_clients;
-		std::string nb_operator;
-		std::string invisible_user;
-		std::string server_connected;
-		std::string nb_channel;
-		std::string datetime;
+		std::string _network_name;
+		std::string _hostname;
+		std::string _port;
+		std::string _infoServer;
+		std::string _servername;
+		std::string _locationServer;
+		std::string _hostInfo;
+		std::string _hostMail;
+		std::string _version;
+		std::string _token;
+		std::string _connexion;
+		std::string _nb_user;
+		std::string _nb_clients;
+		std::string _nb_operator;
+		std::string _invisible_user;
+		std::string _server_connected;
+		std::string _nb_channel;
+		std::string _datetime;
+		// std::vector<Client>		clients;
+		// std::vector<Channel>	channels;
 };
 
 #endif
