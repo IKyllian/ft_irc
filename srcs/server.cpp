@@ -1,92 +1,124 @@
 #include "../includes/Server.hpp"
 
-std::string Server::get_network_name() const { return (network_name); }
-std::string Server::get_hostname() const { return (hostname); }
-std::string Server::get_port() const { return (port); }
-std::string Server::get_infoServer() const { return (infoServer); }
-std::string Server::get_servername() const { return (servername); }
-std::string Server::get_locationServer() const { return (locationServer); }
-std::string Server::get_hostInfo() const { return (hostInfo); }
-std::string Server::get_hostMail() const { return (hostMail); }
-std::string Server::get_version() const { return (version); }
-std::string Server::get_token() const { return (token); }
-std::string Server::get_connexion() const { return (connexion); }
-std::string Server::get_nb_user() const { return (nb_user); }
-std::string Server::get_nb_clients() const { return (nb_clients); }
-std::string Server::get_nb_operator() const { return (nb_operator); }
-std::string Server::get_invisible_user() const { return (invisible_user); }
-std::string Server::get_server_connected() const { return (server_connected); }
-std::string Server::get_nb_channel() const { return (nb_channel); }
-std::string Server::get_datetime() const { return (datetime); }
+
+Server::Server() {}
+
+Server::Server(const Server &server):
+	_network_name(server._network_name),
+	_hostname(server._hostname),
+	_port(server._port),
+	_infoServer(server._infoServer),
+	_servername(server._servername),
+	_locationServer(server._locationServer), 
+	_hostInfo (server._hostInfo),
+	_hostMail(server._hostMail),
+	_version (server._version),
+	_token(server._token),
+	_connexion(server._connexion),
+	_nb_user (server._nb_user),
+	_nb_clients (server._nb_clients),
+	_nb_operator (server._nb_operator),
+	_invisible_user (server._invisible_user),
+	_server_connected(server._server_connected),
+	_nb_channel(server._nb_channel),
+	_datetime (server._datetime)
+{
+}
+
+Server::~Server() {}
+
+
+
+
+std::string Server::get_network_name() const { return (_network_name); }
+std::string Server::get_hostname() const { return (_hostname); }
+std::string Server::get_port() const { return (_port); }
+std::string Server::get_infoServer() const { return (_infoServer); }
+std::string Server::get_servername() const { return (_servername); }
+std::string Server::get_locationServer() const { return (_locationServer); }
+std::string Server::get_hostInfo() const { return (_hostInfo); }
+std::string Server::get_hostMail() const { return (_hostMail); }
+std::string Server::get_version() const { return (_version); }
+std::string Server::get_token() const { return (_token); }
+std::string Server::get_connexion() const { return (_connexion); }
+std::string Server::get_nb_user() const { return (_nb_user); }
+std::string Server::get_nb_clients() const { return (_nb_clients); }
+std::string Server::get_nb_operator() const { return (_nb_operator); }
+std::string Server::get_invisible_user() const { return (_invisible_user); }
+std::string Server::get_server_connected() const { return (_server_connected); }
+std::string Server::get_nb_channel() const { return (_nb_channel); }
+std::string Server::get_datetime() const { return (_datetime); }
+// std::vector<Client>		&Server::get_clients() const { return (clients); }
+// std::vector<Channel>	&Server::get_channels() const { return (channels); }
 
 void Server::set_network_name(std::string &val) {
-	network_name = val;
+	_network_name = val;
 }
 
 void Server::set_hostname(std::string &val) {
-	hostname = val;
+	_hostname = val;
 }
 
 void Server::set_port(std::string &val) {
-	port = val;
+	_port = val;
 }
 
 void Server::set_infoServer(std::string &val) {
-	infoServer = val;
+	_infoServer = val;
 }
 
 void Server::set_servername(std::string &val) {
-	servername = val;
+	_servername = val;
 }
 
 void Server::set_locationServer(std::string &val) {
-	locationServer = val;
+	_locationServer = val;
 }
 
 void Server::set_hostInfo(std::string &val) {
-	hostInfo = val;
+	_hostInfo = val;
 }
 
 void Server::set_hostMail(std::string &val) {
-	hostMail = val;
+	_hostMail = val;
 }
 
 void Server::set_version(std::string &val) {
-	version = val;
+	_version = val;
 }
 
 void Server::set_token(std::string &val) {
-	token = val;
+	_token = val;
 }
 
 void Server::set_connexion(std::string &val) {
-	connexion = val;
+	_connexion = val;
 }
 
 void Server::set_nb_user(std::string &val) {
-	nb_user = val;
+	_nb_user = val;
 }
 
 void Server::set_nb_clients(std::string &val) {
-	nb_clients = val;
+	_nb_clients = val;
 }
 
 void Server::set_nb_operator(std::string &val) {
-	nb_operator = val;
+	_nb_operator = val;
 }
 
 void Server::set_invisible_user(std::string &val) {
-	invisible_user = val;
+	_invisible_user = val;
 }
 
 void Server::set_server_connected(std::string &val) {
-	server_connected = val;
+	_server_connected = val;
 }
 
 void Server::set_nb_channel(std::string &val) {
-	nb_channel = val;
+	_nb_channel = val;
 }
 
 void Server::set_datetime(std::string &val) {
-	datetime = val;
+	_datetime = val;
 }
