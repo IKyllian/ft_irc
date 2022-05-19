@@ -24,6 +24,6 @@
 
 #include "numerics.hpp"
 
-void ft_message(/*User &user, Server &server, Channel &channel, */int nb_message);
+void ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/int nb_message);
 
 #endif
