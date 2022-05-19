@@ -1,8 +1,10 @@
-SRCS		= srcs/test.cpp \
+SRCS		= srcs/main.cpp \
 				srcs/Channel.cpp \
-				srcs/server.cpp \
+				srcs/Server.cpp \
 				srcs/Client.cpp \
-				srcs/message.cpp
+				srcs/Message.cpp \
+				srcs/create_Message.cpp \
+				srcs/print_numerics.cpp
 
 OBJS			= $(SRCS:.cpp=.o)
 

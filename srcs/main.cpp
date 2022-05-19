@@ -3,6 +3,19 @@
 int main(int argc, char **argv)
 {
 
+    /*                      TEST MESSAGE            */
+    Message msg;
+    std::string str = ":Tracey`^!me@68.178.52.73 PRIVMSG #game1 :She's dead. Keep laughing.";
+    msg = ft_create_message(str);
+
+
+    std::cout << "prefix = " << msg.get_prefix() << std::endl;
+    std::cout << "command = " << msg.get_command() << std::endl;
+    std::cout << "parameter = " << msg.get_parameter() << std::endl;
+
+    /*               END TEST MESSAGE              */
+
+
     int socketFD = socket(AF_INET, SOCK_STREAM, 0);
     if (socketFD < 0)
     {

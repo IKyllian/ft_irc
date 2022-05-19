@@ -23,7 +23,9 @@
 #include <cerrno>
 
 #include "numerics.hpp"
+#include "Message.hpp"
 
 void ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/int nb_message);
+Message ft_create_message(std::string str);
 
 #endif
