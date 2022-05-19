@@ -1,5 +1,6 @@
 
 #include "../includes/Client.hpp"
+#include "../includes/Channel.hpp"
 #include "../includes/Server.hpp"
 
 #include <sys/socket.h>	
@@ -35,14 +36,11 @@ int handle_incoming_message(std::vector<Client>& clients, int fd)
 	str.clear();
 	for (i = 0; i < clients.size(); i++)
 	{
-		//std::cout << "HIM fd  " << fd  << " clients[i].get_fd() " << clients[i].get_fd() << " i " << i <<  std::endl;
 		if (fd == clients[i].get_fd())
 			break;
 	}
-
 	if (i == clients.size())
 		clients.push_back(Client(fd));
-	
 	do
 	{
 		std::cout << "--------------" << std::endl;
@@ -52,23 +50,13 @@ int handle_incoming_message(std::vector<Client>& clients, int fd)
 		str += buffer;
 		len = str.length();
 		if(str[len - 1] != '\n' && str[len - 2] != '\r')
-		{
-			std::cout << "coucou" << std::endl;
 			break;
-		}
-
-		// std::cout << "HIM ret: " << ret << std::endl;
-		// std::cout << "HIM buffer: " << buffer << std::endl;
-		// std::cout << "HIM str: " << str << std::endl;
-		// std::cout << "len " << len << std::endl;
-		// std::cout << "str[len - 1] != " << (str[len - 1] != '\n') << std::boolalpha << std::endl; 
-
 	}while(ret > 0);
 
-	//std::cout << "HIM2 str:" << str << std::endl;
-
+	std::cout << "FINAL str:" << std::endl << str << "--------------" << std::endl;;
 //AJOUTER CALL POUR LE PARSING
 // do_parsing(str);
+
 	return ret;
 }
 
@@ -83,47 +71,23 @@ void display_cpp_ver()
     else std::cout << "pre-standard C++\n";
 }
 
-int initial_stuff()
+int prepare_socket(Server &server, std::vector<struct pollfd>	&fds, char* port)
 {
+	int 				socketFD, ret;
+	int 				on = 1;
+	struct sockaddr_in	addr;
+	struct pollfd		fd;
 
-}
+	(void)server;
 
-int main(int ac, char **av)
-{
-
-	Server server;
-
-//var for basic commucation
-	int							socketFD, clientFD, timeout;
-	int							len, on, ret = 1;
-	struct sockaddr_in			addr;
-	std::vector<struct pollfd>	fds;
-	struct pollfd				fd;
-	bool						end_server = FALSE;
-	bool						close_conn = FALSE;
-	unsigned long				i, j;
-
-	std::vector<Client>			clients;
-
-
-	display_cpp_ver();
-
-	if (ac < 2 || ac > 3)
-	{
-		std::cout << "Wrong number of Arguments" << std::endl;
-		return (0);
-	}
-
-
-
-// Create an AF_INET (ipv4)stream socket to receive incoming connections on  
+	// Create an AF_INET (ipv4)stream socket to receive incoming connections on  
 	socketFD = socket(AF_INET, SOCK_STREAM, 0);
 	if (socketFD < 0)
 	{
 		perror("socket() failed");
 		return(-1);
 	}
-// Allow socket descriptor to be reuseable  
+	// Allow socket descriptor to be reuseable  
 	ret = setsockopt(socketFD, SOL_SOCKET,  SO_REUSEADDR,
 	(char *)&on, sizeof(on));
 	if (ret < 0)
@@ -132,9 +96,9 @@ int main(int ac, char **av)
 		close(socketFD);
 		return(-1);
 	}
-// Set socket to be nonblocking. All of the sockets for 
-//    the incoming connections will also be nonblocking since  
-//   they will inherit that state from the listening socket.   
+	// Set socket to be nonblocking. All of the sockets for 
+	//    the incoming connections will also be nonblocking since  
+	//   they will inherit that state from the listening socket.   
 	ret = fcntl(socketFD, F_SETFL, O_NONBLOCK);
 	if (ret == -1)
 	{
@@ -142,16 +106,13 @@ int main(int ac, char **av)
 		close(socketFD);
 		return(-1);
 	}
-//Bind the socket  
-
-
 
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = INADDR_ANY;
-	addr.sin_port = htons(atoi(av[1]));
+	addr.sin_port = htons(atoi(port));
 
-
+	//Bind the socket  
 	ret = bind(socketFD, (struct sockaddr *)&addr, sizeof(addr));
 	if (ret < 0)
 	{
@@ -160,8 +121,7 @@ int main(int ac, char **av)
 		return(-1);
 	}
 
- // Set the listen back log
-
+	// Set the listen back log
 	//second arg (32) is size of the listen backlog
 	ret = listen(socketFD, 32);
 	if (ret == -1 )
@@ -171,16 +131,43 @@ int main(int ac, char **av)
 		exit(-1);
 	}
 
-//Initialize the pollfd structure  <<-- with vector not array
+	//Initialize the pollfd structure  <<-- with vector not array
 	memset(&fd, 0 , sizeof(fd));
 	fd.fd = socketFD;
 	fd.events = POLLIN;
 	fds.push_back(fd);
 
+	return socketFD;
+}
+
+int main(int ac, char **av)
+{
+
+	Server server;
+	std::vector<Client>			clients;
+
+	int							socketFD, clientFD, timeout;
+	std::vector<struct pollfd>	fds;
+	int							len, ret = 1;
+	//struct sockaddr_in			addr;
+	bool						end_server = FALSE;
+	bool						close_conn = FALSE;
+	unsigned long				i, j;
+	struct pollfd		fd;
+
+	display_cpp_ver();
+
+	if (ac < 2 || ac > 3)
+	{
+		std::cout << "Wrong number of Arguments" << std::endl;
+		return (0);
+	}
+
+	socketFD = prepare_socket(server, fds, av[1]);
+	if (socketFD == -1)
+		return (-1);
+
 	timeout = (3 * 60 * 1000); // 3 mins
-
-
-
 
 	do
 	{
@@ -298,6 +285,16 @@ int main(int ac, char **av)
 					std::cout << len << " bytes received " << std::endl;
 					std::cout << std::endl;
 
+					// /*****************************************************/
+					// /* Echo the data back to the client                  */
+					// /*****************************************************/
+					// ret = send(fds[i].fd, buffer, len, 0);
+					// if (ret < 0)
+					// {
+					// 	perror("  send() failed");
+					// 	close_conn = TRUE;
+					// 	break;
+					// }
 
 
 				} while(TRUE);
@@ -310,7 +307,7 @@ int main(int ac, char **av)
 				/*******************************************************/
 				if (close_conn)
 				{
-std::cout << "Closing fd " << fds[i].fd << std::endl;
+					std::cout << "Closing fd " << fds[i].fd << std::endl;
 					for (j = 0; j < clients.size(); j++)
 					{
 						if (fds[i].fd == clients[j].get_fd())
@@ -353,4 +350,5 @@ std::cout << "Closing fd " << fds[i].fd << std::endl;
 			if(fds[i].fd >= 0)
 				close(fds[i].fd);
 		}
+		return 0;
 }
