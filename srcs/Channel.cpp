@@ -13,8 +13,8 @@ Channel::~Channel() {
 }
 
 std::string Channel::get_name() const { return (name); }
-std::map<Client&, std::string> &Channel::get_users()  { return (users); }
-std::map<Client&, std::string>::iterator Channel::get_user(Client& client) { return (users.find(client)); }
+std::map<Client, std::string> &Channel::get_users()  { return (users); }
+// std::map<Client, std::string>::iterator Channel::get_user(Client& client) { return (users.find(client)); }
 std::string Channel::get_channel_modes() const { return (channel_modes); }
 
 void Channel::set_name(std::string val) {
@@ -56,9 +56,9 @@ void Channel::set_channel_modes(std::string mode) {
 		std::cout << "Mode : error syntax" << std::endl;
 }
 
-void Channel::set_user_mode(std::string mode, Client &client) {
+void Channel::set_user_mode(std::string mode, Client client) {
 	std::string modes = "iswo";
-	std::map<Client&, std::string>::iterator it = users.find(client);
+	std::map<Client, std::string>::iterator it = users.find(client);
 	if (users.end() == it)
 		ft_message(401);
 	else {
