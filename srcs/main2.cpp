@@ -144,7 +144,7 @@ int main(int ac, char **av)
 {
 
 	Server server;
-	std::vector<Client>			clients;
+	//std::vector<Client>			clients;
 
 	int							socketFD, clientFD, timeout;
 	std::vector<struct pollfd>	fds;
@@ -259,7 +259,7 @@ int main(int ac, char **av)
 					/*****************************************************/
 
 
-					ret = handle_incoming_message(clients, fds[i].fd);
+					ret = handle_incoming_message(server.get_clients(), fds[i].fd);
 
 					if (ret < 0)
 					{
@@ -308,11 +308,11 @@ int main(int ac, char **av)
 				if (close_conn)
 				{
 					std::cout << "Closing fd " << fds[i].fd << std::endl;
-					for (j = 0; j < clients.size(); j++)
+					for (j = 0; j < server.get_clients().size(); j++)
 					{
-						if (fds[i].fd == clients[j].get_fd())
+						if (fds[i].fd == server.get_clients()[j].get_fd())
 						{
-							clients.erase(clients.begin() + j);
+							server.get_clients().erase(server.get_clients().begin() + j);
 							break;
 						}
 					}

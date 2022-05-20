@@ -48,8 +48,8 @@ std::string Server::get_invisible_user() const { return (_invisible_user); }
 std::string Server::get_server_connected() const { return (_server_connected); }
 std::string Server::get_nb_channel() const { return (_nb_channel); }
 std::string Server::get_datetime() const { return (_datetime); }
-// std::vector<Client>		&Server::get_clients() const { return (clients); }
-// std::vector<Channel>	&Server::get_channels() const { return (channels); }
+std::vector<Client>	&Server::get_clients() { return (clients); }
+std::vector<Channel> &Server::get_channels() { return (channels); }
 
 void Server::set_network_name(std::string &val) {
 	_network_name = val;

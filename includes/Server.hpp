@@ -1,14 +1,11 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include "Client.hpp"
-#include "Channel.hpp"
 #include <set>
 #include <iostream>
-
-// class Client;
-// class Channel;
-
+#include <vector>
+#include "Client.hpp"
+#include "Channel.hpp"
 
 class Server {
 	public :
@@ -34,8 +31,8 @@ class Server {
 		std::string get_server_connected() const;
 		std::string get_nb_channel() const;
 		std::string get_datetime() const;
-		// std::vector<Client>		&get_clients() const;
-		// std::vector<Channel>	&get_channels() const;
+		std::vector<Client>	&get_clients();
+		std::vector<Channel> &get_channels();
 
 		void set_network_name(std::string &val);
 		void set_hostname(std::string &val);
@@ -75,8 +72,8 @@ class Server {
 		std::string _server_connected;
 		std::string _nb_channel;
 		std::string _datetime;
-		// std::vector<Client>		clients;
-		// std::vector<Channel>	channels;
+		std::vector<Client>		clients;
+		std::vector<Channel>	channels;
 };
 
 #endif
