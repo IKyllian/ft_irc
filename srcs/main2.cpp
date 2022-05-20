@@ -25,7 +25,9 @@
 #define TRUE             1
 #define FALSE            0
 
-int handle_incoming_message(std::vector<Client>& clients, int fd)
+// int handle_incoming_message(std::vector<Client>& clients, int fd)
+//TODO change from client
+int handle_incoming_message(Server& server, int fd)
 {
 	int ret;
 	char buffer[65535];
@@ -34,13 +36,13 @@ int handle_incoming_message(std::vector<Client>& clients, int fd)
 	std::string str;
 
 	str.clear();
-	for (i = 0; i < clients.size(); i++)
+	for (i = 0; i < server.get_clients().size(); i++)
 	{
-		if (fd == clients[i].get_fd())
+		if (fd == server.get_clients()[i].get_fd())
 			break;
 	}
-	if (i == clients.size())
-		clients.push_back(Client(fd));
+	if (i == server.get_clients().size())
+		server.get_clients().push_back(Client(fd));
 	do
 	{
 		std::cout << "--------------" << std::endl;
@@ -49,14 +51,14 @@ int handle_incoming_message(std::vector<Client>& clients, int fd)
 
 		str += buffer;
 		len = str.length();
-		if(str[len - 1] != '\n' && str[len - 2] != '\r')
-			break;
+		// if(str[len - 1] == '\n' && str[len - 2] == '\r')
+		// 	break;
 	}while(ret > 0);
 
 	std::cout << "FINAL str:" << std::endl << str << "--------------" << std::endl;;
 //AJOUTER CALL POUR LE PARSING
-// do_parsing(str);
-
+// do_parsing(Server &server, Client& expediteur, std::string message);
+// do_parsing(server, server.get_clients()[i], str);
 	return ret;
 }
 
@@ -143,17 +145,13 @@ int prepare_socket(Server &server, std::vector<struct pollfd>	&fds, char* port)
 int main(int ac, char **av)
 {
 
-	Server server;
-	//std::vector<Client>			clients;
-
-	int							socketFD, clientFD, timeout;
+	Server 						server;
+	int							socketFD, clientFD, timeout, ret;
+	struct pollfd				fd;
 	std::vector<struct pollfd>	fds;
-	int							len, ret = 1;
-	//struct sockaddr_in			addr;
 	bool						end_server = FALSE;
 	bool						close_conn = FALSE;
 	unsigned long				i, j;
-	struct pollfd		fd;
 
 	display_cpp_ver();
 
@@ -190,6 +188,7 @@ int main(int ac, char **av)
 			if(fds[i].revents == 0)
 				continue;
 
+			//POLLIN : there is data awaiting
 			if(fds[i].revents != POLLIN)
 			{
 // Error! revents = 17
@@ -221,34 +220,18 @@ int main(int ac, char **av)
 						break;
 					}
 
-					/*****************************************************/
-					/* Add the new incoming connection to the            */
-					/* pollfd structure                                  */
-					/*****************************************************/
 					std::cout << "New incomig connection: " << clientFD << std::endl;
 
 					fd.fd = clientFD;
 					fd.events = POLLIN;
 					fds.push_back(fd);
-					// fds[nfds].fd = new_sd;
-					// fds[nfds].events = POLLIN;
-					// nfds++;
 
-					/*****************************************************/
-					/* Loop back up and accept another incoming          */
-					/* connection                                        */
-					/*****************************************************/
 				} while (clientFD != -1);
 			}
 			else
 			{
 				std::cout << "Descriptor " << fds[i].fd << " is readable" << std::endl;
 				close_conn = FALSE;
-				/*******************************************************/
-				/* Receive all incoming data on this socket            */
-				/* before we loop back and call poll again.            */
-				/*******************************************************/
-
 				do
 				{
 					/*****************************************************/
@@ -258,8 +241,8 @@ int main(int ac, char **av)
 					/* connection.                                       */
 					/*****************************************************/
 
-
-					ret = handle_incoming_message(server.get_clients(), fds[i].fd);
+				//TODO change proto
+					ret = handle_incoming_message(server, fds[i].fd);
 
 					if (ret < 0)
 					{
@@ -277,25 +260,6 @@ int main(int ac, char **av)
 						close_conn = TRUE;
 						break;
 					}
-
-					/*****************************************************/
-					/* Data was received                                 */
-					/*****************************************************/
-					len = ret;
-					std::cout << len << " bytes received " << std::endl;
-					std::cout << std::endl;
-
-					// /*****************************************************/
-					// /* Echo the data back to the client                  */
-					// /*****************************************************/
-					// ret = send(fds[i].fd, buffer, len, 0);
-					// if (ret < 0)
-					// {
-					// 	perror("  send() failed");
-					// 	close_conn = TRUE;
-					// 	break;
-					// }
-
 
 				} while(TRUE);
 
@@ -318,20 +282,11 @@ int main(int ac, char **av)
 					}
 					close(fds[i].fd);
 					fds[i].fd = -1;
-				//	compress_array = TRUE;
 				}
 
 
 			}  /* End of existing connection is readable             */
 		} /* End of loop through pollable descriptors              */
-
-		/***********************************************************/
-		/* If the compress_array flag was turned on, we need       */
-		/* to squeeze together the array and decrement the number  */
-		/* of file descriptors. We do not need to move back the    */
-		/* events and revents fields because the events will always*/
-		/* be POLLIN in this case, and revents is output.          */
-		/***********************************************************/
 
 			for (i = 0; i < fds.size(); i++)
 			{
@@ -342,9 +297,8 @@ int main(int ac, char **av)
 			}
 		} while (end_server == FALSE); /* End of serving running.    */
 
-		/*************************************************************/
-		/* Clean up all of the sockets that are open                 */
-		/*************************************************************/
+
+		std::cout << "Closing all remaining fd" << std::endl;
 		for (i = 0; i < fds.size(); i++)
 		{
 			if(fds[i].fd >= 0)
