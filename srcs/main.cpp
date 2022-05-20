@@ -4,14 +4,17 @@ int main(int argc, char **argv)
 {
 
     /*                      TEST MESSAGE            */
-    Message msg;
-    std::string str = ":Tracey`^!me@68.178.52.73 PRIVMSG #game1 :She's dead. Keep laughing.";
-    msg = ft_create_message(str);
-
-
-    std::cout << "prefix = " << msg.get_prefix() << std::endl;
-    std::cout << "command = " << msg.get_command() << std::endl;
-    std::cout << "parameter = " << msg.get_parameter() << std::endl;
+    std::vector<Message> msg;
+    std::vector<std::string> msg_list;
+    std::string str = "\r\n\r\n:Tracey`^!me@68.178.52.73 PRIVMSG #game1 :She's dead. Keep laughing.\r\nPRIVMSG2 #game2 :She's dead. Keep laughing.";
+    msg_list = ft_split_message(str);
+    for (size_t i = 0; i < msg_list.size(); i++)
+    {
+        msg.push_back(ft_create_message(msg_list[i]));
+        std::cout << "prefix = " << msg[i].get_prefix() << std::endl;
+        std::cout << "command = " << msg[i].get_command() << std::endl;
+        std::cout << "parameter = " << msg[i].get_parameter() << std::endl;
+    }
 
     /*               END TEST MESSAGE              */
 
