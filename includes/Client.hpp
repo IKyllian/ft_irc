@@ -19,12 +19,16 @@ class Client {
 		std::string get_user_modes() const;
 		int			get_fd() const;
 		bool		get_logged() const;
+		std::string	get_buffer() const;
 
 		void set_nickname(std::string val);
 		void set_username(std::string val);
 		void set_user_modes(std::string val);
 		void set_fd(int &val);
 		void set_logged(bool &val);
+		void append_buffer(char* buffer);
+
+		std::string extract_command(size_t pos);
 
 	private :
 		std::string _nickname;
@@ -32,6 +36,7 @@ class Client {
 		std::string _user_modes;
 		int			_fd;
 		bool		_logged;
+		std::string	_buffer;
 };
 
 #endif
