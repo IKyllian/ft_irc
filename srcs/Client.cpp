@@ -42,18 +42,15 @@ void Client::set_fd(int &val) {
 	_fd = val;
 }
 
-void Client::set_logged(bool &val)
-{
+void Client::set_logged(bool &val) {
 	_logged = val;
 }
 
-void Client::append_buffer(char* buffer)
-{
+void Client::append_buffer(char* buffer) {
 	_buffer += buffer;
 }
 
-std::string Client::extract_command(size_t pos)
-{
+std::string Client::extract_command(size_t pos) {
 	std::string command;
 
 	command = _buffer.substr(0, pos + 1);

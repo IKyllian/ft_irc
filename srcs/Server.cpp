@@ -48,8 +48,12 @@ std::string Server::get_invisible_user() const { return (_invisible_user); }
 std::string Server::get_server_connected() const { return (_server_connected); }
 std::string Server::get_nb_channel() const { return (_nb_channel); }
 std::string Server::get_datetime() const { return (_datetime); }
-std::vector<Client>	&Server::get_clients() { return (clients); }
-std::vector<Channel> &Server::get_channels() { return (channels); }
+std::vector<Client>	&Server::get_clients() { return (_clients); }
+std::vector<Channel> &Server::get_channels() { return (_channels); }
+int Server::get_serverFD() const { return (_serverFD); }
+pollfd &Server::get_server_pollfd() { return (_server_pollfd); }
+std::string Server::get_password() const { return (_password); }
+bool Server::get_using_password() const { return (_using_password); }
 
 void Server::set_network_name(std::string &val) {
 	_network_name = val;
@@ -121,4 +125,20 @@ void Server::set_nb_channel(std::string &val) {
 
 void Server::set_datetime(std::string &val) {
 	_datetime = val;
+}
+
+void Server::set_serverFD(int val) {
+	_serverFD = val;
+}
+
+void Server::set_server_pollfd(pollfd &val) {
+	_server_pollfd = val;
+}
+
+void Server::set_password(std::string val) {
+	_password = val;
+}
+
+void Server::set_using_password(bool val) {
+	_using_password = val;
 }
