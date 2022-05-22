@@ -2,7 +2,7 @@
 
 Client::Client() : _logged(false){}
 Client::Client(std::string nickname) : _nickname(nickname), _logged(false) {};
-Client::Client(const Client &client) : _nickname(client._nickname), _username(client._username), _user_modes(client._user_modes), _fd(client._fd), _logged(client._logged), _command_buffer(client._command_buffer) {}
+Client::Client(const Client &client) : _nickname(client._nickname), _username(client._username), _user_modes(client._user_modes), _fd(client._fd), _logged(client._logged), _buffer(client._buffer) {}
 // Client::Client(const Client *client) {
 // 	*this = client;
 // }
@@ -56,7 +56,8 @@ std::string Client::extract_command(size_t pos)
 {
 	std::string command;
 
-	command = 
+	command = _buffer.substr(0, pos + 1);
+	_buffer = _buffer.substr(pos + 2, - 1);
 
 	return command;
 }

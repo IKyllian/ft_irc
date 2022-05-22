@@ -47,7 +47,7 @@ int handle_incoming_message(Server& server, int fd)
 	}while(ret > 0);
 
 	pos = server.get_clients()[i].get_buffer().rfind("\r\n");
-	if (pos == -1)
+	if (pos == -1 || pos >= server.get_clients()[i].get_buffer().length())
 	{
 		std::cout << "from fd: "<< fd << " command incomplete, storing: " << std::endl 
 				<< server.get_clients()[i].get_buffer() << std::endl
