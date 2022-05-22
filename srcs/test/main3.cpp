@@ -75,39 +75,39 @@ void display_cpp_ver()
 }
 
 
-bool init_socket(Server &server, char** av)
+bool init_socket(Server &server, int ac, char** av)
 {
 	struct sockaddr_in	addr;
-	int 				on = 1;
-	int					ret;
+	int 				on = 1; //TODO learn more about on
+	int					ret, serverFD;
 	struct pollfd		fd;
 
 	// Create an AF_INET (ipv4)stream socket to receive incoming connections on  
-	server.set_serverFD(socket(AF_INET, SOCK_STREAM, 0));
-	if (server.get_serverFD() < 0)
+	serverFD = socket(AF_INET, SOCK_STREAM, 0);
+	if (serverFD < 0)
 	{
 		perror("socket() failed");
 		return false;
 	}
 
 	// Allow socket descriptor to be reuseable  
-	ret = setsockopt(server.get_serverFD(), SOL_SOCKET,  SO_REUSEADDR,
+	ret = setsockopt(serverFD, SOL_SOCKET,  SO_REUSEADDR,
 	(char *)&on, sizeof(on));
 	if (ret < 0)
 	{
 		perror("setsockopt() failed");
-		close(server.get_serverFD());
+		close(serverFD);
 		return false;
 	}
 
 	// Set socket to be nonblocking. All of the sockets for 
 	//    the incoming connections will also be nonblocking since  
 	//   they will inherit that state from the listening socket.   
-	ret = fcntl(server.get_serverFD(), F_SETFL, O_NONBLOCK);
+	ret = fcntl(serverFD, F_SETFL, O_NONBLOCK);
 	if (ret == -1)
 	{
 		perror("fcntl() failed");
-		close(server.get_serverFD());
+		close(serverFD);
 		return false;
 	}
 
@@ -118,29 +118,37 @@ bool init_socket(Server &server, char** av)
 
 
 	//Bind the socket  
-	ret = bind(server.get_serverFD(), (struct sockaddr *)&addr, sizeof(addr));
+	ret = bind(serverFD, (struct sockaddr *)&addr, sizeof(addr));
 	if (ret < 0)
 	{
 		perror("bind() failed");
-		close(server.get_serverFD());
+		close(serverFD);
 		return false;
 	}
 
 	// Set the listen back log
 	//second arg (32) is size of the listen backlog
-	ret = listen(server.get_serverFD(), 32);
+	ret = listen(serverFD, 32);
 	if (ret == -1 )
 	{
 		perror("listen() failed");
-		close(server.get_serverFD());
+		close(serverFD);
 		return false;
 	}
 
 	//Initialize the pollfd structure  <<-- with vector not array
 	memset(&fd, 0 , sizeof(fd));
-	fd.fd = server.get_serverFD();
+	fd.fd = serverFD;
 	fd.events = POLLIN;
-	server.set_server_pollfd(fd);
+	server.get_fds().push_back(fd);
+
+	if (ac == 3)
+	{
+		server.set_using_password(true);
+		server.set_password(av[2]);
+	}
+	else
+		server.set_using_password(false);
 
 	return true;
 }
@@ -155,27 +163,101 @@ int main(int ac, char **av)
 		return (0);
 	}
 
-	Server	server;
-	bool	running = true;
-	int		ret;
+	Server			server;
+	bool			running = true;
+	int				ret;
+	struct pollfd	fd;
+	unsigned long	i, j;
 
-	if (!init_socket(server, av))
+	if (!init_socket(server, ac, av))
 		return (-1);
-	if (ac == 3)
-	{
-		server.set_using_password(true);
-		server.set_password(av[2]);
-	}
-	else
-		server.set_using_password(false);
 
-	//main loop
 	while (running)
 	{
 		std::cout << "Waiting on poll()..." << std::endl;
-		ret = poll( , fds.size(), TIMEOUT);
-	}
+		ret = poll( &server.get_fds()[0], server.get_fds().size(), TIMEOUT);
 
-	// TODO clean all fd
+		if (ret < 0)
+		{
+			perror("  poll() failed");
+			break;
+		}
+		if (ret == 0)
+		{
+			std::cerr << "poll() timed out.  End program." << std::endl;
+			break;
+		}
+
+		for (i = 0; i < server.get_fds().size(); i++)
+		{
+			if(server.get_fds()[i].revents == 0)
+				continue;
+
+// 			if(server.get_fds()[i].revents != POLLIN)
+// 			{
+// 				// Error! revents = 17
+// 				std::cerr << "Error! revents = " << server.get_fds()[i].revents << std::endl;
+// 				running = false;
+// 				break;
+
+// 			}
+
+			
+			if (i == 0) // server fd
+			{
+				while (true)
+				{
+					memset(&fd, 0 , sizeof(fd));
+					fd.fd = accept(server.get_server_fd(), NULL, NULL);
+					if (fd.fd < 0)
+					{
+						if (errno != EWOULDBLOCK)
+						{
+							perror("  accept() failed");
+							running == false;
+						}
+						break;
+					}
+					std::cout << "New incomig connection: " << fd.fd << std::endl;
+					fd.events = POLLIN;
+					server.get_fds().push_back(fd);
+				}
+			}
+			else // client fd
+			{
+				std::cout << "Descriptor " << server.get_fds()[i].fd << " is readable" << std::endl;
+				while (true)
+				{
+					ret = handle_incoming_message(server, server.get_fds()[i].fd);
+
+					if (ret <= 0)
+					{
+						if (errno == EWOULDBLOCK)
+							break;
+						std::cout << "Closing fd " << server.get_fds()[i].fd << std::endl;
+						for (j = 0; j < server.get_clients().size(); j++)
+						{
+							if (server.get_fds()[i].fd == server.get_clients()[j].get_fd())
+							{
+								std::cout << "Removing Client: " << server.get_clients()[j].get_fd() << std::endl;
+								server.get_clients().erase(server.get_clients().begin() + j);
+								//TODO faire des trucs ? (enlever le user des channels ?)
+								break;
+							}
+						}
+						close(server.get_fds()[i].fd);
+						server.get_fds().erase(server.get_fds().begin() + i);
+						// i--; ??
+					}
+				} //end while reading incoming message		
+			}
+		} // end checking all fds in pollfd vector
+	}
+	std::cout << "Closing all remaining fd" << std::endl;
+	for (i = 0; i < server.get_fds().size(); i++)
+	{
+		if(server.get_fds()[i].fd >= 0)
+			close(server.get_fds()[i].fd);
+	}
 	return 0;
 }

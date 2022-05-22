@@ -31,12 +31,13 @@ class Server {
 		std::string get_server_connected() const;
 		std::string get_nb_channel() const;
 		std::string get_datetime() const;
+
 		std::vector<Client>	&get_clients();
 		std::vector<Channel> &get_channels();
-		int get_serverFD() const;
-		pollfd &get_server_pollfd();
+		std::vector<struct pollfd> &get_fds();
 		std::string get_password() const;
 		bool get_using_password() const;
+		int get_server_fd() const;
 
 		void set_network_name(std::string &val);
 		void set_hostname(std::string &val);
@@ -56,8 +57,7 @@ class Server {
 		void set_server_connected(std::string &val);
 		void set_nb_channel(std::string &val);
 		void set_datetime(std::string &val);
-		void set_serverFD(int val);
-		void set_server_pollfd(pollfd &val);
+
 		void set_password(std::string val);
 		void set_using_password(bool val);
 
@@ -80,12 +80,12 @@ class Server {
 		std::string _server_connected;
 		std::string _nb_channel;
 		std::string _datetime;
-		std::vector<Client>		_clients;
-		std::vector<Channel>	_channels;
-		int						_serverFD;
-		pollfd					_server_pollfd;	
-		std::string				_password;
-		bool					_using_password;
+
+		std::vector<Client>			_clients;
+		std::vector<Channel>		_channels;
+		std::vector<struct pollfd>	_fds;
+		std::string					_password;
+		bool						_using_password;
 };
 
 #endif
