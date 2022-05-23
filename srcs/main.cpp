@@ -46,7 +46,7 @@ int handle_incoming_message(Server& server, int fd)
 	}while(ret > 0);
 
 	pos = server.get_clients()[i].get_buffer().rfind("\r\n");
-	if (pos == -1 || pos >= server.get_clients()[i].get_buffer().length())
+	if (pos == std::string::npos || pos >= server.get_clients()[i].get_buffer().length())
 	{
 		std::cout << "from fd: "<< fd << " command incomplete, storing: " << std::endl 
 				<< server.get_clients()[i].get_buffer() << std::endl
@@ -56,8 +56,8 @@ int handle_incoming_message(Server& server, int fd)
 	
 	message = server.get_clients()[i].extract_command(pos);
 	std::cout << "command:" << std::endl
-			<< message 
-			<< "--------------" << std::endl;
+			<< message;
+	std::cout << "--------------" << std::endl;
 //AJOUTER CALL POUR LE PARSING
 // do_parsing(Server &server, Client& expediteur, std::string message);
 // do_parsing(server, server.get_clients()[i], message);
@@ -116,7 +116,6 @@ bool init_socket(Server &server, int ac, char** av)
 	addr.sin_addr.s_addr = INADDR_ANY;
 	addr.sin_port = htons(atoi(av[1]));
 
-
 	//Bind the socket  
 	ret = bind(serverFD, (struct sockaddr *)&addr, sizeof(addr));
 	if (ret < 0)
@@ -165,6 +164,7 @@ int main(int ac, char **av)
 
 	Server			server;
 	bool			running = true;
+	bool			removeFD = false;
 	int				ret;
 	struct pollfd	fd;
 	unsigned long	i, j;
@@ -193,16 +193,21 @@ int main(int ac, char **av)
 			if(server.get_fds()[i].revents == 0)
 				continue;
 
-// 			if(server.get_fds()[i].revents != POLLIN)
-// 			{
-// 				// Error! revents = 17
-// 				std::cerr << "Error! revents = " << server.get_fds()[i].revents << std::endl;
-// 				running = false;
-// 				break;
+			if(server.get_fds()[i].revents != POLLIN)
+			{
+				// Error! revents = 17
+				// connection severed
+				std::cerr << "Error! revents = " << server.get_fds()[i].revents << std::endl;
 
-// 			}
+				if (i == 0)
+				{
+					running = false;
+					break;
+				}
+				removeFD = true;
+				break;
+			}
 
-			
 			if (i == 0) // server fd
 			{
 				while (true)
@@ -214,7 +219,7 @@ int main(int ac, char **av)
 						if (errno != EWOULDBLOCK)
 						{
 							perror("  accept() failed");
-							running == false;
+							running = false;
 						}
 						break;
 					}
@@ -227,32 +232,38 @@ int main(int ac, char **av)
 			{
 				std::cout << "Descriptor " << server.get_fds()[i].fd << " is readable" << std::endl;
 				while (true)
-				{
+				{		
 					ret = handle_incoming_message(server, server.get_fds()[i].fd);
-
 					if (ret <= 0)
 					{
+						//EWOULDBLOCK 35
 						if (errno == EWOULDBLOCK)
 							break;
-						std::cout << "Closing fd " << server.get_fds()[i].fd << std::endl;
-						for (j = 0; j < server.get_clients().size(); j++)
-						{
-							if (server.get_fds()[i].fd == server.get_clients()[j].get_fd())
-							{
-								std::cout << "Removing Client: " << server.get_clients()[j].get_fd() << std::endl;
-								server.get_clients().erase(server.get_clients().begin() + j);
-								//TODO faire des trucs ? (enlever le user des channels ?)
-								break;
-							}
-						}
-						close(server.get_fds()[i].fd);
-						server.get_fds().erase(server.get_fds().begin() + i);
-						// i--; ??
+						removeFD = true;
+						break;
 					}
 				} //end while reading incoming message		
 			}
 		} // end checking all fds in pollfd vector
-	}
+
+		if (removeFD)
+		{
+			removeFD = false;
+			std::cout << "Closing fd " << server.get_fds()[i].fd << std::endl;
+			for (j = 0; j < server.get_clients().size(); j++)
+			{
+				if (server.get_fds()[i].fd == server.get_clients()[j].get_fd())
+				{
+					std::cout << "Removing Client: " << server.get_clients()[j].get_fd() << std::endl;
+					server.get_clients().erase(server.get_clients().begin() + j);
+					//TODO faire des trucs ? (enlever le user des channels ?)
+					break;
+				}
+			}
+			close(server.get_fds()[i].fd);
+			server.get_fds().erase(server.get_fds().begin() + i);
+		}
+	} // end main loop
 	std::cout << "Closing all remaining fd" << std::endl;
 	for (i = 0; i < server.get_fds().size(); i++)
 	{
