@@ -13,6 +13,8 @@ Channel::~Channel() {
 	users.clear();
 }
 
+bool Channel::operator==(const Channel &channel) { return (get_name() == channel.get_name()); };
+
 std::vector<Client*>::iterator Channel::search_user_invite(Client *client) {
 	std::vector<Client*>::iterator it = invite_list.begin();
 	for (; it != invite_list.end(); it++)
@@ -164,4 +166,48 @@ void Channel::ban_user(Client *client) {
 void Channel::print_users() {
 	for (std::map<Client*, std::string>::iterator it = users.begin(); it != users.end(); it++)
 		std::cout << it->first->get_nickname() << std::endl;
+}
+
+std::vector<std::string> parse_comma(std::string parameter) {
+	std::vector<std::string> strings_parse;
+	int idx = 0;
+	size_t pos = parameter.find(",", idx);
+	if (pos == std::string::npos)
+		strings_parse.push_back(parameter.substr(idx, parameter.size()));
+	else {
+		while (pos != std::string::npos) {
+			strings_parse.push_back(parameter.substr(idx, pos - idx));
+			idx = pos + 1;
+			pos = parameter.find(",", idx);
+		}
+		strings_parse.push_back(parameter.substr(idx, parameter.size() - idx));
+	}
+	return (strings_parse);
+}
+
+void join_command(std::vector<std::string> parameters, std::vector<Channel> *channels, Client *client) {
+	std::vector<std::string> channels_string;
+	std::vector<std::string> keys;
+	channels_string = parse_comma(parameters[0]);
+	if (parameters.size() > 1)
+		keys = parse_comma(parameters[1]);
+	for (size_t i = 0; i < channels_string.size(); i++)
+		join_channel(channels, client, channels_string[i], keys[i]);
+}
+
+void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key) {
+	(void)key;
+	std::vector<Channel>::iterator it = channels->begin();
+	for (; it != channels->end(); it++) {
+		if ((*it).get_name() == channel)
+			break;
+	}
+	if (it == channels->end())
+		channels->push_back(Channel(channel));
+	it = channels->begin();
+	for (; it != channels->end(); it++) {
+		if ((*it).get_name() == channel)
+			break;
+	}
+	(*it).set_user(client);
 }

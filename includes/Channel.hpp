@@ -14,6 +14,8 @@ class Channel {
 		Channel(const Channel &channel);
 		~Channel();
 
+		bool operator==(const Channel &channel);
+
 		std::vector<Client*>::iterator search_user_invite(Client *client);
 		std::vector<Client*>::iterator search_user_ban(Client *client);
 
@@ -43,5 +45,10 @@ class Channel {
 		std::vector<Client*> users_ban;
 		std::vector<Client*> invite_list;
 };
+
+
+std::vector<std::string> parse_comma(std::string parameter);
+void join_command(std::vector<std::string> parameters, std::vector<Channel> *channels, Client *client);
+void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key);
 
 #endif
