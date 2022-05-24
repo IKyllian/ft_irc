@@ -1,7 +1,7 @@
 #include "../includes/Channel.hpp"
 
 Channel::Channel() {}
-Channel::Channel(std::string &name) : name(name), user_limit(-1) {}
+Channel::Channel(std::string &name) : name(name), user_limit(SIZE_MAX) {}
 Channel::Channel(const Channel &channel) : name(channel.name) {
 	users.clear();
 	users = channel.users;
@@ -44,11 +44,11 @@ void Channel::set_name(std::string val) {
 	name = val;
 }
 
-void set_password(std::string password) {
+void Channel::set_password(std::string password) {
 	this->password = password;
 }
 
-void set_user_limit(int limit) {
+void Channel::set_user_limit(int limit) {
 	user_limit = limit;
 }
 

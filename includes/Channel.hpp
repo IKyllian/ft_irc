@@ -45,7 +45,7 @@ class Channel {
 	private :
 		std::string name;
 		std::string password;
-		int user_limit;
+		size_t user_limit;
 		std::map<Client*, std::string> users; // Stock Client et les modes du user sur le channel
 		std::string channel_modes;
 		std::vector<Client*> users_ban;
