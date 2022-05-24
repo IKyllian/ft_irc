@@ -1,6 +1,6 @@
-#include "../includes/ft_irc.hpp"
-#include "../includes/Channel.hpp"
-#include "../includes/Client.hpp"
+#include "../../includes/ft_irc.hpp"
+#include "../../includes/Channel.hpp"
+#include "../../includes/Client.hpp"
 int main(int argc, char **argv)
 {
 	(void)argc;
@@ -34,10 +34,10 @@ int main(int argc, char **argv)
 
 	channels[0].set_channel_modes("+i");
 
-	channels[0].add_invite(&client2);
-	std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
-	channels[0].set_user(&client2);
-	std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
+	// channels[0].add_invite(&client2);
+	// std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
+	// channels[0].set_user(&client2);
+	// std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
 
 	std::cout << channels[0].get_users().size() << std::endl;
 	for (std::map<Client*, std::string>::iterator it = channels[0].get_users().begin(); it != channels[0].get_users().end(); ++it) {

@@ -1,7 +1,7 @@
 #include "../includes/Channel.hpp"
 
 Channel::Channel() {}
-Channel::Channel(std::string &name) : name(name) {}
+Channel::Channel(std::string &name) : name(name), user_limit(-1) {}
 Channel::Channel(const Channel &channel) : name(channel.name) {
 	users.clear();
 	users = channel.users;
@@ -37,28 +37,45 @@ std::vector<Client*>						&Channel::get_users_ban() { return (users_ban); };
 std::vector<Client*>						&Channel::get_invite_list() { return (invite_list); };
 std::map<Client*, std::string>::iterator	Channel::get_user(Client* client) { return (users.find(client)); }
 std::string									Channel::get_channel_modes() const { return (channel_modes); }
+std::string 								Channel::get_password() const { return (password); }
+int 										Channel::get_user_limit() const { return (user_limit); }
 
 void Channel::set_name(std::string val) {
 	name = val;
 }
 
-void Channel::set_user(Client* client) { // Fonction qui sert a add un user au channel
+void set_password(std::string password) {
+	this->password = password;
+}
+
+void set_user_limit(int limit) {
+	user_limit = limit;
+}
+
+void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a add un user au channel
 	std::vector<Client*>::iterator it = search_user_ban(client);
 	std::vector<Client*>::iterator it2 = search_user_invite(client);
-	if (users_ban.end() == it) {
-		if (channel_modes.find('i') == std::string::npos)
-			users.insert(std::pair<Client*, std::string>(client, ""));
-		else {
-			if (it2 != invite_list.end()) { // Check si le user a recu une invitation
-				users.insert(std::pair<Client*, std::string>(client, ""));
-				invite_list.erase(it2);
+	if (users.size() < user_limit) {
+		if (users_ban.end() == it) {
+			if (channel_modes.find('k') != std::string::npos) {
+				if (key != password) {
+					ft_print_numerics(475);
+					return ;
+				}
 			}
-			else
-				ft_print_numerics(473);
-		}
-	}
-	//else
-		//Check l'erreur a mettre si un client essaie de join un channel où il est ban
+			if (channel_modes.find('i') != std::string::npos) {
+				if (it2 != invite_list.end()) { // Check si le user a recu une invitation
+					users.insert(std::pair<Client*, std::string>(client, ""));
+					invite_list.erase(it2);
+				} else
+					ft_print_numerics(473);
+			} else {
+				users.insert(std::pair<Client*, std::string>(client, ""));
+			}
+		} else
+			ft_print_numerics(474);
+	} else
+		ft_print_numerics(471);
 }
 
 void Channel::set_channel_modes(std::string mode) {
@@ -70,9 +87,10 @@ void Channel::set_channel_modes(std::string mode) {
 					if (channel_modes.find(mode[i]) != std::string::npos) {
 							ft_print_numerics(501);
 							continue;
-						}
-					else
+					} else {
+
 						channel_modes.push_back(mode[i]);
+					}
 				}
 			}
 		} else if (mode[0] == '-') {
@@ -81,8 +99,7 @@ void Channel::set_channel_modes(std::string mode) {
 					if (channel_modes.find(mode[i]) == std::string::npos) {
 							ft_print_numerics(501);
 							continue;
-						}
-					else
+					} else
 						channel_modes.erase(channel_modes.find(mode[i]), 1);
 				}
 			}
@@ -105,8 +122,7 @@ void Channel::set_user_mode(std::string mode, Client *client) {
 						if (it->second.find(mode[i]) != std::string::npos) {
 							ft_print_numerics(501);
 							continue;
-						}
-						else
+						} else
 							it->second.push_back(mode[i]);
 					}
 				}
@@ -116,8 +132,7 @@ void Channel::set_user_mode(std::string mode, Client *client) {
 						if (it->second.find(mode[i]) == std::string::npos) {
 							ft_print_numerics(501);
 							continue;
-						}
-						else
+						} else
 							it->second.erase(it->second.find(mode[i]), 1);
 					}
 				}
@@ -172,16 +187,12 @@ std::vector<std::string> parse_comma(std::string parameter) {
 	std::vector<std::string> strings_parse;
 	int idx = 0;
 	size_t pos = parameter.find(",", idx);
-	if (pos == std::string::npos)
-		strings_parse.push_back(parameter.substr(idx, parameter.size()));
-	else {
-		while (pos != std::string::npos) {
-			strings_parse.push_back(parameter.substr(idx, pos - idx));
-			idx = pos + 1;
-			pos = parameter.find(",", idx);
-		}
-		strings_parse.push_back(parameter.substr(idx, parameter.size() - idx));
+	while (pos != std::string::npos) {
+		strings_parse.push_back(parameter.substr(idx, pos - idx));
+		idx = pos + 1;
+		pos = parameter.find(",", idx);
 	}
+	strings_parse.push_back(parameter.substr(idx, parameter.size() - idx));
 	return (strings_parse);
 }
 
@@ -191,12 +202,15 @@ void join_command(std::vector<std::string> parameters, std::vector<Channel> *cha
 	channels_string = parse_comma(parameters[0]);
 	if (parameters.size() > 1)
 		keys = parse_comma(parameters[1]);
-	for (size_t i = 0; i < channels_string.size(); i++)
-		join_channel(channels, client, channels_string[i], keys[i]);
+	for (size_t i = 0; i < channels_string.size(); i++) {
+		if (i - 1 > keys.size())
+			join_channel(channels, client, channels_string[i], "");
+		else
+			join_channel(channels, client, channels_string[i], keys[i]);
+	}
 }
 
 void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key) {
-	(void)key;
 	std::vector<Channel>::iterator it = channels->begin();
 	for (; it != channels->end(); it++) {
 		if ((*it).get_name() == channel)
@@ -209,5 +223,5 @@ void join_channel(std::vector<Channel> *channels, Client *client, std::string ch
 		if ((*it).get_name() == channel)
 			break;
 	}
-	(*it).set_user(client);
+	(*it).set_user(client, key);
 }
