@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Client.hpp"
 #include "ft_irc.hpp"
+#include <sstream> // pour convertir string en int 
 
 class Channel {
 	public :
@@ -30,15 +31,19 @@ class Channel {
 		
 		void set_name(std::string val);
 		void set_user(Client *client, std::string key);
-		void set_channel_modes(std::string mode);
-		void set_user_mode(std::string mode, Client *client);
+		void set_channel_modes(std::string mode, std::vector<std::string> parameters);
+		void set_mode(char mode, std::string parameter = std::string());
+		void set_user_mode(char mode, std::string parameter);
 		void add_invite(Client *client);
-		void set_password(std::string password);
+		void set_password(std::string password = std::string());
 		void set_user_limit(int limit);
 		
 		void remove_user(Client *client);
 		void remove_invite(Client *client);
 		void ban_user(Client *client);
+		void unban_user(Client *client);
+		void unset_mode(char mode, std::string parameter = std::string());
+		void unset_user_mode(char mode, std::string parameter);
 
 		void print_users();
 
@@ -54,6 +59,6 @@ class Channel {
 
 std::vector<std::string> parse_comma(std::string parameter);
 void join_command(std::vector<std::string> parameters, std::vector<Channel> *channels, Client *client);
-void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key);
+void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key = std::string());
 
 #endif
