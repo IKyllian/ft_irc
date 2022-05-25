@@ -1,77 +1,77 @@
 #include "../includes/Channel.hpp"
 
 Channel::Channel() {}
-Channel::Channel(std::string &name) : name(name), user_limit(0) {}
-Channel::Channel(const Channel &channel) : name(channel.name) {
-	users.clear();
-	users = channel.users;
+Channel::Channel(std::string &name) : _name(name), _user_limit(0) {}
+Channel::Channel(const Channel &channel) : _name(channel._name) {
+	_users.clear();
+	_users = channel._users;
 	// users.insert(channel.users.begin(), channel.users.end());
-	channel_modes = channel.channel_modes;
+	_channel_modes = channel._channel_modes;
 }
 
 Channel::~Channel() {
-	users.clear();
+	_users.clear();
 }
 
 bool Channel::operator==(const Channel &channel) { return (get_name() == channel.get_name()); };
 
 std::vector<Client*>::iterator Channel::search_user_invite(Client *client) {
-	std::vector<Client*>::iterator it = invite_list.begin();
-	for (; it != invite_list.end(); it++)
+	std::vector<Client*>::iterator it = _invite_list.begin();
+	for (; it != _invite_list.end(); it++)
 		if (*it == client)
 			return (it);
 	return (it);
 }
 
 std::vector<Client*>::iterator Channel::search_user_ban(Client *client) {
-	std::vector<Client*>::iterator it = users_ban.begin();
-	for (; it != users_ban.end(); it++)
+	std::vector<Client*>::iterator it = _users_ban.begin();
+	for (; it != _users_ban.end(); it++)
 		if (*it == client)
 			return (it);
 	return (it);
 }
 
-std::string									Channel::get_name() const { return (name); }
-std::map<Client*, std::string>				&Channel::get_users()  { return (users); }
-std::vector<Client*>						&Channel::get_users_ban() { return (users_ban); };
-std::vector<Client*>						&Channel::get_invite_list() { return (invite_list); };
-std::map<Client*, std::string>::iterator	Channel::get_user(Client* client) { return (users.find(client)); }
-std::string									Channel::get_channel_modes() const { return (channel_modes); }
-std::string 								Channel::get_password() const { return (password); }
-int 										Channel::get_user_limit() const { return (user_limit); }
+std::string									Channel::get_name() const { return (_name); }
+std::map<Client*, std::string>				&Channel::get_users()  { return (_users); }
+std::vector<Client*>						&Channel::get_users_ban() { return (_users_ban); };
+std::vector<Client*>						&Channel::get_invite_list() { return (_invite_list); };
+std::map<Client*, std::string>::iterator	Channel::get_user(Client* client) { return (_users.find(client)); }
+std::string									Channel::get_channel_modes() const { return (_channel_modes); }
+std::string 								Channel::get_password() const { return (_password); }
+int 										Channel::get_user_limit() const { return (_user_limit); }
 
 void Channel::set_name(std::string val) {
-	name = val;
+	_name = val;
 }
 
 void Channel::set_password(std::string password) {
-	this->password = password;
+	this->_password = password;
 }
 
 void Channel::set_user_limit(int limit) {
-	user_limit = limit;
+	_user_limit = limit;
 }
 
 void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a add un user au channel
 	std::vector<Client*>::iterator it = search_user_ban(client);
 	std::vector<Client*>::iterator it2 = search_user_invite(client);
-	if ((channel_modes.find('l') == std::string::npos) || (channel_modes.find('l') != std::string::npos && users.size() < user_limit)) {
-		if (users_ban.end() == it) {
-			if (channel_modes.find('k') != std::string::npos) {
-				std::cout << "Password = " << password << " - Key = " << key << std::endl;
-				if (key != password) {
+	if ((_channel_modes.find('l') == std::string::npos) || (_channel_modes.find('l') != std::string::npos && _users.size() < _user_limit)) {
+		if (_users_ban.end() == it) {
+			if (_channel_modes.find('k') != std::string::npos) {
+				// std::cout << "Password = " << _password << " - Key = " << key << std::endl;
+				if (key != _password) {
 					ft_print_numerics(475);
 					return ;
 				}
 			}
-			if (channel_modes.find('i') != std::string::npos) {
-				if (it2 != invite_list.end()) { // Check si le user a recu une invitation
-					users.insert(std::pair<Client*, std::string>(client, ""));
-					invite_list.erase(it2);
+			if (_channel_modes.find('i') != std::string::npos) {
+				if (it2 != _invite_list.end()) { // Check si le user a recu une invitation
+					_users.insert(std::pair<Client*, std::string>(client, ""));
+					_invite_list.erase(it2);
 				} else
 					ft_print_numerics(473);
 			} else {
-				users.insert(std::pair<Client*, std::string>(client, ""));
+				_users.insert(std::pair<Client*, std::string>(client, ""));
 			}
 		} else
 			ft_print_numerics(474);
@@ -86,20 +86,20 @@ void Channel::set_mode(char mode, std::string parameter) {
 			ft_print_numerics(461);
 		else {
 			set_user_mode(mode, parameter);
-			channel_modes.push_back(mode);
+			_channel_modes.push_back(mode);
 		}
 	} else if (mode == 'p')
-		channel_modes.push_back(mode);
+		_channel_modes.push_back(mode);
 	else if (mode == 's')
-		channel_modes.push_back(mode);
+		_channel_modes.push_back(mode);
 	else if (mode == 'i')
-		channel_modes.push_back(mode);
+		_channel_modes.push_back(mode);
 	else if (mode == 't')
-		channel_modes.push_back(mode);
+		_channel_modes.push_back(mode);
 	else if (mode == 'n')
-		channel_modes.push_back(mode);
+		_channel_modes.push_back(mode);
 	else if (mode == 'm')
-		channel_modes.push_back(mode);
+		_channel_modes.push_back(mode);
 	else if (mode == 'l') {
 		if (parameter == "")
 			ft_print_numerics(461);
@@ -107,15 +107,15 @@ void Channel::set_mode(char mode, std::string parameter) {
 		if (nb < 0 || nb > SIZE_MAX)
 			ft_print_numerics(461);
 		else {
-			channel_modes.push_back(mode);
+			_channel_modes.push_back(mode);
 			set_user_limit(nb);
 		}
 	} else if (mode == 'b') {
-		std::map<Client*, std::string>::iterator it = users.begin();
-		for (; it != users.end(); it++)
+		std::map<Client*, std::string>::iterator it = _users.begin();
+		for (; it != _users.end(); it++)
 		if ((*it).first->get_nickname() == parameter)
 			break;
-		if (it == users.end())
+		if (it == _users.end())
 			ft_print_numerics(401);
 		else
 			ban_user((*it).first);
@@ -129,7 +129,7 @@ void Channel::set_mode(char mode, std::string parameter) {
 			ft_print_numerics(461);
 		else {
 			set_password(parameter);
-			channel_modes.push_back(mode);
+			_channel_modes.push_back(mode);
 		}
 	}
 	else
@@ -142,29 +142,29 @@ void Channel::unset_mode(char mode, std::string parameter) {
 			ft_print_numerics(461);
 		else {
 			unset_user_mode(mode, parameter);
-			channel_modes.erase(channel_modes.find(mode), 1);
+			_channel_modes.erase(_channel_modes.find(mode), 1);
 		}
 	} else if (mode == 'p')
-		channel_modes.erase(channel_modes.find(mode), 1);
+		_channel_modes.erase(_channel_modes.find(mode), 1);
 	else if (mode == 's')
-		channel_modes.erase(channel_modes.find(mode), 1);
+		_channel_modes.erase(_channel_modes.find(mode), 1);
 	else if (mode == 'i')
-		channel_modes.erase(channel_modes.find(mode), 1);
+		_channel_modes.erase(_channel_modes.find(mode), 1);
 	else if (mode == 't')
-		channel_modes.erase(channel_modes.find(mode), 1);
+		_channel_modes.erase(_channel_modes.find(mode), 1);
 	else if (mode == 'n')
-		channel_modes.erase(channel_modes.find(mode), 1);
+		_channel_modes.erase(_channel_modes.find(mode), 1);
 	else if (mode == 'm')
-		channel_modes.erase(channel_modes.find(mode), 1);
+		_channel_modes.erase(_channel_modes.find(mode), 1);
 	else if (mode == 'l') {
-		channel_modes.erase(channel_modes.find(mode), 1);
+		_channel_modes.erase(_channel_modes.find(mode), 1);
 		set_user_limit(0);
 	} else if (mode == 'b') {
-		std::map<Client*, std::string>::iterator it = users.begin();
-		for (; it != users.end(); it++)
+		std::map<Client*, std::string>::iterator it = _users.begin();
+		for (; it != _users.end(); it++)
 		if ((*it).first->get_nickname() == parameter)
 			break;
-		if (it == users.end())
+		if (it == _users.end())
 			ft_print_numerics(401);
 		else
 			unban_user((*it).first);
@@ -178,7 +178,7 @@ void Channel::unset_mode(char mode, std::string parameter) {
 			ft_print_numerics(461);
 		else {
 			set_password();
-			channel_modes.erase(channel_modes.find(mode), 1);
+			_channel_modes.erase(_channel_modes.find(mode), 1);
 		}
 	}
 	else
@@ -191,7 +191,7 @@ void Channel::set_channel_modes(std::string mode, std::vector<std::string> param
 		if (mode[0] == '+') {
 			for (size_t i = 1; i < mode.size(); i++) {
 				if (modes.find(mode[i]) != std::string::npos) {
-					if (channel_modes.find(mode[i]) != std::string::npos) {
+					if (_channel_modes.find(mode[i]) != std::string::npos) {
 							ft_print_numerics(501); //Check si c'est bien cette erreur
 							continue;
 					} else {
@@ -206,7 +206,7 @@ void Channel::set_channel_modes(std::string mode, std::vector<std::string> param
 		} else if (mode[0] == '-') {
 			for (size_t i = 1; i < mode.size(); i++) {
 				if (modes.find(mode[i]) != std::string::npos) {
-					if (channel_modes.find(mode[i]) == std::string::npos) {
+					if (_channel_modes.find(mode[i]) == std::string::npos) {
 							ft_print_numerics(501);
 							continue;
 					} else {
@@ -224,11 +224,11 @@ void Channel::set_channel_modes(std::string mode, std::vector<std::string> param
 }
 
 void Channel::set_user_mode(char mode, std::string parameter) {
-	std::map<Client*, std::string>::iterator it = users.begin();
-	for (; it != users.end(); it++)
+	std::map<Client*, std::string>::iterator it = _users.begin();
+	for (; it != _users.end(); it++)
 		if ((*it).first->get_nickname() == parameter)
 			break;
-	if (it == users.end())
+	if (it == _users.end())
 		ft_print_numerics(401);
 	else {
 		if (it->second.find(mode) == std::string::npos)
@@ -237,15 +237,15 @@ void Channel::set_user_mode(char mode, std::string parameter) {
 }
 
 void Channel::unset_user_mode(char mode, std::string parameter) {
-	std::map<Client*, std::string>::iterator it = users.begin();
-	for (; it != users.end(); it++)
+	std::map<Client*, std::string>::iterator it = _users.begin();
+	for (; it != _users.end(); it++)
 		if ((*it).first->get_nickname() == parameter)
 			break;
-	if (it == users.end())
+	if (it == _users.end())
 		ft_print_numerics(401);
 	else {
 		if (it->second.find(mode) != std::string::npos)
-			it->second.erase(channel_modes.find(mode), 1);
+			it->second.erase(_channel_modes.find(mode), 1);
 	}
 }
 
@@ -286,47 +286,47 @@ void Channel::unset_user_mode(char mode, std::string parameter) {
 void Channel::add_invite(Client *client) {
 	std::vector<Client*>::iterator it = search_user_invite(client);
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
-	if (it2 == users_ban.end()) {
-		if (it == invite_list.end())
-			invite_list.push_back(client);
+	if (it2 == _users_ban.end()) {
+		if (it == _invite_list.end())
+			_invite_list.push_back(client);
 	}
 }
 
 void Channel::remove_user(Client *client) {
-	std::map<Client*, std::string>::iterator it = users.find(client);
-	if (users.end() == it)
+	std::map<Client*, std::string>::iterator it = _users.find(client);
+	if (_users.end() == it)
 		ft_print_numerics(442);
 	else {
-		users.erase(it);
+		_users.erase(it);
 		remove_invite(client);
 	}
 }
 
 void Channel::remove_invite(Client *client) {
 	std::vector<Client*>::iterator it = search_user_invite(client);
-	if (invite_list.end() != it)
-		invite_list.erase(it);
+	if (_invite_list.end() != it)
+		_invite_list.erase(it);
 }
 
 void Channel::ban_user(Client *client) {
-	std::map<Client*, std::string>::iterator it = users.find(client);
+	std::map<Client*, std::string>::iterator it = _users.find(client);
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
-	if (users.end() != it)
-		users.erase(it);
-	if (users_ban.end() == it2)
-		users_ban.push_back(client);
+	if (_users.end() != it)
+		_users.erase(it);
+	if (_users_ban.end() == it2)
+		_users_ban.push_back(client);
 	remove_invite(client);
 }
 
 
 void Channel::unban_user(Client *client) {
 	std::vector<Client*>::iterator it = search_user_ban(client);
-	if (users_ban.end() != it)
-		users_ban.erase(it);
+	if (_users_ban.end() != it)
+		_users_ban.erase(it);
 }
 
 void Channel::print_users() {
-	for (std::map<Client*, std::string>::iterator it = users.begin(); it != users.end(); it++)
+	for (std::map<Client*, std::string>::iterator it = _users.begin(); it != _users.end(); it++)
 		std::cout << it->first->get_nickname() << std::endl;
 }
 

@@ -48,13 +48,13 @@ class Channel {
 		void print_users();
 
 	private :
-		std::string name;
-		std::string password;
-		size_t user_limit;
-		std::map<Client*, std::string> users; // Stock Client et les modes du user sur le channel
-		std::string channel_modes;
-		std::vector<Client*> users_ban;
-		std::vector<Client*> invite_list;
+		std::string _name;
+		std::string _password;
+		size_t _user_limit;
+		std::map<Client*, std::string> _users; // Stock Client et les modes du user sur le channel
+		std::string _channel_modes;
+		std::vector<Client*> _users_ban;
+		std::vector<Client*> _invite_list;
 };
 
 std::vector<std::string> parse_comma(std::string parameter);
