@@ -27,6 +27,7 @@ class Channel {
 		std::map<Client*, std::string>::iterator get_user(Client* client);
 		std::string get_channel_modes() const;
 		std::string get_password() const;
+		std::string get_topic() const;
 		int get_user_limit() const;
 		
 		void set_name(std::string val);
@@ -36,6 +37,7 @@ class Channel {
 		void set_user_mode(char mode, std::string parameter);
 		void add_invite(Client *client);
 		void set_password(std::string password = std::string());
+		void set_topic(std::string new_topic = std::string());
 		void set_user_limit(int limit);
 		
 		void remove_user(Client *client);
@@ -51,6 +53,7 @@ class Channel {
 		std::string _name;
 		std::string _password;
 		size_t _user_limit;
+		std::string topic;
 		std::map<Client*, std::string> _users; // Stock Client et les modes du user sur le channel
 		std::string _channel_modes;
 		std::vector<Client*> _users_ban;
@@ -60,5 +63,6 @@ class Channel {
 std::vector<std::string> parse_comma(std::string parameter);
 void join_command(std::vector<std::string> parameters, std::vector<Channel> *channels, Client *client);
 void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key = std::string());
+void list_command(std::vector<Channel> channels, std::vector<std::string> parameters = std::vector<std::string>());
 
 #endif

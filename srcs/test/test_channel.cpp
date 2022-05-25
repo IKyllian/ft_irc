@@ -34,6 +34,10 @@ int main(int argc, char **argv)
 	Client client2(client2_name);
 	Client client3(user7);
 
+	client1.set_user_modes("+ospwioo");
+
+	std::cout << "Client modes = " << client1.get_user_modes() << std::endl;
+
 	join_command(channels_string, &channels, &client1);
 	join_command(channels_string2, &channels, &client1);
 
