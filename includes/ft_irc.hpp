@@ -22,12 +22,13 @@
 #include <string>
 #include <cerrno>
 #include <vector>
+#include <cstdlib>
 
 #include "numerics.hpp"
 #include "Message.hpp"
 
 void                        ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/int nb_message);
-Message                     ft_create_message(std::string str);
+Message*                    ft_create_message(std::string str);
 std::vector<std::string>    ft_split_message(std::string str);
 
 #endif
