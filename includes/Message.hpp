@@ -2,6 +2,8 @@
 #define MESSAGE_HPP
 
 #include <iostream>
+#include <vector>
+#include <string>
 
 class Message {
 	public :
@@ -30,7 +32,7 @@ class Message {
 		void set_mask(std::string &val);
 		void set_subject(std::string &val);
 		void set_parameter(std::string &val);
-		void set_nb_parameter(int &val);
+		void set_nb_parameter(int val);
 
 	private :
 	std::string 				_sender;
@@ -42,7 +44,7 @@ class Message {
     std::string 				_mask;
 	std::string 				_subject;
 	std::string					_parameter;
-	int							_nb_parameter;
+	int					_nb_parameter;
 	std::vector<std::string>	_tab_parameter;
 };
 

@@ -1,19 +1,27 @@
-#include "../includes/ft_irc.hpp"
+#include "../../includes/ft_irc.hpp"
 
 int main(int argc, char **argv)
 {
 
     /*                      TEST MESSAGE            */
-    std::vector<Message> msg;
+    std::vector<Message*> msg;
+    Message msg2;
     std::vector<std::string> msg_list;
     std::string str = "\r\n\r\n:Tracey`^!me@68.178.52.73 PRIVMSG #game1 :She's dead. Keep laughing.\r\nPRIVMSG2 #game2 :She's dead. Keep laughing.";
     msg_list = ft_split_message(str);
     for (size_t i = 0; i < msg_list.size(); i++)
     {
         msg.push_back(ft_create_message(msg_list[i]));
-        std::cout << "prefix = " << msg[i].get_prefix() << std::endl;
-        std::cout << "command = " << msg[i].get_command() << std::endl;
-        std::cout << "parameter = " << msg[i].get_parameter() << std::endl;
+        std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
+        std::cout << "command = " << msg[i]->get_command() << std::endl;
+        std::cout << "parameter = " << msg[i]->get_parameter() << std::endl;
+        std::cout << "first = " << msg[i]->get_nb_parameter() << std::endl;
+        for (int j = 0; j < msg[i]->get_nb_parameter(); j++)
+            std::cout << "splited parameter = " << msg[i]->get_tab_parameter()[j] << std::endl;        
+    }
+    for (size_t i = 0; i < msg_list.size(); i++)
+    {
+        delete msg[i];
     }
 
     /*               END TEST MESSAGE              */

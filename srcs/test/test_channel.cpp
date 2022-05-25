@@ -1,6 +1,7 @@
-#include "../includes/ft_irc.hpp"
-#include "../includes/Channel.hpp"
-#include "../includes/Client.hpp"
+#include "../../includes/ft_irc.hpp"
+#include "../../includes/Channel.hpp"
+#include "../../includes/Client.hpp"
+
 int main(int argc, char **argv)
 {
 	(void)argc;

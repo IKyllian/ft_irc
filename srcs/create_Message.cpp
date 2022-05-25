@@ -29,9 +29,9 @@ static void ft_split_parameter(Message &msg)
 
     while (position != std::string::npos)
     {
-        position = str.find(" ", position);
+        position = msg.get_parameter().find(" ", position);
         if (position - startpoint > 0)
-            msg.get_tab_parameter().push_back(str.substr(startpoint, position - startpoint));
+            msg.get_tab_parameter().push_back(msg.get_parameter().substr(startpoint, position - startpoint));
         if (position != std::string::npos)
         {
             position++;
@@ -40,38 +40,38 @@ static void ft_split_parameter(Message &msg)
         nb++;
     }
     msg.set_nb_parameter(nb);
+    // std::cout << "Split function " << msg.get_nb_parameter() << std::endl;
+
     return ;
 }
 
-Message ft_create_message(std::string str)
+Message *ft_create_message(std::string str)
 {
+    Message *msg = new Message;
     std::string delimiter = " ";
     std::string str_to_pass;
     int position = 0;
     int startpoint = 0;
-
-    Message msg;
-
+    
     if (str[0] == ':')
     {
         position = str.find(' ', position);
         str_to_pass = str.substr(startpoint, position - startpoint);
-        msg.set_prefix(str_to_pass);
+        msg->set_prefix(str_to_pass);
         position++;
         startpoint = position;
     }
     position = str.find(' ', position);
     str_to_pass = str.substr(startpoint, position - startpoint);
-    msg.set_command(str_to_pass);
+    msg->set_command(str_to_pass);
     position++;
     startpoint = position;
 
     position = str.length();
     str_to_pass = str.substr(startpoint, position - startpoint);
-    msg.set_parameter(str_to_pass);
+    msg->set_parameter(str_to_pass);
     position++;
     startpoint = position;
-    ft_split_parameter(&msg);
-
+    ft_split_parameter(*msg);
     return (msg);
 }

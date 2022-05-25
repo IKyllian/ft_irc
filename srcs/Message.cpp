@@ -40,12 +40,19 @@ void Message::set_parameter(std::string &val) {
 	_parameter = val;
 }
 
-std::string Message::get_sender() const { return (_sender); };
-std::string Message::get_receiver() const { return (_receiver); } ;
-std::string Message::get_payload() const { return (_payload); } ;
-std::string Message::get_prefix() const { return (_prefix); } ;
-std::string Message::get_command() const { return (_command); };
-std::string Message::get_command_info() const { return (_command_info); } ;
-std::string Message::get_mask() const { return (_mask); } ;
-std::string Message::get_subject() const { return (_subject); } ;
-std::string Message::get_parameter() const { return (_parameter); } ;
+void Message::set_nb_parameter(int val) {
+	_nb_parameter = val;
+}
+
+std::string 				Message::get_sender() const { return (_sender); };
+std::string 				Message::get_receiver() const { return (_receiver); } ;
+std::string 				Message::get_payload() const { return (_payload); } ;
+std::string 				Message::get_prefix() const { return (_prefix); } ;
+std::string 				Message::get_command() const { return (_command); };
+std::string 				Message::get_command_info() const { return (_command_info); } ;
+std::string 				Message::get_mask() const { return (_mask); } ;
+std::string 				Message::get_subject() const { return (_subject); } ;
+std::string 				Message::get_parameter() const { return (_parameter); } ;
+int							Message::get_nb_parameter() const { return (_nb_parameter); } ;
+// int							Message::get_nb_parameter() const { return (std::atoi(_nb_parameter.c_str())); } ;
+std::vector<std::string>	&Message::get_tab_parameter() { return (_tab_parameter); }
