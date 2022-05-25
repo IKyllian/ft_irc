@@ -54,5 +54,4 @@ std::string 				Message::get_mask() const { return (_mask); } ;
 std::string 				Message::get_subject() const { return (_subject); } ;
 std::string 				Message::get_parameter() const { return (_parameter); } ;
 int							Message::get_nb_parameter() const { return (_nb_parameter); } ;
-// int							Message::get_nb_parameter() const { return (std::atoi(_nb_parameter.c_str())); } ;
 std::vector<std::string>	&Message::get_tab_parameter() { return (_tab_parameter); }

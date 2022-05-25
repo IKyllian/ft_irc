@@ -5,7 +5,6 @@ int main(int argc, char **argv)
 
     /*                      TEST MESSAGE            */
     std::vector<Message*> msg;
-    Message msg2;
     std::vector<std::string> msg_list;
     std::string str = "\r\n\r\n:Tracey`^!me@68.178.52.73 PRIVMSG #game1 :She's dead. Keep laughing.\r\nPRIVMSG2 #game2 :She's dead. Keep laughing.";
     msg_list = ft_split_message(str);
