@@ -58,6 +58,8 @@ void Channel::set_topic(std::string new_topic) {
 		topic = "";
 	else
 		topic = new_topic;
+	//Manque les erreurs
+	std::cout << "TOPIC " << topic << std::endl;
 	// Send to the client the new topic
 	//RPL_TOPICWHOTIME (333)
 }
@@ -77,6 +79,7 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 				if (it2 != _invite_list.end()) { // Check si le user a recu une invitation
 					_users.insert(std::pair<Client*, std::string>(client, ""));
 					_invite_list.erase(it2);
+					std::cout << "JOIN " << client->get_nickname() << " " << get_name() << std::endl;
 					if (topic.size() > 0)
 						ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic 
 					else
@@ -89,6 +92,7 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 					ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic
 				else
 					ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
+			// Then send a list of users currently joined to the channel
 			}
 		} else
 			ft_print_numerics(474);
@@ -186,7 +190,7 @@ void Channel::unset_mode(char mode, std::string parameter) {
 		std::map<Client*, std::string>::iterator it = _users.begin();
 		for (; it != _users.end(); it++)
 		if ((*it).first->get_nickname() == parameter)
-			break;
+			break; 
 		if (it == _users.end())
 			ft_print_numerics(401);
 		else
@@ -274,40 +278,6 @@ void Channel::unset_user_mode(char mode, std::string parameter) {
 	}
 }
 
-// void Channel::set_user_mode(std::string mode, Client *client) {
-// 	std::string modes = "iswo";
-// 	std::map<Client*, std::string>::iterator it = users.find(client);
-// 	if (users.end() == it)
-// 		ft_print_numerics(401);
-// 	else {
-// 		if (mode.size() > 1) {
-// 			if (mode[0] == '+') {
-// 				for (size_t i = 1; i < mode.size(); i++) {
-// 					if (modes.find(mode[i]) != std::string::npos) {
-// 						if (it->second.find(mode[i]) != std::string::npos) {
-// 							ft_print_numerics(501);
-// 							continue;
-// 						} else
-// 							it->second.push_back(mode[i]);
-// 					}
-// 				}
-// 			} else if (mode[0] == '-') {
-// 				for (size_t i = 1; i < mode.size(); i++) {
-// 					if (modes.find(mode[i]) != std::string::npos) {
-// 						if (it->second.find(mode[i]) == std::string::npos) {
-// 							ft_print_numerics(501);
-// 							continue;
-// 						} else
-// 							it->second.erase(it->second.find(mode[i]), 1);
-// 					}
-// 				}
-// 			} else
-// 				std::cout << "Mode : error syntax" << std::endl;
-// 		} else
-// 			std::cout << "Mode : error syntax" << std::endl;
-// 	}
-// }
-
 void Channel::add_invite(Client *client) {
 	std::vector<Client*>::iterator it = search_user_invite(client);
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
@@ -342,6 +312,7 @@ void Channel::ban_user(Client *client) {
 	if (_users_ban.end() == it2)
 		_users_ban.push_back(client);
 	remove_invite(client);
+	std::cout << "PART " << client->get_nickname() << " " << get_name() << std::endl;
 }
 
 
