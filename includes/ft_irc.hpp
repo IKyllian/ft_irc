@@ -31,4 +31,6 @@ void                        ft_print_numerics(/*User &user, Server &server, Chan
 Message*                    ft_create_message(std::string str);
 std::vector<std::string>    ft_split_message(std::string str);
 
+bool send_message(Server &server, Client &receiver, std::string message, int msgnum);
+
 #endif

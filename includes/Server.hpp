@@ -61,6 +61,8 @@ class Server {
 		void set_password(std::string val);
 		void set_using_password(bool val);
 
+		void command_NICK(Client &client, Message &message);
+
 	private :
 		std::string _network_name;
 		std::string _hostname;
@@ -86,6 +88,9 @@ class Server {
 		std::vector<struct pollfd>	_fds;
 		std::string					_password;
 		bool						_using_password;
+		
+		bool _nick_available(std::string nick) const;
+		bool _nick_isvalid(std::string nick) const;
 };
 
 #endif
