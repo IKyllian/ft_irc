@@ -1,7 +1,7 @@
 #include "../includes/numerics.hpp"
 #include "../includes/ft_irc.hpp"
 
-void ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/int nb_message)
+std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/int nb_message)
 {
     //              Client VAR               //
     std::string username = "Kyllian";
@@ -89,374 +89,375 @@ void ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &
     switch (nb_message)
     {
     case 1:
-        std::cout << username << RPL_WELCOME(network_name, user_nick);
+        return (username + RPL_WELCOME(network_name, user_nick));
         break;
     case 2:
-        std::cout << username << RPL_YOURHOST(network_name, user_nick);
+        return (username + RPL_YOURHOST(network_name, user_nick));
         break;
     case 3:
-        std::cout << username << RPL_CREATED(datetime);
+        return (username + RPL_CREATED(datetime));
         break;
     case 4:
-        std::cout << username << RPL_MYINFO(servername, version, user_modes, channel_modes);
+        return (username + RPL_MYINFO(servername, version, user_modes, channel_modes));
         break;
     case 5:
-        std::cout << username << RPL_ISUPPORT(token);           //Need to create token: cf https://modern.ircdocs.horse/#rplisupport-005
+        return (username + RPL_ISUPPORT(token));           //Need to create token: cf https://modern.ircdocs.horse/#rplisupport-005
         break;
     case 10:
-        std::cout << username << RPL_BOUNCE(hostname, port, infoServer);
+        return (username + RPL_BOUNCE(hostname, port, infoServer));
         break;
     case 221:
-        std::cout << username << RPL_UMODEIS(user_modes);
+        return (username + RPL_UMODEIS(user_modes));
         break;
     case 251:
-        std::cout << username << RPL_LUSERCLIENT(nb_user, invisible_user, server_connected);
+        return (username + RPL_LUSERCLIENT(nb_user, invisible_user, server_connected));
         break;
     case 252:
-        std::cout << username << RPL_LUSEROP(nb_operator);
+        return (username + RPL_LUSEROP(nb_operator));
         break;
     case 253:
-        std::cout << username << RPL_LUSERUNKNOWN(connexion);
+        return (username + RPL_LUSERUNKNOWN(connexion));
         break;
     case 254:
-        std::cout << username << RPL_LUSERCHANNELS(nb_channel);
+        return (username + RPL_LUSERCHANNELS(nb_channel));
         break;
     case 255:
-        std::cout << username << RPL_LUSERME(nb_clients, server_connected);
+        return (username + RPL_LUSERME(nb_clients, server_connected));
         break;
     case 256:
-        std::cout << username << RPL_ADMINME(servername);
+        return (username + RPL_ADMINME(servername));
         break;
     case 257:
-        std::cout << username << RPL_ADMINLOC1(locationServer);
+        return (username + RPL_ADMINLOC1(locationServer));
         break;
     case 258:
-        std::cout << username << RPL_ADMINLOC2(hostInfo);
+        return (username + RPL_ADMINLOC2(hostInfo));
         break;
     case 259:
-        std::cout << username << RPL_ADMINEMAIL(hostMail);
+        return (username + RPL_ADMINEMAIL(hostMail));
         break;
     case 263:
-        std::cout << username << RPL_TRYAGAIN(command);
+        return (username + RPL_TRYAGAIN(command));
         break;
     case 265:
-        std::cout << username << RPL_LOCALUSERS(local_user, max_user);
+        return (username + RPL_LOCALUSERS(local_user, max_user));
         break;
     case 266:
-        std::cout << username << RPL_GLOBALUSERS(global_user, max_user);
+        return (username + RPL_GLOBALUSERS(global_user, max_user));
         break;
     case 276:
-        std::cout << username << RPL_WHOISCERTFP(user_nick, user_fingerprint);
+        return (username + RPL_WHOISCERTFP(user_nick, user_fingerprint));
         break;
     case 300:
-        std::cout << username << RPL_NONE(null);
+        return (username + RPL_NONE(null));
         break;
     case 301:
-        std::cout << username << RPL_AWAY(user_nick, away_message);
+        return (username + RPL_AWAY(user_nick, away_message));
         break;
     case 302:
-        std::cout << username << RPL_USERHOST(command);         //NEED TO CREATE A MESSAGE cf: https://modern.ircdocs.horse/#rpluserhost-302
+        return (username + RPL_USERHOST(command));         //NEED TO CREATE A MESSAGE cf: https://modern.ircdocs.horse/#rpluserhost-302
         break;
     case 305:
-        std::cout << username << RPL_UNAWAY(null);
+        return (username + RPL_UNAWAY(null));
         break;
     case 306:
-        std::cout << username << RPL_NOWAWAY(null);
+        return (username + RPL_NOWAWAY(null));
         break;
     case 352:
-        std::cout << username << RPL_WHOREPLY(channel_name, username, hostname, servername, user_nick, user_flags, hopcount, realname);
+        return (username + RPL_WHOREPLY(channel_name, username, hostname, servername, user_nick, user_flags, hopcount, realname));
         break;
     case 315:
-        std::cout << username << RPL_ENDOFWHO(mask);
+        return (username + RPL_ENDOFWHO(mask));
         break;
     case 307:
-        std::cout << username << RPL_WHOISREGNICK(user_nick);
+        return (username + RPL_WHOISREGNICK(user_nick));
         break;
     case 311:
-        std::cout << username << RPL_WHOISUSER(user_nick, username, hostname, realname);
+        return (username + RPL_WHOISUSER(user_nick, username, hostname, realname));
         break;
     case 312:
-        std::cout << username << RPL_WHOISSERVER(user_nick, servername, infoServer);
+        return (username + RPL_WHOISSERVER(user_nick, servername, infoServer));
         break;
     case 313:
-        std::cout << username << RPL_WHOISOPERATOR(user_nick);
+        return (username + RPL_WHOISOPERATOR(user_nick));
         break;
     case 314:
-        std::cout << username << RPL_WHOWASUSER(user_nick, username, hostname, realname);
+        return (username + RPL_WHOWASUSER(user_nick, username, hostname, realname));
         break;
     case 317:
-        std::cout << username << RPL_WHOISIDLE(user_nick, sec_away, sign_on);
+        return (username + RPL_WHOISIDLE(user_nick, sec_away, sign_on));
         break;
     case 318:
-        std::cout << username << RPL_ENDOFWHOIS(user_nick);
+        return (username + RPL_ENDOFWHOIS(user_nick));
         break;
     case 319:
         // Potentiellement prefix sur channel_name
-        std::cout << username << RPL_WHOISCHANNELS(user_nick, channel_name);
+        return (username + RPL_WHOISCHANNELS(user_nick, channel_name));
         break;
     case 320:
-        std::cout << username << RPL_WHOISSPECIAL(user_nick);
+        return (username + RPL_WHOISSPECIAL(user_nick));
         break;
     case 321:
-        std::cout << username << RPL_LISTSTART(null);
+        return (username + RPL_LISTSTART(null));
         break;
     case 322:
-        std::cout << username << RPL_LIST(channel_name, client_count, channel_topic);
+        return (username + RPL_LIST(channel_name, client_count, channel_topic));
         break;
     case 323:
-        std::cout << username << RPL_LISTEND(null);
+        return (username + RPL_LISTEND(null));
         break;
     case 324:
-        std::cout << username << RPL_CHANNELMODEIS(channel_name, mode_string, mode_arguments);
+        return (username + RPL_CHANNELMODEIS(channel_name, mode_string, mode_arguments));
         break;
     case 329:
-        std::cout << username << RPL_CREATIONTIME(channel_name, channel_creationTime);
+        return (username + RPL_CREATIONTIME(channel_name, channel_creationTime));
         break;
     case 330:
-        std::cout << username << RPL_WHOISACCOUNT(user_nick, user_account);
+        return (username + RPL_WHOISACCOUNT(user_nick, user_account));
         break;
     case 331:
-        std::cout << username << RPL_NOTOPIC(channel_name);
+        return (username + RPL_NOTOPIC(channel_name));
         break;
     case 332:
-        std::cout << username << RPL_TOPIC(channel_name, channel_topic);
+        return (username + RPL_TOPIC(channel_name, channel_topic));
         break;
     case 333:
-        std::cout << username << RPL_TOPICWHOTIME(channel_name, channel_whoSetTopic, channel_TimeSetTopic);
+        return (username + RPL_TOPICWHOTIME(channel_name, channel_whoSetTopic, channel_TimeSetTopic));
         break;
     case 336:
-        std::cout << username << RPL_INVITELIST(channel_name);
+        return (username + RPL_INVITELIST(channel_name));
         break;
     case 337:
-        std::cout << username << RPL_ENDOFINVITELIST(null);
+        return (username + RPL_ENDOFINVITELIST(null));
         break;
     case 341:
-        std::cout << username << RPL_INVITING(user_nick, channel_topic);
+        return (username + RPL_INVITING(user_nick, channel_topic));
         break;
     case 346:
-        std::cout << username << RPL_INVEXLIST(channel_name, mask_InviteExeptionList);
+        return (username + RPL_INVEXLIST(channel_name, mask_InviteExeptionList));
         break;
     case 347:
-        std::cout << username << RPL_ENDOFINVEXLIST(channel_name);
+        return (username + RPL_ENDOFINVEXLIST(channel_name));
         break;
     case 348:
-        std::cout << username << RPL_EXCEPTLIST(channel_name, mask_ExeptionList);
+        return (username + RPL_EXCEPTLIST(channel_name, mask_ExeptionList));
         break;
     case 349:
-        std::cout << username << RPL_ENDOFEXCEPTLIST(channel_name);
+        return (username + RPL_ENDOFEXCEPTLIST(channel_name));
         break;
     case 351:
-        std::cout << username << RPL_VERSION(version, servername, comment);
+        return (username + RPL_VERSION(version, servername, comment));
         break;
     case 353:
-        std::cout << username << RPL_NAMREPLY(symbol, channel_name, user_nick);
+        return (username + RPL_NAMREPLY(symbol, channel_name, user_nick));
         break;
     case 366:
-        std::cout << username << RPL_ENDOFNAMES(channel_name);
+        return (username + RPL_ENDOFNAMES(channel_name));
         break;
     case 364:
-        std::cout << username << RPL_LINKS(servername, hopcount, infoServer);
+        return (username + RPL_LINKS(servername, hopcount, infoServer));
         break;
     case 365:
-        std::cout << username << RPL_ENDOFLINKS(null);
+        return (username + RPL_ENDOFLINKS(null));
         break;
     case 367:
-        std::cout << username << RPL_BANLIST(channel_name, banMask, banner_nick, ban_timeSet);           //
+        return (username + RPL_BANLIST(channel_name, banMask, banner_nick, ban_timeSet));           //
         break;
     case 368:
-        std::cout << username << RPL_ENDOFBANLIST(channel_name);
+        return (username + RPL_ENDOFBANLIST(channel_name));
         break;
     case 369:
-        std::cout << username << RPL_ENDOFWHOWAS(user_nick);
+        return (username + RPL_ENDOFWHOWAS(user_nick));
         break;
     case 371:
-        std::cout << username << RPL_INFO(infoServer);          // Perharps other info
+        return (username + RPL_INFO(infoServer));          // Perharps other info
         break;
     case 374:
-        std::cout << username << RPL_ENDOFINFO(null);
+        return (username + RPL_ENDOFINFO(null));
         break;
     case 375:
-        std::cout << username << RPL_MOTDSTART(servername);
+        return (username + RPL_MOTDSTART(servername));
         break;
     case 372:
-        std::cout << username << RPL_MOTD(motd);
+        return (username + RPL_MOTD(motd));
         break;
     case 376:
-        std::cout << username << RPL_ENDOFMOTD(null);
+        return (username + RPL_ENDOFMOTD(null));
         break;
     case 378:
-        std::cout << username << RPL_WHOISHOST(user_nick);          //Need to define ip ?
+        return (username + RPL_WHOISHOST(user_nick));          //Need to define ip ?
         break;
     case 379:
-        std::cout << username << RPL_WHOISMODES(user_nick);         //Need to define available modes ?
+        return (username + RPL_WHOISMODES(user_nick));         //Need to define available modes ?
         break;
     case 381:
-        std::cout << username << RPL_YOUREOPER(null);
+        return (username + RPL_YOUREOPER(null));
         break;
     case 382:
-        std::cout << username << RPL_REHASHING(Rehashing_message);
+        return (username + RPL_REHASHING(Rehashing_message));
         break;
     case 391:
-        std::cout << username << RPL_TIME(servername, actual_time);
+        return (username + RPL_TIME(servername, actual_time));
         break;
 	case 670:
-		std::cout << username << RPL_STARTTLS(null);
+		return (username + RPL_STARTTLS(null));
 		break;
 	case 671:
-		std::cout << username << RPL_WHOISSECURE(user_nick);
+		return (username + RPL_WHOISSECURE(user_nick));
 		break;
 	case 704:
-		std::cout << username << RPL_HELPSTART(subject, help_msg);
+		return (username + RPL_HELPSTART(subject, help_msg));
 		break;
 	case 705:
-		std::cout << username << RPL_HELPTXT(subject, help_msg);
+		return (username + RPL_HELPTXT(subject, help_msg));
 		break;
 	case 706:
-		std::cout << username << RPL_ENDOFHELP(subject, help_msg);
+		return (username + RPL_ENDOFHELP(subject, help_msg));
 		break;
 	case 900:
-		std::cout << username << RPL_LOGGEDIN(user_nick, username, hostname, user_account, username);		// User = username ???
+		return (username + RPL_LOGGEDIN(user_nick, username, hostname, user_account, username));		// User = username ???
 		break;
 	case 901:
-		std::cout << username << RPL_LOGGEDOUT(user_nick, username, hostname, user_account);
+		return (username + RPL_LOGGEDOUT(user_nick, username, hostname, user_account));
 		break;
 	case 903:
-		std::cout << username << RPL_SASLSUCCESS(null);
+		return (username + RPL_SASLSUCCESS(null));
 		break;
 	case 908:
-		std::cout << username << RPL_SASLMECHS(SASL_mechanisms);
+		return (username + RPL_SASLMECHS(SASL_mechanisms));
 		break;
 	case 400:
-        std::cout << username << ERR_UNKNOWNERROR(command, command_info);
+        return (username + ERR_UNKNOWNERROR(command, command_info));
         break;
 	case 401:
-		std::cout << username << ERR_NOSUCHNICK(user_nick);
+		return (username + ERR_NOSUCHNICK(user_nick));
 		break;
 	case 402:
-		std::cout << username << ERR_NOSUCHSERVER(servername);
+		return (username + ERR_NOSUCHSERVER(servername));
 		break;
 	case 403:
-		std::cout << username << ERR_NOSUCHCHANNEL(channel_name);
+		return (username + ERR_NOSUCHCHANNEL(channel_name));
 		break;
 	case 404:
-		std::cout << username << ERR_CANNOTSENDTOCHAN(channel_name);
+		return (username + ERR_CANNOTSENDTOCHAN(channel_name));
 		break;
 	case 405:
-		std::cout << username << ERR_TOOMANYCHANNELS(channel_name);
+		return (username + ERR_TOOMANYCHANNELS(channel_name));
 		break;
 	case 406:
-		std::cout << username << ERR_WASNOSUCHNICK(null);
+		return (username + ERR_WASNOSUCHNICK(null));
 		break;
 	case 409:
-		std::cout << username << ERR_NOORIGIN(null);
+		return (username + ERR_NOORIGIN(null));
 		break;
 	case 417:
-		std::cout << username << ERR_INPUTTOOLONG(null);
+		return (username + ERR_INPUTTOOLONG(null));
 		break;
 	case 421:
-		std::cout << username << ERR_UNKNOWNCOMMAND(command);
+		return (username + ERR_UNKNOWNCOMMAND(command));
 		break;
 	case 422:
-		std::cout << username << ERR_NOMOTD(null);
+		return (username + ERR_NOMOTD(null));
 		break;
 	case 432:
-		std::cout << username << ERR_ERRONEUSNICKNAME(user_nick);
+		return (username + ERR_ERRONEUSNICKNAME(user_nick));
 		break;
 	case 433:
-		std::cout << username << ERR_NICKNAMEINUSE(user_nick);
+		return (username + ERR_NICKNAMEINUSE(user_nick));
 		break;
 	case 441:
-		std::cout << username << ERR_USERNOTINCHANNEL(user_nick, channel_name);
+		return (username + ERR_USERNOTINCHANNEL(user_nick, channel_name));
 		break;
 	case 442:
-		std::cout << username << ERR_NOTONCHANNEL(channel_name);
+		return (username + ERR_NOTONCHANNEL(channel_name));
 		break;
 	case 443:
-        std::cout << username << ERR_UNKNOWNERROR(command, command_info);
+        return (username + ERR_UNKNOWNERROR(command, command_info));
         break;
 	case 451:
-		std::cout << username << ERR_NOTREGISTERED(null);
+		return (username + ERR_NOTREGISTERED(null));
 		break;
 	case 461:
-		std::cout << username << ERR_NEEDMOREPARAMS(command);
+		return (username + ERR_NEEDMOREPARAMS(command));
 		break;
 	case 462:
-		std::cout << username << ERR_ALREADYREGISTERED(null);
+		return (username + ERR_ALREADYREGISTERED(null));
 		break;
 	case 464:
-		std::cout << username << ERR_PASSWDMISMATCH(null);
+		return (username + ERR_PASSWDMISMATCH(null));
 		break;
 	case 465:
-		std::cout << username << ERR_YOUREBANNEDCREEP(null);
+		return (username + ERR_YOUREBANNEDCREEP(null));
 		break;
 	case 471:
-		std::cout << username << ERR_CHANNELISFULL(channel_name);
+		return (username + ERR_CHANNELISFULL(channel_name));
 		break;
 	case 472:
-		std::cout << username << ERR_UNKNOWNMODE(mode_char);
+		return (username + ERR_UNKNOWNMODE(mode_char));
 		break;
 	case 473:
-		std::cout << username << ERR_INVITEONLYCHAN(channel_name);
+		return (username + ERR_INVITEONLYCHAN(channel_name));
 		break;
 	case 474:
-		std::cout << username << ERR_BANNEDFROMCHAN(channel_name);
+		return (username + ERR_BANNEDFROMCHAN(channel_name));
 		break;
 	case 475:
-		std::cout << username << ERR_BADCHANNELKEY(channel_name);
+		return (username + ERR_BADCHANNELKEY(channel_name));
 		break;
 	case 476:
-		std::cout << username << ERR_BADCHANMASK(channel_name);
+		return (username + ERR_BADCHANMASK(channel_name));
 		break;
 	case 481:
-		std::cout << username << ERR_NOPRIVILEGES(null);
+		return (username + ERR_NOPRIVILEGES(null));
 		break;
 	case 482:
-		std::cout << username << ERR_CHANOPRIVSNEEDED(channel_name);
+		return (username + ERR_CHANOPRIVSNEEDED(channel_name));
 		break;
 	case 483:
-		std::cout << username << ERR_CANTKILLSERVER(null);
+		return (username + ERR_CANTKILLSERVER(null));
 		break;
 	case 491:
-		std::cout << username << ERR_NOOPERHOST(null);
+		return (username + ERR_NOOPERHOST(null));
 		break;
 	case 501:
-		std::cout << username << ERR_UMODEUNKNOWNFLAG(null);
+		return (username + ERR_UMODEUNKNOWNFLAG(null));
 		break;
 	case 502:
-		std::cout << username << ERR_USERSDONTMATCH(null);
+		return (username + ERR_USERSDONTMATCH(null));
 		break;
 	case 524:
-		std::cout << username << ERR_HELPNOTFOUND(subject);
+		return (username + ERR_HELPNOTFOUND(subject));
 		break;
 	case 525:
-		std::cout << username << ERR_INVALIDKEY(target);
+		return (username + ERR_INVALIDKEY(target));
 		break;
 	case 691:
-		std::cout << username << ERR_STARTTLS(null);
+		return (username + ERR_STARTTLS(null));
 		break;
 	case 696:
-		std::cout << username << ERR_INVALIDMODEPARAM(target, mode_char, parameter, description);
+		return (username + ERR_INVALIDMODEPARAM(target, mode_char, parameter, description));
 		break;
 	case 723:
-		std::cout << username << ERR_NOPRIVS(privilege);
+		return (username + ERR_NOPRIVS(privilege));
 		break;
 	case 902:
-		std::cout << username << ERR_NICKLOCKED(null);
+		return (username + ERR_NICKLOCKED(null));
 		break;
 	case 904:
-		std::cout << username << ERR_SASLFAIL(null);
+		return (username + ERR_SASLFAIL(null));
 		break;
 	case 905:
-		std::cout << username << ERR_SASLTOOLONG(null);
+		return (username + ERR_SASLTOOLONG(null));
 		break;
 	case 906:
-		std::cout << username << ERR_SASLABORTED(null);
+		return (username + ERR_SASLABORTED(null));
 		break;
 	case 907:
-		std::cout << username << ERR_SASLALREADY(null);
+		return (username + ERR_SASLALREADY(null));
 		break;
 
 	default:
         break;
     }
+    return ("");
 }

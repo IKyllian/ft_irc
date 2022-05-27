@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-//											LIBRAIRIE C++												//
+//											  LIBRAIRIE C++												//
 
 #include <iostream>
 #include <string>
@@ -24,11 +24,22 @@
 #include <vector>
 #include <cstdlib>
 
-#include "numerics.hpp"
+//                                             Class HPP                                                   //
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "Message.hpp"
+#include "Server.hpp"
 
-void                        ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/int nb_message);
-Message*                    ft_create_message(std::string str);
+//                                              OTHERS                                                   //
+
+#include "numerics.hpp"
+
+class Server;
+class Channel;
+
+std::string                 ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message);
+Message                     *ft_create_message(std::string str);
 std::vector<std::string>    ft_split_message(std::string str);
+void                        do_parsing(/*Server &server, Client& expediteur,*/ std::string message);
 
 #endif
