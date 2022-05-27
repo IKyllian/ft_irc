@@ -1,7 +1,7 @@
 #include "../includes/numerics.hpp"
 #include "../includes/ft_irc.hpp"
 
-std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/int nb_message)
+std::string ft_print_numerics(/*Client &user, Server &server, Channel &channel, Message &message*/int nb_message)
 {
     //              Client VAR               //
     std::string username = "Kyllian";

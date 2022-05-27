@@ -8,6 +8,7 @@
 #include "Channel.hpp"
 
 class Channel;
+class Client;
 
 class Server {
 	public :
