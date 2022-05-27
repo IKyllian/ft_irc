@@ -1,7 +1,9 @@
 #include "../includes/ft_irc.hpp"
 
-static void do_command(Server &server, Client &expediteur, Message &msg)
+static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
 {
+    /*(void)server;
+    (void)receiver;*/
     if (msg.get_command() == "CAP")
     {
         //  do_CAP();
@@ -160,7 +162,7 @@ static void do_command(Server &server, Client &expediteur, Message &msg)
     }
 }
 
-void do_parsing(Server &server, Client &expediteur, std::string message)
+void do_parsing(/*Server &server, Client &expediteur,*/ std::string message)
 {
     std::vector<Message*> msg;
     std::vector<std::string> msg_list;
@@ -169,7 +171,7 @@ void do_parsing(Server &server, Client &expediteur, std::string message)
     for (size_t i = 0; i < msg_list.size(); i++)
         msg.push_back(ft_create_message(msg_list[i]));
     for (size_t i = 0; i < msg.size(); i++)
-        do_command(server, expediteur, msg[i]);
+        do_command(/*server, expediteur, */*msg[i]);
     for (size_t i = 0; i < msg.size(); i++)
         delete msg[i];
     return;

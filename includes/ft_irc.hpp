@@ -34,9 +34,12 @@
 
 #include "numerics.hpp"
 
-std::string                 ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message)
+class Server;
+class Channel;
+
+std::string                 ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message);
 Message                     *ft_create_message(std::string str);
 std::vector<std::string>    ft_split_message(std::string str);
-void                        do_parsing(Server &server, Client& expediteur, std::string message);
+void                        do_parsing(/*Server &server, Client& expediteur,*/ std::string message);
 
 #endif

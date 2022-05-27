@@ -459,4 +459,5 @@ std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Me
 	default:
         break;
     }
+    return ("");
 }
