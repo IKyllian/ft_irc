@@ -34,8 +34,38 @@ void Client::set_username(std::string val) {
 	_username = val;
 }
 
-void Client::set_user_modes(std::string val) {
-	_user_modes = val;
+void Client::set_user_modes(std::string mode) {
+	const std::string modes = "iswo";
+	if (mode.size() > 1) {
+		if (mode[0] == '+') {
+			for (size_t i = 1; i < mode.size(); i++) {
+				if (modes.find(mode[i]) != std::string::npos) {
+					if (_user_modes.find(mode[i]) != std::string::npos) {
+							ft_print_numerics(501); // Check si il faut mettre l'erreur
+							continue;
+					} else {
+						ft_print_numerics(221); // RPL_UMODEIS
+						_user_modes.push_back(mode[i]);
+					}
+				} else
+					ft_print_numerics(472);
+			}
+		} else if (mode[0] == '-') {
+			for (size_t i = 1; i < mode.size(); i++) {
+				if (modes.find(mode[i]) != std::string::npos) {
+					if (_user_modes.find(mode[i]) == std::string::npos) {
+							ft_print_numerics(501); // Check si il faut mettre l'erreur
+							continue;
+					} else {
+						_user_modes.erase(_user_modes.find(mode[i]));
+						ft_print_numerics(221); // RPL_UMODEIS
+					}
+				}
+			}
+		} else
+			std::cout << "Mode : error syntax" << std::endl;
+	} else
+		ft_print_numerics(221); // RPL_CHANNELMODEIS (Si aucun mode n'est donné, renvoie juste les modes actuels)
 }
 
 void Client::set_fd(int &val) {

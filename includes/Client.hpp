@@ -2,6 +2,7 @@
 #define CLIENT_HPP
 
 #include <iostream>
+#include "ft_irc.hpp"
 
 class Client {
 	public :
@@ -23,7 +24,7 @@ class Client {
 
 		void set_nickname(std::string val);
 		void set_username(std::string val);
-		void set_user_modes(std::string val);
+		void set_user_modes(std::string mode);
 		void set_fd(int &val);
 		void set_logged(bool &val);
 		void append_buffer(char* buffer);
