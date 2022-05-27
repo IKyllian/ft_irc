@@ -128,13 +128,41 @@ void Server::set_datetime(std::string &val) {
 	_datetime = val;
 }
 
-
-
-
 void Server::set_password(std::string val) {
 	_password = val;
 }
 
 void Server::set_using_password(bool val) {
 	_using_password = val;
+}
+
+void Server::command_JOIN(std::vector<std::string> parameters, Client *client) {
+	std::vector<std::string>		channels_string;
+	std::vector<std::string>		keys;
+	std::vector<Channel>::iterator	it;
+
+	channels_string = parse_comma(parameters[0]);
+	if (parameters.size() > 1)
+		keys = parse_comma(parameters[1]);
+	for (size_t i = 0; i < channels_string.size(); i++) {
+		for (it = _channels.begin(); it != _channels.end(); it++)
+			if ((*it).get_name() ==  channels_string[i])
+				break;
+		if (it == _channels.end()) {
+			_channels.push_back(Channel(channels_string[i]));
+			it = _channels.begin();
+			for (; it != _channels.end(); it++) {
+				if ((*it).get_name() == channels_string[i])
+					break;
+			}
+		}
+		if (keys.size() - 1 > i) // A check
+			(*it).set_user(client);
+		else
+			(*it).set_user(client, keys[i]);
+		// if (keys.size() - 1 > i)
+		// 	join_channel(_channels, client, channels_string[i]);
+		// else
+		// 	join_channel(_channels, client, channels_string[i], keys[i]);
+	}
 }
