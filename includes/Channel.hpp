@@ -8,6 +8,8 @@
 #include "ft_irc.hpp"
 #include <sstream> // pour convertir string en int 
 
+class Client;
+
 class Channel {
 	public :
 		Channel();

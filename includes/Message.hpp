@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "Client.hpp"
+
+class Client;
 
 class Message {
 	public :
@@ -11,8 +14,8 @@ class Message {
 		Message(const Message &message);
 		~Message();
 
-		std::string 				get_sender() const;
-		std::string 				get_receiver() const;
+		Client 						&get_sender() const;
+		Client 						&get_receiver() const;
 		std::string 				get_payload() const;
 		std::string 				get_prefix() const;
 		std::string 				get_command() const;
@@ -23,8 +26,8 @@ class Message {
 		int							get_nb_parameter() const;
 		std::vector<std::string>	&get_tab_parameter();
 
-		void set_sender(std::string &val);
-		void set_receiver(std::string &val);
+		void set_sender(Client &val);
+		void set_receiver(Client &val);
 		void set_payload(std::string &val);
 		void set_prefix(std::string &val);
 		void set_command(std::string &val);
@@ -35,8 +38,8 @@ class Message {
 		void set_nb_parameter(int val);
 
 	private :
-	std::string 				_sender;
-	std::string 				_receiver;
+	Client 						*_sender;
+	Client 						*_receiver;
 	std::string 				_payload;
 	std::string 				_prefix;
     std::string 				_command;
@@ -44,7 +47,7 @@ class Message {
     std::string 				_mask;
 	std::string 				_subject;
 	std::string					_parameter;
-	int					_nb_parameter;
+	int							_nb_parameter;
 	std::vector<std::string>	_tab_parameter;
 };
 
