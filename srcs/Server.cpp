@@ -1,6 +1,6 @@
 #include "../includes/Server.hpp"
-#include "../includes/Message.hpp"
-#include "../includes/ft_irc.hpp"
+// #include "../includes/Message.hpp"
+// #include "../includes/ft_irc.hpp"
 
 Server::Server() {}
 
@@ -196,7 +196,7 @@ void Server::command_NICK(Client &client, Message &message) {
         //  - Returned when a nickname parameter expected for a
         //    command and isn't found.
 
-		send_message(*this, client, /* print numerics demander a Romain */, 431);
+		//send_message(*this, message, "<header>", "print-numerics", 431);
 
 	}
 	else if (!_nick_available(new_nick))
@@ -207,7 +207,7 @@ void Server::command_NICK(Client &client, Message &message) {
 		//        in an attempt to change to a currently existing
 		//        nickname.
 
-		send_message(*this, client, /* print numerics demander a Romain */, 433);
+		//send_message(*this, client, /* print numerics demander a Romain */, 433);
 
 	}
 	else if (!_nick_isvalid(new_nick))
@@ -218,7 +218,7 @@ void Server::command_NICK(Client &client, Message &message) {
         //    characters which do not fall in the defined set.  See
         //    section 2.3.1 for details on valid nicknames.
 
-		send_message(*this, client, /* print numerics demander a Romain */, 432);
+		//send_message(*this, client, /* print numerics demander a Romain */, 432);
 	}
 	else if (client.get_user_modes().find('r') != std::string::npos)
 	{
@@ -226,13 +226,22 @@ void Server::command_NICK(Client &client, Message &message) {
 		//           ":Your connection is restricted!"
 		//      - Sent by the server to a user upon connection to indicate
 		//        the restricted nature of the connection (user mode "+r").
-		send_message(*this, client, /* print numerics demander a Romain */, 484);
+		
+		//send_message(*this, client, /* print numerics demander a Romain */, 484);
 	}
 	else 
 	{
 		//set nickname
 		client.set_nickname(new_nick);
 
+		    //    001    RPL_WELCOME
+            //   "Welcome to the Internet Relay Network
+            //    <nick>!<user>@<host>"
+			std::string a = "<header>";
+			std::string b = "Welcome to the Internet Relay Network <nick>!<user>@<host>";
+			std::string c = "001";
+	//	send_message(*this, message, a, b, c);
+		send_message(*this, message, "<header>", "Welcome to the Internet Relay Network <nick>!<user>@<host>", "001");
 		//send_message(); //for valid nick change
 		//response
 	}
@@ -251,4 +260,48 @@ void Server::command_NICK(Client &client, Message &message) {
         //    nickname collision (registered of a NICK that
         //    already exists by another server).
 
+
+
+// "send_message
+// (Server&,
+// Message&,
+// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >,
+// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >,
+// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >)
+// ", referenced from:
+
+
+}
+
+
+bool Server::send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum)
+{
+	int					ret, len;
+	char				buffer[65535];
+	std::string			str;
+	// std::stringstream	ss;
+
+	// ss << msgnum;
+(void) server;
+
+	str = ":";
+	str += header;
+	str += " ";
+	str += msgnum;
+	str += " ";
+	str += message;
+	str += "\r\n";
+
+    len = str.length();
+	memset(&buffer, 0, sizeof(buffer));
+	strcpy(buffer, str.c_str());
+std::cout << "sending: " << std::endl;
+std::cout << buffer << std::endl;
+	ret = send(msg_data.get_receiver().get_fd(), buffer, len, 0);
+	if (ret < 0)
+	{
+		perror("  send() failed");
+		return false;
+	}
+	return true;
 }

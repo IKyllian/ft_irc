@@ -4,11 +4,14 @@
 #include <set>
 #include <iostream>
 #include <vector>
+#include "Message.hpp"
 #include "Client.hpp"
 #include "Channel.hpp"
+#include "ft_irc.hpp"
 
 class Channel;
 class Client;
+class Message;
 
 class Server {
 	public :
@@ -64,6 +67,8 @@ class Server {
 		void set_password(std::string val);
 		void set_using_password(bool val);
 
+		bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
+
 		void command_JOIN(std::vector<std::string> parameters, Client *client);
 		void command_NICK(Client &client, Message &message);
 
@@ -96,5 +101,6 @@ class Server {
 		bool _nick_available(std::string nick) const;
 		bool _nick_isvalid(std::string nick) const;
 };
+
 
 #endif
