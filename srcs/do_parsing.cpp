@@ -5,6 +5,7 @@ static void do_command(Server &server, Message &msg)
 {
     /*(void)server;
     (void)receiver;*/
+std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() << std::endl;
     if (msg.get_command() == "CAP")
     {
         //  do_CAP();
@@ -168,7 +169,7 @@ void do_parsing(Server &server, Client &sender, std::string message)
     std::vector<Message*> msg;
     std::vector<std::string> msg_list;
     (void) sender;
-
+std::cout << "###inside do_parsing" << std::endl;
     msg_list = ft_split_message(message);
     for (size_t i = 0; i < msg_list.size(); i++)
     {

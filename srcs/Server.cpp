@@ -187,8 +187,10 @@ bool Server::_nick_isvalid(std::string nick) const {
 }
 
 void Server::command_NICK(Client &client, Message &message) {
+std::cout << "message.get_tab_parameter()[0]" << message.get_tab_parameter()[0] << std::endl;
 	std::string new_nick = message.get_tab_parameter()[0];
-
+std::cout << "alive 1" << std::endl;
+std::cout << "###inside command_NICK" << std::endl;
 	if (message.get_tab_parameter().size() == 0)
 	{
 	    //    431    ERR_NONICKNAMEGIVEN
@@ -231,6 +233,7 @@ void Server::command_NICK(Client &client, Message &message) {
 	}
 	else 
 	{
+std::cout << "alive 2" << std::endl;
 		//set nickname
 		client.set_nickname(new_nick);
 
@@ -280,7 +283,7 @@ bool Server::send_message(Server &server, Message &msg_data, std::string header,
 	char				buffer[65535];
 	std::string			str;
 	// std::stringstream	ss;
-
+std::cout << "###inside send_message" << std::endl;
 	// ss << msgnum;
 (void) server;
 
