@@ -54,7 +54,7 @@ void Channel::set_user_limit(int limit) {
 }
 
 void Channel::set_topic(std::string new_topic) {
-	if (topic.size() < 1)
+	if (topic.size() == 1)
 		topic = "";
 	else
 		topic = new_topic;
@@ -79,7 +79,7 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 				if (it2 != _invite_list.end()) { // Check si le user a recu une invitation
 					_users.insert(std::pair<Client*, std::string>(client, ""));
 					_invite_list.erase(it2);
-					std::cout << "JOIN " << client->get_nickname() << " " << get_name() << std::endl;
+					std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
 					if (topic.size() > 0)
 						ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic 
 					else
@@ -88,10 +88,12 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 					ft_print_numerics(473);
 			} else {
 				_users.insert(std::pair<Client*, std::string>(client, ""));
+				std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
 				if (topic.size() > 0)
 					ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic
-				else
-					ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
+				// Check si il faut envoyer RPL_NOTOPIC si pas de Topic dans le channel (Dans la doc de Join c'est marqué non mais dans Topic c'est marqué oui)
+				// else
+				// 	ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
 			// Then send a list of users currently joined to the channel
 			}
 		} else
@@ -285,7 +287,7 @@ void Channel::add_invite(Client *client) {
 		if (it == _invite_list.end())
 			_invite_list.push_back(client);
 	}
-	// RPL_INVITING (341) 
+	// RPL_INVITING (341)
 }
 
 void Channel::remove_user(Client *client) {
@@ -295,6 +297,7 @@ void Channel::remove_user(Client *client) {
 	else {
 		_users.erase(it);
 		remove_invite(client);
+		std::cout << ":" << client->get_nickname() << " PART " << get_name() << std::endl;
 	}
 }
 
@@ -312,7 +315,7 @@ void Channel::ban_user(Client *client) {
 	if (_users_ban.end() == it2)
 		_users_ban.push_back(client);
 	remove_invite(client);
-	std::cout << "PART " << client->get_nickname() << " " << get_name() << std::endl;
+	std::cout << "KICK " << client->get_nickname() << " " << get_name() << std::endl;
 }
 
 

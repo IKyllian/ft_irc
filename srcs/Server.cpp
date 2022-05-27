@@ -141,6 +141,10 @@ void Server::command_JOIN(std::vector<std::string> parameters, Client *client) {
 	std::vector<std::string>		keys;
 	std::vector<Channel>::iterator	it;
 
+	if (parameters.size() < 1) {
+		ft_print_numerics(461);
+		return ;
+	}
 	channels_string = parse_comma(parameters[0]);
 	if (parameters.size() > 1)
 		keys = parse_comma(parameters[1]);
@@ -160,9 +164,52 @@ void Server::command_JOIN(std::vector<std::string> parameters, Client *client) {
 			(*it).set_user(client);
 		else
 			(*it).set_user(client, keys[i]);
-		// if (keys.size() - 1 > i)
-		// 	join_channel(_channels, client, channels_string[i]);
-		// else
-		// 	join_channel(_channels, client, channels_string[i], keys[i]);
 	}
+}
+
+void Server::command_PART(std::vector<std::string> parameters, Client *client) {
+	std::vector<std::string>		channels_string;
+	std::vector<Channel>::iterator	it;
+
+	if (parameters.size() < 1) {
+		ft_print_numerics(461);
+		return ;
+	}
+	channels_string = parse_comma(parameters[0]);
+	for (size_t i = 0; i < channels_string.size(); i++) {
+		for (it = _channels.begin(); it != _channels.end(); it++)
+			if ((*it).get_name() ==  channels_string[i])
+				break;
+		if (it == _channels.end()) {
+			ft_print_numerics(403);
+			continue ;
+		}
+		(*it).remove_user(client);
+	}
+}
+
+void Server::command_TOPIC(std::vector<std::string> parameters, Client *client) {
+	std::vector<Channel>::iterator	it;
+	std::map<Client*, std::string>::iterator it2;
+
+	if (parameters.size() < 1 || parameters.size() > 2) {
+		ft_print_numerics(461);
+		return ;
+	}
+	for (it = _channels.begin(); it != _channels.end(); it++)
+		if ((*it).get_name() ==  parameters[0])
+			break;	
+	if (it == _channels.end()) {
+		ft_print_numerics(403);
+		return ;
+	}
+	it2 = (*it).get_users().find(client);
+	if (it2 == (*it).get_users().end()) {
+		ft_print_numerics(442);
+		return ;
+	}
+	if (parameters.size() == 2)
+		(*it).set_topic(parameters[1]);
+	//Afficher Topic
+
 }

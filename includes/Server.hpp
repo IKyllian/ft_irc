@@ -4,10 +4,11 @@
 #include <set>
 #include <iostream>
 #include <vector>
-#include "Client.hpp"
 #include "Channel.hpp"
+#include "Client.hpp"
 
 class Channel;
+class Client;
 
 class Server {
 	public :
@@ -64,6 +65,8 @@ class Server {
 		void set_using_password(bool val);
 
 		void command_JOIN(std::vector<std::string> parameters, Client *client);
+		void command_PART(std::vector<std::string> parameters, Client *client);
+		void command_TOPIC(std::vector<std::string> parameters, Client *client);
 
 	private :
 		std::string _network_name;

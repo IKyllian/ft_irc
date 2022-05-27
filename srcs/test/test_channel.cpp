@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 	std::vector<std::string> mode_parameters;
 	// Mode Message
 	mode_parameters.push_back("1234");
-	mode_parameters.push_back("Kyllian");
+	// mode_parameters.push_back("Kyllian");
 	//List of channels
 	channels_string.push_back("chan,channel2,test_channel_1234,azeazeojazjpopaozjepoajepoajze4");
 	channels_string.push_back("1234,azerty1234567890,coucou,helloworld");
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 	std::cout << server.get_channels()[0].get_name() << std::endl;
 	std::cout << server.get_channels()[1].get_name() << std::endl;
 
-	server.get_channels()[0].set_channel_modes("+kbi", mode_parameters);
+	server.get_channels()[0].set_channel_modes("+ki", mode_parameters);
 
 	std::cout << "Password = " << server.get_channels()[0].get_password() << " - Mode = " << server.get_channels()[0].get_channel_modes() << std::endl;
 
@@ -60,10 +60,12 @@ int main(int argc, char **argv)
 	std::cout << "Invite list size = " << server.get_channels()[0].get_invite_list().size() << std::endl;
 
 
-	// server.command_JOIN(channels_string3, &client1);
+	server.command_JOIN(channels_string3, &client1);
 	server.command_JOIN(channels_string3, &client2);
 	// channels[0].set_user(&client2);
 	// std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
+
+	server.command_PART(channels_string, &client1);
 
 	std::cout << server.get_channels()[0].get_users().size() << std::endl;
 	for (std::map<Client*, std::string>::iterator it = server.get_channels()[0].get_users().begin(); it != server.get_channels()[0].get_users().end(); ++it) {
