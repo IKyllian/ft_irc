@@ -374,7 +374,6 @@ std::vector<std::string> parse_comma(std::string parameter) {
 	// (*it).set_user(client, key);
 // }
 
-
 void list_command(std::vector<Channel> channels, std::vector<std::string> parameters) {
 	ft_print_numerics(321);	// RPL_LISTSTART (Pas sûr de devoir l'envoyer)
 	if (channels.size() < 1) {

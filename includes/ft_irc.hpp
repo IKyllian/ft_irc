@@ -36,6 +36,7 @@
 
 class Server;
 class Channel;
+class Message;
 
 std::string                 ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message);
 Message                     *ft_create_message(std::string str);

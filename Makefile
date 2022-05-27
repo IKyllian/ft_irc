@@ -1,5 +1,5 @@
 
-SRCS		= 	srcs/main.cpp \
+SRCS		= 	srcs/test/test_channel.cpp \
 				srcs/Channel.cpp \
 				srcs/Server.cpp \
 				srcs/Client.cpp \
