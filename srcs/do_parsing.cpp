@@ -1,6 +1,7 @@
 #include "../includes/ft_irc.hpp"
+#include "../includes/Server.hpp"
 
-static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
+static void do_command(Server &server, Message &msg)
 {
     /*(void)server;
     (void)receiver;*/
@@ -18,7 +19,7 @@ static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
     }
     else if (msg.get_command() == "NICK")
     {
-        //  do_NICK ();
+        server.command_NICK(msg.get_sender(), msg);
     }
     else if (msg.get_command() == "USER")
     {
@@ -162,7 +163,7 @@ static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
     }
 }
 
-void do_parsing(/*Server &server, Client &sender, Client &receiver*/ std::string message)
+void do_parsing(Server &server, Client &sender, std::string message)
 {
     std::vector<Message*> msg;
     std::vector<std::string> msg_list;
@@ -173,7 +174,7 @@ void do_parsing(/*Server &server, Client &sender, Client &receiver*/ std::string
         msg.push_back(ft_create_message(msg_list[i]));
     }
     for (size_t i = 0; i < msg.size(); i++)
-        do_command(/*server, expediteur, */*msg[i]);
+        do_command(server, *msg[i]);
     for (size_t i = 0; i < msg.size(); i++)
         delete msg[i];
     return;

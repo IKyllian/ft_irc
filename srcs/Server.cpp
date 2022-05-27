@@ -220,7 +220,7 @@ void Server::command_NICK(Client &client, Message &message) {
 
 		send_message(*this, client, /* print numerics demander a Romain */, 432);
 	}
-	else if (/* is restricted, demander a Kyllian pour les user modes*/)
+	else if (client.get_user_modes().find('r') != std::string::npos)
 	{
 		//    484    ERR_RESTRICTED
 		//           ":Your connection is restricted!"
