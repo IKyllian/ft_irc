@@ -7,6 +7,8 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 
+class Channel;
+
 class Server {
 	public :
 		Server();

@@ -2,7 +2,7 @@
 #define TEST_HPP
 
 
-#include "../includes/Client.hpp"
+#include "../../includes/Client.hpp"
 
 #include <string.h> //linux
 #include <stdlib.h> //linux

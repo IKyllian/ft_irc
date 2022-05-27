@@ -1,11 +1,12 @@
 
-SRCS		= 	srcs/test/test_channel.cpp \
+SRCS		= 	srcs/main.cpp.cpp \
 				srcs/Channel.cpp \
 				srcs/Server.cpp \
 				srcs/Client.cpp \
 				srcs/Message.cpp \
 				srcs/create_Message.cpp \
-				srcs/print_numerics.cpp
+				srcs/print_numerics.cpp \
+				srcs/do_parsing.cpp		
 
 OBJS			= $(SRCS:.cpp=.o)
 
