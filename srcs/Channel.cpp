@@ -340,36 +340,39 @@ std::vector<std::string> parse_comma(std::string parameter) {
 	return (strings_parse);
 }
 
-void join_command(std::vector<std::string> parameters, std::vector<Channel> *channels, Client *client) {
-	std::vector<std::string> channels_string;
-	std::vector<std::string> keys;
-	channels_string = parse_comma(parameters[0]);
-	if (parameters.size() > 1)
-		keys = parse_comma(parameters[1]);
-	for (size_t i = 0; i < channels_string.size(); i++) {
-		if (keys.size() - 1 > i)
-			join_channel(channels, client, channels_string[i]);
-		else
-			join_channel(channels, client, channels_string[i], keys[i]);
-	}
-}
+// void join_command(std::vector<std::string> parameters, std::vector<Channel> *channels, Client *client) {
+// 	std::vector<std::string> channels_string;
+// 	std::vector<std::string> keys;
+// 	channels_string = parse_comma(parameters[0]);
+// 	if (parameters.size() > 1)
+// 		keys = parse_comma(parameters[1]);
+// 	for (size_t i = 0; i < channels_string.size(); i++) {
+// 		if (keys.size() - 1 > i)
+// 			join_channel(channels, client, channels_string[i]);
+// 		else
+// 			join_channel(channels, client, channels_string[i], keys[i]);
+// 	}
+// }
 
-void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key) {
-	std::vector<Channel>::iterator it = channels->begin();
-	for (; it != channels->end(); it++) {
-		if ((*it).get_name() == channel)
-			break;
-	}
-	if (it == channels->end())
-		channels->push_back(Channel(channel));
-	it = channels->begin();
-	for (; it != channels->end(); it++) {
-		if ((*it).get_name() == channel)
-			break;
-	}
-	(*it).set_user(client, key);
-}
-
+// void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key) {
+	// Reste a check ces erreurs : ERR_NEEDMOREPARAMS (461) / ERR_TOOMANYCHANNELS (405)
+	// std::vector<Channel>::iterator it = channels->begin();
+	// for (; it != channels->end(); it++) {
+	// 	if ((*it).get_name() == channel)
+	// 		break;
+	// }
+	// if (it == channels->end()) {
+	// 	ft_print_numerics(403);
+	// 	return ;
+	// }
+	//	channels->push_back(Channel(channel));
+	// it = channels->begin();
+	// for (; it != channels->end(); it++) {
+	// 	if ((*it).get_name() == channel)
+	// 		break;
+	// }
+	// (*it).set_user(client, key);
+// }
 
 void list_command(std::vector<Channel> channels, std::vector<std::string> parameters) {
 	ft_print_numerics(321);	// RPL_LISTSTART (Pas sûr de devoir l'envoyer)

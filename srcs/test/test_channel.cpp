@@ -1,10 +1,14 @@
 #include "../../includes/ft_irc.hpp"
 #include "../../includes/Channel.hpp"
 #include "../../includes/Client.hpp"
+#include "../../includes/Server.hpp"
+
 int main(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
+	Server server;
+
 	std::vector<std::string> channels_string;
 	std::vector<std::string> channels_string2;
 	std::vector<std::string> channels_string3;
@@ -24,7 +28,7 @@ int main(int argc, char **argv)
 	channels_string3.push_back("chan");
 	channels_string3.push_back("1234");
 
-	std::vector<Channel> channels;
+	// std::vector<Channel> channels;
 	std::string name = "myChannel";
 	std::string client_name = "Kyllian";
 	std::string client2_name = "Romain";
@@ -34,37 +38,42 @@ int main(int argc, char **argv)
 	Client client2(client2_name);
 	Client client3(user7);
 
-	client1.set_user_modes("+ospwioo");
+	// client1.set_user_modes("+ospwioo");
 
-	std::cout << "Client modes = " << client1.get_user_modes() << std::endl;
+	// std::cout << "Client modes = " << client1.get_user_modes() << std::endl;
 
-	join_command(channels_string, &channels, &client1);
-	join_command(channels_string2, &channels, &client1);
+	server.command_JOIN(channels_string, &client1);
+	server.command_JOIN(channels_string2, &client1);
+	// join_command(channels_string, &channels, &client1);
+	// join_command(channels_string2, &channels, &client1);
 
-	std::cout << channels[0].get_name() << std::endl;
-	std::cout << channels[1].get_name() << std::endl;
+	std::cout << server.get_channels()[0].get_name() << std::endl;
+	std::cout << server.get_channels()[1].get_name() << std::endl;
 
-	channels[0].set_channel_modes("+kbi", mode_parameters);
+	server.get_channels()[0].set_channel_modes("+kbi", mode_parameters);
 
-	std::cout << "Password = " << channels[0].get_password() << " - Mode = " << channels[0].get_channel_modes() << std::endl;
+	std::cout << "Password = " << server.get_channels()[0].get_password() << " - Mode = " << server.get_channels()[0].get_channel_modes() << std::endl;
 
-	channels[0].set_channel_modes("-k", mode_parameters);
+	server.get_channels()[0].set_channel_modes("-k", mode_parameters);
 
-	std::cout << "Password = " << channels[0].get_password() << " - Mode = " << channels[0].get_channel_modes() << std::endl;
+	std::cout << "Password = " << server.get_channels()[0].get_password() << " - Mode = " << server.get_channels()[0].get_channel_modes() << std::endl;
 
-	channels[0].add_invite(&client2);
-	std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
-	join_command(channels_string3, &channels, &client2);
+	server.get_channels()[0].add_invite(&client2);
+	std::cout << "Invite list size = " << server.get_channels()[0].get_invite_list().size() << std::endl;
+
+
+	// server.command_JOIN(channels_string3, &client1);
+	server.command_JOIN(channels_string3, &client2);
 	// channels[0].set_user(&client2);
-	std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
+	// std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
 
-	std::cout << channels[0].get_users().size() << std::endl;
-	for (std::map<Client*, std::string>::iterator it = channels[0].get_users().begin(); it != channels[0].get_users().end(); ++it) {
+	std::cout << server.get_channels()[0].get_users().size() << std::endl;
+	for (std::map<Client*, std::string>::iterator it = server.get_channels()[0].get_users().begin(); it != server.get_channels()[0].get_users().end(); ++it) {
 		std::cout << "Users : " << it->first->get_nickname() << std::endl;
 	}
 
-	std::cout << channels[1].get_users().size() << std::endl;
-	for (std::map<Client*, std::string>::iterator it = channels[1].get_users().begin(); it != channels[1].get_users().end(); ++it) {
+	std::cout << server.get_channels()[1].get_users().size() << std::endl;
+	for (std::map<Client*, std::string>::iterator it = server.get_channels()[1].get_users().begin(); it != server.get_channels()[1].get_users().end(); ++it) {
 		std::cout << "Users : " << it->first->get_nickname() << std::endl;
 	}
 

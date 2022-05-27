@@ -64,6 +64,8 @@ class Server {
 		void set_password(std::string val);
 		void set_using_password(bool val);
 
+		void command_JOIN(std::vector<std::string> parameters, Client *client);
+
 	private :
 		std::string _network_name;
 		std::string _hostname;
