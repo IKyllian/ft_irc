@@ -1,5 +1,6 @@
 #include "../includes/Server.hpp"
-
+#include "../includes/Message.hpp"
+#include "../includes/ft_irc.hpp"
 
 Server::Server() {}
 
@@ -165,4 +166,89 @@ void Server::command_JOIN(std::vector<std::string> parameters, Client *client) {
 		// else
 		// 	join_channel(_channels, client, channels_string[i], keys[i]);
 	}
+}
+
+bool Server::_nick_available(std::string nick) const {
+	for (unsigned long i = 0; i < _clients.size(); i++)
+	{
+		if (_clients[i].get_nickname() == nick)
+			return false;
+	}
+	return true;
+}
+
+bool Server::_nick_isvalid(std::string nick) const {
+	std::string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`|^_-{}[]\\";
+
+	if (nick.find_first_not_of(valid) != std::string::npos)
+		return false;
+	return true;
+
+}
+
+void Server::command_NICK(Client &client, Message &message) {
+	std::string new_nick = message.get_tab_parameter()[0];
+
+	if (message.get_tab_parameter().size() == 0)
+	{
+	    //    431    ERR_NONICKNAMEGIVEN
+        //       ":No nickname given"
+        //  - Returned when a nickname parameter expected for a
+        //    command and isn't found.
+
+		send_message(*this, client, /* print numerics demander a Romain */, 431);
+
+	}
+	else if (!_nick_available(new_nick))
+	{
+		//    433    ERR_NICKNAMEINUSE
+		//           "<nick> :Nickname is already in use"
+		//      - Returned when a NICK message is processed that results
+		//        in an attempt to change to a currently existing
+		//        nickname.
+
+		send_message(*this, client, /* print numerics demander a Romain */, 433);
+
+	}
+	else if (!_nick_isvalid(new_nick))
+	{
+		//        432    ERR_ERRONEUSNICKNAME
+        //       "<nick> :Erroneous nickname"
+        //  - Returned after receiving a NICK message which contains
+        //    characters which do not fall in the defined set.  See
+        //    section 2.3.1 for details on valid nicknames.
+
+		send_message(*this, client, /* print numerics demander a Romain */, 432);
+	}
+	else if (/* is restricted, demander a Kyllian pour les user modes*/)
+	{
+		//    484    ERR_RESTRICTED
+		//           ":Your connection is restricted!"
+		//      - Sent by the server to a user upon connection to indicate
+		//        the restricted nature of the connection (user mode "+r").
+		send_message(*this, client, /* print numerics demander a Romain */, 484);
+	}
+	else 
+	{
+		//set nickname
+		client.set_nickname(new_nick);
+
+		//send_message(); //for valid nick change
+		//response
+	}
+
+	    //    437    ERR_UNAVAILRESOURCE
+        //       "<nick/channel> :Nick/channel is temporarily unavailable"
+        //  - Returned by a server to a user trying to join a channel
+        //    currently blocked by the channel delay mechanism.
+        //  - Returned by a server to a user trying to change nickname
+        //    when the desired nickname is blocked by the nick delay
+        //    mechanism.
+
+		//        436    ERR_NICKCOLLISION
+        //       "<nick> :Nickname collision KILL from <user>@<host>"
+        //  - Returned by a server to a client when it detects a
+        //    nickname collision (registered of a NICK that
+        //    already exists by another server).
+
 }
