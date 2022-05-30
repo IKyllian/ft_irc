@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 	// mode_parameters.push_back("Kyllian");
 	//List of channels
 	channels_string.push_back("chan,channel2,test_channel_1234,azeazeojazjpopaozjepoajepoajze4");
-	channels_string.push_back("1234,azerty1234567890,coucou,helloworld");
+	// channels_string.push_back("1234,azerty1234567890,coucou,helloworld");
 
 	//Channel2
 	channels_string2.push_back("channel2");
@@ -42,6 +42,10 @@ int main(int argc, char **argv)
 
 	server.command_JOIN(channels_string, &client1);
 	server.command_JOIN(channels_string2, &client1);
+
+	std::cout << "Channels size = " << server.get_channels().size() << std::endl;
+
+
 	// join_command(channels_string, &channels, &client1);
 	// join_command(channels_string2, &channels, &client1);
 
@@ -62,20 +66,29 @@ int main(int argc, char **argv)
 
 	server.command_JOIN(channels_string3, &client1);
 	server.command_JOIN(channels_string3, &client2);
+
+	// server.command_PART(channels_string, &client1);
+
+	server.command_NAMES(channels_string);
+	// std::cout << "Channels size = " << server.get_channels().size() << std::endl;
+
+
 	// channels[0].set_user(&client2);
 	// std::cout << "Invite list size = " << channels[0].get_invite_list().size() << std::endl;
 
-	server.command_PART(channels_string, &client1);
+	// server.command_PART(channels_string, &client1);
 
-	std::cout << server.get_channels()[0].get_users().size() << std::endl;
-	for (std::map<Client*, std::string>::iterator it = server.get_channels()[0].get_users().begin(); it != server.get_channels()[0].get_users().end(); ++it) {
-		std::cout << "Users : " << it->first->get_nickname() << std::endl;
-	}
+	// std::cout << "Channels size = " << server.get_channels().size() << std::endl;
 
-	std::cout << server.get_channels()[1].get_users().size() << std::endl;
-	for (std::map<Client*, std::string>::iterator it = server.get_channels()[1].get_users().begin(); it != server.get_channels()[1].get_users().end(); ++it) {
-		std::cout << "Users : " << it->first->get_nickname() << std::endl;
-	}
+	// std::cout << server.get_channels()[0].get_users().size() << std::endl;
+	// for (std::map<Client*, std::string>::iterator it = server.get_channels()[0].get_users().begin(); it != server.get_channels()[0].get_users().end(); ++it) {
+	// 	std::cout << "Users : " << it->first->get_nickname() << std::endl;
+	// }
+
+	// std::cout << server.get_channels()[1].get_users().size() << std::endl;
+	// for (std::map<Client*, std::string>::iterator it = server.get_channels()[1].get_users().begin(); it != server.get_channels()[1].get_users().end(); ++it) {
+	// 	std::cout << "Users : " << it->first->get_nickname() << std::endl;
+	// }
 
 	// channels[0].set_user_mode("-iws", &client3);
 	

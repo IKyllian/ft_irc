@@ -65,41 +65,49 @@ void Channel::set_topic(std::string new_topic) {
 }
 
 void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a add un user au channel
-	std::vector<Client*>::iterator it = search_user_ban(client);
-	std::vector<Client*>::iterator it2 = search_user_invite(client);
-	if ((_channel_modes.find('l') == std::string::npos) || (_channel_modes.find('l') != std::string::npos && _users.size() < _user_limit)) {
-		if (_users_ban.end() == it) {
-			if (_channel_modes.find('k') != std::string::npos) {
-				if (key != _password) {
-					ft_print_numerics(475);
-					return ;
+	std::vector<Client*>::iterator user_ban_it = search_user_ban(client);
+	std::vector<Client*>::iterator user_invite_it = search_user_invite(client);
+	std::map<Client*, std::string>::iterator user_it = get_user(client);
+	if (user_it == _users.end()) {
+		if ((_channel_modes.find('l') == std::string::npos) || (_channel_modes.find('l') != std::string::npos && _users.size() < _user_limit)) {
+			if (_users_ban.end() == user_ban_it) {
+				if (_channel_modes.find('k') != std::string::npos) {
+					if (key != _password) {
+						ft_print_numerics(475);
+						return ;
+					}
 				}
-			}
-			if (_channel_modes.find('i') != std::string::npos) {
-				if (it2 != _invite_list.end()) { // Check si le user a recu une invitation
-					_users.insert(std::pair<Client*, std::string>(client, ""));
-					_invite_list.erase(it2);
+				if (_channel_modes.find('i') != std::string::npos) {
+					if (user_invite_it != _invite_list.end()) { // Check si le user a recu une invitation
+						_users.insert(std::pair<Client*, std::string>(client, ""));
+						_invite_list.erase(user_invite_it);
+						std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
+						if (topic.size() > 0)
+							ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic 
+						else
+							ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
+					} else
+						ft_print_numerics(473);
+				} else {
+					if (_users.size() == 0)
+						_users.insert(std::pair<Client*, std::string>(client, "o"));
+					else
+						_users.insert(std::pair<Client*, std::string>(client, ""));
 					std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
 					if (topic.size() > 0)
-						ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic 
-					else
-						ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
-				} else
-					ft_print_numerics(473);
-			} else {
-				_users.insert(std::pair<Client*, std::string>(client, ""));
-				std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
-				if (topic.size() > 0)
-					ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic
-				// Check si il faut envoyer RPL_NOTOPIC si pas de Topic dans le channel (Dans la doc de Join c'est marqué non mais dans Topic c'est marqué oui)
-				// else
-				// 	ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
-			// Then send a list of users currently joined to the channel
-			}
+						ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic
+					// Check si il faut envoyer RPL_NOTOPIC si pas de Topic dans le channel (Dans la doc de Join c'est marqué non mais dans Topic c'est marqué oui)
+					// else
+					// 	ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
+				// Then send a list of users currently joined to the channel
+				}
+			} else
+				ft_print_numerics(474);
 		} else
-			ft_print_numerics(474);
+			ft_print_numerics(471);
 	} else
-		ft_print_numerics(471);
+		std::cout << "User already joined this channel" << std::endl; // Check ce qu'il faut renvoyer si le user a deja join le channel
+	
 }
 
 void Channel::set_mode(char mode, std::string parameter) {
@@ -130,7 +138,7 @@ void Channel::set_mode(char mode, std::string parameter) {
 		if (parameter == "")
 			ft_print_numerics(461);
 		std::istringstream(parameter) >> nb; // Pas de gestion d'erreur pour l'instant (ex: 45qwef)
-		if (nb < 0 || nb > SIZE_MAX)
+		if (nb > SIZE_MAX)
 			ft_print_numerics(461);
 		else {
 			_channel_modes.push_back(mode);
@@ -283,20 +291,36 @@ void Channel::unset_user_mode(char mode, std::string parameter) {
 void Channel::add_invite(Client *client) {
 	std::vector<Client*>::iterator it = search_user_invite(client);
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
+	std::map<Client*, std::string>::iterator it3;
 	if (it2 == _users_ban.end()) {
+		for (_users.begin(); it3 != _users.end(); it3++)
+			if ((*it3).first->get_nickname() == client->get_nickname())
+				break ;
+		if (it3 == _users.end()) {
+			ft_print_numerics(443);
+			return ;
+		}
 		if (it == _invite_list.end())
 			_invite_list.push_back(client);
 	}
 	// RPL_INVITING (341)
 }
 
-void Channel::remove_user(Client *client) {
+void Channel::remove_user(Client *client, std::vector<Channel> *channels) {
 	std::map<Client*, std::string>::iterator it = _users.find(client);
+	std::vector<Channel>::iterator it2;
 	if (_users.end() == it)
 		ft_print_numerics(442);
 	else {
 		_users.erase(it);
 		remove_invite(client);
+		if (_users.size() == 0) {
+			for (it2 = channels->begin(); it2 != channels->end(); it2++)
+				if (it2->get_name() == get_name())
+					break ;			
+			if (it2 != channels->end())
+				channels->erase(it2);
+		}
 		std::cout << ":" << client->get_nickname() << " PART " << get_name() << std::endl;
 	}
 }
@@ -342,41 +366,6 @@ std::vector<std::string> parse_comma(std::string parameter) {
 	strings_parse.push_back(parameter.substr(idx, parameter.size() - idx));
 	return (strings_parse);
 }
-
-// void join_command(std::vector<std::string> parameters, std::vector<Channel> *channels, Client *client) {
-// 	std::vector<std::string> channels_string;
-// 	std::vector<std::string> keys;
-// 	channels_string = parse_comma(parameters[0]);
-// 	if (parameters.size() > 1)
-// 		keys = parse_comma(parameters[1]);
-// 	for (size_t i = 0; i < channels_string.size(); i++) {
-// 		if (keys.size() - 1 > i)
-// 			join_channel(channels, client, channels_string[i]);
-// 		else
-// 			join_channel(channels, client, channels_string[i], keys[i]);
-// 	}
-// }
-
-// void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key) {
-	// Reste a check ces erreurs : ERR_NEEDMOREPARAMS (461) / ERR_TOOMANYCHANNELS (405)
-	// std::vector<Channel>::iterator it = channels->begin();
-	// for (; it != channels->end(); it++) {
-	// 	if ((*it).get_name() == channel)
-	// 		break;
-	// }
-	// if (it == channels->end()) {
-	// 	ft_print_numerics(403);
-	// 	return ;
-	// }
-	//	channels->push_back(Channel(channel));
-	// it = channels->begin();
-	// for (; it != channels->end(); it++) {
-	// 	if ((*it).get_name() == channel)
-	// 		break;
-	// }
-	// (*it).set_user(client, key);
-// }
-
 
 void list_command(std::vector<Channel> channels, std::vector<std::string> parameters) {
 	ft_print_numerics(321);	// RPL_LISTSTART (Pas sûr de devoir l'envoyer)

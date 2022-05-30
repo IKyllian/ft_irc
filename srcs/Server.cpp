@@ -184,7 +184,7 @@ void Server::command_PART(std::vector<std::string> parameters, Client *client) {
 			ft_print_numerics(403);
 			continue ;
 		}
-		(*it).remove_user(client);
+		(*it).remove_user(client, &_channels);
 	}
 }
 
@@ -210,6 +210,81 @@ void Server::command_TOPIC(std::vector<std::string> parameters, Client *client) 
 	}
 	if (parameters.size() == 2)
 		(*it).set_topic(parameters[1]);
-	//Afficher Topic
-
+	else
+		std::cout << (*it).get_topic();
+		// ft_print_numerics(332); // RPL_TOPIC (332) 
 }
+
+void Server::command_NAMES(std::vector<std::string> parameters) {
+	std::vector<std::string>		channels_string;
+	std::vector<Channel>::iterator	it;
+
+	if (parameters.size() < 1) {
+		for (it = _channels.begin(); it != _channels.end(); it++) {
+			ft_print_numerics(353); //RPL_NAMREPLY (353) 
+		}
+	} else {
+		channels_string = parse_comma(parameters[0]);
+		for (size_t i = 0; i < channels_string.size(); i++) {
+			for (it = _channels.begin(); it != _channels.end(); it++)
+				if ((*it).get_name() ==  channels_string[i])
+					break;
+			if (it == _channels.end())
+				continue ;
+			ft_print_numerics(353); //RPL_NAMREPLY (353) 
+		}
+	}
+	ft_print_numerics(366); // RPL_ENDOFNAMES (366) 
+}
+
+void Server::command_LIST(std::vector<std::string> parameters) {
+	std::vector<std::string>		channels_string;
+	std::vector<Channel>::iterator	it;
+
+	if (parameters.size() < 1) {
+		for (it = _channels.begin(); it != _channels.end(); it++) {
+			ft_print_numerics(353); //RPL_NAMREPLY (353) 
+		}
+	} else {
+		channels_string = parse_comma(parameters[0]);
+		for (size_t i = 0; i < channels_string.size(); i++) {
+			for (it = _channels.begin(); it != _channels.end(); it++)
+				if ((*it).get_name() ==  channels_string[i])
+					break;
+			if (it == _channels.end())
+				continue ;
+			ft_print_numerics(353); //RPL_NAMREPLY (353) 
+		}
+	}
+	ft_print_numerics(366); // RPL_ENDOFNAMES (366) 
+}
+
+void Server::command_INVITE(Client *sender, std::vector<std::string> parameters) {
+	std::vector<Channel>::iterator	channel_it;
+	std::vector<Client>::iterator	client_it;
+
+	if (parameters.size() != 2) {
+		ft_print_numerics(461);
+	} else {
+		for (client_it = _clients.begin(); client_it != _clients.end(); client_it++)
+			if ((*client_it).get_nickname() ==  parameters[0])
+				break;
+		// Check ce qu'il faut faire si le nickname correspond a aucun Client
+		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++)
+			if ((*channel_it).get_name() ==  parameters[1])
+				break;
+		if (channel_it == _channels.end())
+			ft_print_numerics(403);
+		if ((*channel_it).get_users().find(sender)->second.find("o") == std::string::npos) {
+			ft_print_numerics(482);  // ERR_CHANOPRIVSNEEDED (482)
+		} else {
+			(*channel_it).add_invite(&(*client_it));
+			ft_print_numerics(341); //RPL_NAMREPLY (353) 
+		}
+	}
+	ft_print_numerics(366); // RPL_ENDOFNAMES (366) 
+}
+
+// void Server::command_KICK(Client *sender, std::vector<std::string> parameters) {
+
+// }

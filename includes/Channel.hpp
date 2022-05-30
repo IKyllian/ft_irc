@@ -42,7 +42,7 @@ class Channel {
 		void set_topic(std::string new_topic = std::string());
 		void set_user_limit(int limit);
 		
-		void remove_user(Client *client);
+		void remove_user(Client *client, std::vector<Channel> *channels);
 		void remove_invite(Client *client);
 		void ban_user(Client *client);
 		void unban_user(Client *client);

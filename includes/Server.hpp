@@ -67,6 +67,10 @@ class Server {
 		void command_JOIN(std::vector<std::string> parameters, Client *client);
 		void command_PART(std::vector<std::string> parameters, Client *client);
 		void command_TOPIC(std::vector<std::string> parameters, Client *client);
+		void command_NAMES(std::vector<std::string> parameters);
+		void command_LIST(std::vector<std::string> parameters);
+		void command_INVITE(Client *sender, std::vector<std::string> parameters);
+		void command_KICK(Client *sender, std::vector<std::string> parameters);
 
 	private :
 		std::string _network_name;
