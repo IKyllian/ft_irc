@@ -31,7 +31,12 @@ static void ft_split_parameter(Message &msg)
     {
         position = msg.get_parameter().find(" ", position);
         if (position - startpoint > 0)
-            msg.get_tab_parameter().push_back(msg.get_parameter().substr(startpoint, position - startpoint));
+        {
+            if (position = msg.get_parameter().end())
+                msg.get_tab_parameter().push_back(msg.get_parameter().substr(startpoint, position - startpoint - 2));
+            else
+                msg.get_tab_parameter().push_back(msg.get_parameter().substr(startpoint, position - startpoint));
+        }
         if (position != std::string::npos)
         {
             position++;
