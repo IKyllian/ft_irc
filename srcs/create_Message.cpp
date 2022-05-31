@@ -16,6 +16,10 @@ std::vector<std::string> ft_split_message(std::string str)
         if (position - startpoint > 0)
         {
             tmp = str.substr(startpoint, position);
+            // for (unsigned int i = 0; i < tmp.length(); i++)
+            // {
+                // std::cout << "i: " << i << " : " << tmp[i] << " : " << (int) tmp[i] << std::endl; 
+            // }
             if (position == std::string::npos)
             {
                 if (str.substr(startpoint, position).size() <= 0)
