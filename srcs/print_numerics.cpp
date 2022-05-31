@@ -359,6 +359,9 @@ std::string ft_print_numerics(/*Client &user, Server &server, Channel &channel, 
 	case 422:
 		return (username + ERR_NOMOTD(null));
 		break;
+    case 431:
+		return (username + ERR_NONICKNAMEGIVEN(null));
+        break;
 	case 432:
 		return (username + ERR_ERRONEUSNICKNAME(user_nick));
 		break;
@@ -457,6 +460,7 @@ std::string ft_print_numerics(/*Client &user, Server &server, Channel &channel, 
 		break;
 
 	default:
+        std::cout << "Numeric not found" << std::endl;
         break;
     }
     return ("");

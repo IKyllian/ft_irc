@@ -26,7 +26,7 @@ class Message {
 		int							get_nb_parameter() const;
 		std::vector<std::string>	&get_tab_parameter();
 
-		void set_sender(Client &val);
+		void set_sender(Client *val);
 		void set_receiver(Client &val);
 		void set_payload(std::string &val);
 		void set_prefix(std::string &val);

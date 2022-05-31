@@ -176,7 +176,10 @@ std::cout << "###inside do_parsing" << std::endl;
         msg.push_back(ft_create_message(msg_list[i]));
     }
     for (size_t i = 0; i < msg.size(); i++)
+    {
+        msg[i]->set_sender(&sender);
         do_command(server, *msg[i]);
+    }
     for (size_t i = 0; i < msg.size(); i++)
         delete msg[i];
     return;

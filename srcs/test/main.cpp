@@ -6,7 +6,14 @@ int main(int argc, char **argv)
     /*                      TEST MESSAGE            */
     // std::vector<Message*> msg;
     // std::vector<std::string> msg_list;
-     std::string str = "\r\n\r\n:Tracey`^!me@68.178.52.73 PRIVMSG #game1 :She's dead. Keep laughing.\r\nMOTD #game2 :She's dead. Keep laughing.";
+     std::string str = "\r\nNICK a\r\n";
+    Client client;
+    int nb = 5;
+
+    client.set_nickname("dsdsa");
+    client.set_fd(nb);
+    client.set_user_modes("dsadas");
+    client.set_username("loleee");
     // msg_list = ft_split_message(str);
     // for (size_t i = 0; i < msg_list.size(); i++)
     // {
@@ -23,9 +30,8 @@ int main(int argc, char **argv)
     //     delete msg[i];
     // }
 
-    do_parsing(str);
+    do_parsing(client ,str);
     /*               END TEST MESSAGE              */
-
 
     int socketFD = socket(AF_INET, SOCK_STREAM, 0);
     if (socketFD < 0)

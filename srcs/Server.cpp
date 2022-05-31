@@ -198,7 +198,7 @@ std::cout << "###inside command_NICK" << std::endl;
         //  - Returned when a nickname parameter expected for a
         //    command and isn't found.
 
-		//send_message(*this, message, "<header>", "print-numerics", 431);
+		// send_message(*this, client, /* print numerics demander a Romain */, 431);
 
 	}
 	else if (!_nick_available(new_nick))
@@ -209,7 +209,7 @@ std::cout << "###inside command_NICK" << std::endl;
 		//        in an attempt to change to a currently existing
 		//        nickname.
 
-		//send_message(*this, client, /* print numerics demander a Romain */, 433);
+		// send_message(*this, client, /* print numerics demander a Romain */, 433);
 
 	}
 	else if (!_nick_isvalid(new_nick))
@@ -220,17 +220,16 @@ std::cout << "###inside command_NICK" << std::endl;
         //    characters which do not fall in the defined set.  See
         //    section 2.3.1 for details on valid nicknames.
 
-		//send_message(*this, client, /* print numerics demander a Romain */, 432);
+		// send_message(*this, client, /* print numerics demander a Romain */, 432);
 	}
-	else if (client.get_user_modes().find('r') != std::string::npos)
-	{
+	//else if (/* is restricted, demander a Kyllian pour les user modes*/)
+	//{
 		//    484    ERR_RESTRICTED
 		//           ":Your connection is restricted!"
 		//      - Sent by the server to a user upon connection to indicate
 		//        the restricted nature of the connection (user mode "+r").
-		
-		//send_message(*this, client, /* print numerics demander a Romain */, 484);
-	}
+		// send_message(*this, client, /* print numerics demander a Romain */, 484);
+	//}
 	else 
 	{
 std::cout << "alive 2" << std::endl;
