@@ -7,6 +7,7 @@ std::vector<std::string> ft_split_message(std::string str)
     size_t old_position;
     size_t position = 0;
     size_t startpoint = 0;
+    std::string tmp;
 
     while (position != std::string::npos)
     {
@@ -14,6 +15,7 @@ std::vector<std::string> ft_split_message(std::string str)
         position = str.find("\r\n", position);
         if (position - startpoint > 0)
         {
+            tmp = str.substr(startpoint, position);
             if (position == std::string::npos)
             {
                 if (str.substr(startpoint, position).size() <= 0)
