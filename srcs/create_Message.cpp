@@ -16,6 +16,8 @@ std::vector<std::string> ft_split_message(std::string str)
         {
             if (position == std::string::npos)
             {
+                if (str.substr(startpoint, position).size() <= 0)
+                    break;
                 msg_list.push_back(str.substr(startpoint, position));
                 break;
             }
@@ -25,8 +27,6 @@ std::vector<std::string> ft_split_message(std::string str)
         {
             position += 2;
             startpoint = position;
-            if (str.find("\r\n", position) == std::string::npos && str.find("\0", position) - position == 0)
-                std::cout << " str == npos" << std::endl;
         }
     }
     std::cout << "msg list size = " << msg_list.size() << std::endl;
