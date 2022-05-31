@@ -68,7 +68,7 @@ class Server {
 		void set_using_password(bool val);
 
 		bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
-
+		bool send_message(Client &client, std::string message);
 		void command_JOIN(std::vector<std::string> parameters, Client *client);
 		void command_NICK(Client &client, Message &message);
 

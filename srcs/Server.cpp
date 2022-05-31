@@ -1,6 +1,8 @@
 #include "../includes/Server.hpp"
 // #include "../includes/Message.hpp"
-// #include "../includes/ft_irc.hpp"
+#include "../includes/ft_irc.hpp"
+#include <cstring>
+
 
 Server::Server() {}
 
@@ -179,41 +181,94 @@ bool Server::_nick_available(std::string nick) const {
 
 bool Server::_nick_isvalid(std::string nick) const {
 	std::string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`|^_-{}[]\\";
+	size_t ret;
 
-	if (nick.find_first_not_of(valid) != std::string::npos)
+for (unsigned long i = 0; i < nick.length(); i++)
+{
+	std::cout << "i: " << i << "nick[i]: " << nick[i] << "| (int): " << (int) nick[i] << std::endl;
+}
+
+
+	ret = nick.find_first_not_of(valid);
+	if (ret != std::string::npos || ret >= nick.length())
 		return false;
 	return true;
 
 }
 
 void Server::command_NICK(Client &client, Message &message) {
-std::cout << "message.get_tab_parameter()[0]" << message.get_tab_parameter()[0] << std::endl;
+//std::cout << "message.get_tab_parameter()[0]:" << message.get_tab_parameter()[0] << std::endl;
 	std::string new_nick = message.get_tab_parameter()[0];
-std::cout << "alive 1" << std::endl;
-std::cout << "###inside command_NICK" << std::endl;
+	std::string answer;
+
+// for (unsigned long i = 0; i < new_nick.length(); i++)
+// {
+// 	std::cout << "i:" << i << " : " << new_nick[i] << " : " << (int) new_nick[i] << std::endl;
+// }
+// std::cout << "newnick.len: " << new_nick.length() << std::endl;
+// std::cout << "###inside command_NICK" << std::endl;
+
+
+
 	if (message.get_tab_parameter().size() == 0)
 	{
+std::cout << ">>>no nick given" << std::endl;
 	    //    431    ERR_NONICKNAMEGIVEN
         //       ":No nickname given"
         //  - Returned when a nickname parameter expected for a
         //    command and isn't found.
 
-		// send_message(*this, client, /* print numerics demander a Romain */, 431);
+		if (client.get_hasnick())
+		{
+			answer = ":";
+			answer += this->get_hostname();
+			answer += " 431 ";
+			answer += client.get_nickname();
+			answer += " ";
+			answer += ":No nickname given";
+
+			send_message(client, answer);
+
+		}
+		else
+		{
+			answer = ":";
+			answer += this->get_hostname();
+			answer += " 431 * ";
+			answer += ":No nickname given";
+			send_message(client, answer);
+
+		}
 
 	}
 	else if (!_nick_available(new_nick))
 	{
+std::cout << ">>>nick not available" << std::endl;
 		//    433    ERR_NICKNAMEINUSE
 		//           "<nick> :Nickname is already in use"
 		//      - Returned when a NICK message is processed that results
 		//        in an attempt to change to a currently existing
 		//        nickname.
 
-		// send_message(*this, client, /* print numerics demander a Romain */, 433);
+		//send_message(*this, client, /* print numerics demander a Romain */, 433);
+			answer = ":";
+			answer += this->get_hostname();
+			answer += " 433 ";
+			if (client.get_hasnick())
+			{
+				answer += client.get_nickname();
+			}
+			else
+			{
+				answer += "*";
+			}
+			answer += ":Nickname is already in use";
 
+			send_message(client, answer);
 	}
 	else if (!_nick_isvalid(new_nick))
 	{
+std::cout << ">>>nick invalid" << std::endl;
 		//        432    ERR_ERRONEUSNICKNAME
         //       "<nick> :Erroneous nickname"
         //  - Returned after receiving a NICK message which contains
@@ -222,17 +277,18 @@ std::cout << "###inside command_NICK" << std::endl;
 
 		// send_message(*this, client, /* print numerics demander a Romain */, 432);
 	}
-	//else if (/* is restricted, demander a Kyllian pour les user modes*/)
-	//{
+	else if (client.get_user_modes().find('r') != std::string::npos)
+	{
+std::cout << ">>>user restricted" << std::endl;
 		//    484    ERR_RESTRICTED
 		//           ":Your connection is restricted!"
 		//      - Sent by the server to a user upon connection to indicate
 		//        the restricted nature of the connection (user mode "+r").
 		// send_message(*this, client, /* print numerics demander a Romain */, 484);
-	//}
+	}
 	else 
 	{
-std::cout << "alive 2" << std::endl;
+std::cout << ">>>changing nickname" << std::endl;
 		//set nickname
 		client.set_nickname(new_nick);
 
@@ -247,6 +303,14 @@ std::cout << "alive 2" << std::endl;
 		//send_message(); //for valid nick change
 		//response
 	}
+
+
+
+//test response
+std::cout << "************" << std::endl;
+std::cout << "NICK client fd = " << client.get_fd() << std::endl;
+		send_message(client, ":irc.example.com 001 abc :Welcome to the Internet Relay Network abc!abc@polaris.cs.uchicago.edu");
+
 
 	    //    437    ERR_UNAVAILRESOURCE
         //       "<nick/channel> :Nick/channel is temporarily unavailable"
@@ -272,7 +336,7 @@ std::cout << "alive 2" << std::endl;
 // std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >)
 // ", referenced from:
 
-
+std::cout << "###end of command_NICK" << std::endl;
 }
 
 
@@ -306,4 +370,53 @@ std::cout << buffer << std::endl;
 		return false;
 	}
 	return true;
+}
+
+bool Server::send_message(Client &target, std::string message)
+{
+	int					ret;
+	unsigned long 		i;
+	char				buffer[65535];
+	size_t				len;
+	//std::string			str;
+
+	memset(&buffer, 0, sizeof(buffer));
+
+
+
+	//strcpy(buffer, str.c_str());
+	
+	for (i = 0; i < message.length(); i++)
+	{
+		buffer[i] = message[i];
+	}
+	buffer[i] = '\0';
+	len = i;
+	
+	
+	std::cout << "sending: " << std::endl;
+	std::cout << message << std::endl;
+	std::cout << buffer << std::endl;
+	std::cout << "msg.len: " << message.length() << std::endl;
+	std::cout << "len: " << len << std::endl;
+
+// i = 0;
+// while (buffer[i])
+// {
+// 	std::cout << buffer[i] << std::endl;
+// 	i++;
+// }
+//std::cout << "wesh2 " << std::endl;
+
+std::cout << "wesh target.get_fd():" << target.get_fd() << std::endl;
+	ret = send(target.get_fd(), buffer, len, 0);
+std::cout << "wesh3 " << std::endl;
+	if (ret < 0)
+	{
+		perror("  send() failed");
+		return false;
+	}
+
+	return true;
+
 }

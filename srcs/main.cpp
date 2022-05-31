@@ -22,6 +22,8 @@
 #include <cstdio>
 
 #define TIMEOUT			180000 // 180000 = 3 minutes
+//#define HOSTNAME		"kikaro.42.fr"
+
 
 int handle_incoming_message(Server& server, int fd)
 {
@@ -37,7 +39,10 @@ int handle_incoming_message(Server& server, int fd)
 			break;
 	}
 	if (i == server.get_clients().size())
+	{
+		std::cout << "Client " << fd << " is new, adding to client list" << std::endl;
 		server.get_clients().push_back(Client(fd));
+	}
 	do
 	{
 		memset(&buffer, 0, sizeof(buffer));
@@ -56,11 +61,13 @@ int handle_incoming_message(Server& server, int fd)
 	
 	message = server.get_clients()[i].extract_command(pos);
 	std::cout << "command:" << std::endl
-			<< message;
+			<< message << std::endl;
 	std::cout << "--------------" << std::endl;
 //AJOUTER CALL POUR LE PARSING
+std::cout << "juste avant parsing: fd du client = " << server.get_clients()[i].get_fd() << std::endl;
+do_parsing(server, server.get_clients()[i], message);
 // do_parsing(Server &server, Client& expediteur, std::string message);
-	do_parsing(server, server.get_clients()[i], message);
+// do_parsing(server, server.get_clients()[i], message);
 	return ret;
 }
 
@@ -75,7 +82,7 @@ void display_cpp_ver()
 }
 
 
-bool init_socket(Server &server, int ac, char** av)
+bool init_socket(Server &server, char** av)
 {
 	struct sockaddr_in	addr;
 	int 				on = 1; //TODO learn more about on
@@ -141,6 +148,11 @@ bool init_socket(Server &server, int ac, char** av)
 	fd.events = POLLIN;
 	server.get_fds().push_back(fd);
 
+	return true;
+}
+
+bool init_server(Server &server, int ac, char** av)
+{
 	if (ac == 3)
 	{
 		server.set_using_password(true);
@@ -149,8 +161,12 @@ bool init_socket(Server &server, int ac, char** av)
 	else
 		server.set_using_password(false);
 
-	return true;
+	//use DEFINES to set base server settings
+	std::string test = "kikaro.42.fr";
+	server.set_hostname(test);
+	return true;	
 }
+
 
 int main(int ac, char **av)
 {
@@ -169,8 +185,9 @@ int main(int ac, char **av)
 	struct pollfd	fd;
 	unsigned long	i, j;
 
-	if (!init_socket(server, ac, av))
+	if (!init_socket(server, av))
 		return (-1);
+	init_server(server, ac, av);
 
 	while (running)
 	{
