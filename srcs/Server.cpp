@@ -196,7 +196,7 @@ void Server::command_NICK(Client &client, Message &message) {
         //  - Returned when a nickname parameter expected for a
         //    command and isn't found.
 
-		send_message(*this, client, /* print numerics demander a Romain */, 431);
+		// send_message(*this, client, /* print numerics demander a Romain */, 431);
 
 	}
 	else if (!_nick_available(new_nick))
@@ -207,7 +207,7 @@ void Server::command_NICK(Client &client, Message &message) {
 		//        in an attempt to change to a currently existing
 		//        nickname.
 
-		send_message(*this, client, /* print numerics demander a Romain */, 433);
+		// send_message(*this, client, /* print numerics demander a Romain */, 433);
 
 	}
 	else if (!_nick_isvalid(new_nick))
@@ -218,16 +218,16 @@ void Server::command_NICK(Client &client, Message &message) {
         //    characters which do not fall in the defined set.  See
         //    section 2.3.1 for details on valid nicknames.
 
-		send_message(*this, client, /* print numerics demander a Romain */, 432);
+		// send_message(*this, client, /* print numerics demander a Romain */, 432);
 	}
-	else if (/* is restricted, demander a Kyllian pour les user modes*/)
-	{
+	//else if (/* is restricted, demander a Kyllian pour les user modes*/)
+	//{
 		//    484    ERR_RESTRICTED
 		//           ":Your connection is restricted!"
 		//      - Sent by the server to a user upon connection to indicate
 		//        the restricted nature of the connection (user mode "+r").
-		send_message(*this, client, /* print numerics demander a Romain */, 484);
-	}
+		// send_message(*this, client, /* print numerics demander a Romain */, 484);
+	//}
 	else 
 	{
 		//set nickname

@@ -9,6 +9,7 @@
 
 class Channel;
 class Client;
+class Message;
 
 class Server {
 	public :
