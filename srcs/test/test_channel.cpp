@@ -10,6 +10,8 @@ int main(int argc, char **argv)
 	std::vector<std::string> channels_string;
 	std::vector<std::string> channels_string2;
 	std::vector<std::string> channels_string3;
+	std::vector<std::string> channels_string4;
+	std::vector<std::string> channels_string5;
 	std::vector<std::string> mode_parameters;
 	// Mode Message
 	mode_parameters.push_back("1234");
@@ -26,6 +28,13 @@ int main(int argc, char **argv)
 	channels_string3.push_back("chan");
 	channels_string3.push_back("1234");
 
+
+	channels_string4.push_back("Romain");
+	channels_string4.push_back("chan");
+
+	channels_string5.push_back("chan");
+	channels_string5.push_back("Romain");
+
 	// std::vector<Channel> channels;
 	std::string name = "myChannel";
 	std::string client_name = "Kyllian";
@@ -35,6 +44,11 @@ int main(int argc, char **argv)
 	Client client1(client_name);
 	Client client2(client2_name);
 	Client client3(user7);
+
+	server.set_user(Client(client_name));
+	server.set_user(Client(client2_name));
+
+	std::cout << "User size = " << server.get_clients().size() << std::endl;
 
 	// client1.set_user_modes("+ospwioo");
 
@@ -60,16 +74,23 @@ int main(int argc, char **argv)
 
 	std::cout << "Password = " << server.get_channels()[0].get_password() << " - Mode = " << server.get_channels()[0].get_channel_modes() << std::endl;
 
-	server.get_channels()[0].add_invite(&client2);
+	server.command_INVITE(&client1, channels_string4);
 	std::cout << "Invite list size = " << server.get_channels()[0].get_invite_list().size() << std::endl;
 
 
 	server.command_JOIN(channels_string3, &client1);
 	server.command_JOIN(channels_string3, &client2);
 
+	std::cout << "Invite list size = " << server.get_channels()[0].get_invite_list().size() << std::endl;
+
+
 	// server.command_PART(channels_string, &client1);
 
-	server.command_NAMES(channels_string);
+	// server.command_NAMES(channels_string);
+	server.command_KICK(&client1, channels_string5);
+
+	std::cout << "Users size = " << server.get_channels()[0].get_users().size() << std::endl;
+
 	// std::cout << "Channels size = " << server.get_channels().size() << std::endl;
 
 

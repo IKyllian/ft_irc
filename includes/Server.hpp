@@ -36,7 +36,10 @@ class Server {
 		std::string get_datetime() const;
 
 		std::vector<Client>	&get_clients();
+		std::vector<Client>::iterator get_client(std::string to_search);
+		int get_client_id(std::string to_search);
 		std::vector<Channel> &get_channels();
+		std::vector<Channel>::iterator get_channel(std::string to_search);
 		std::vector<struct pollfd> &get_fds();
 		std::string get_password() const;
 		bool get_using_password() const;
@@ -63,6 +66,7 @@ class Server {
 
 		void set_password(std::string val);
 		void set_using_password(bool val);
+		void set_user(Client client);
 
 		void command_JOIN(std::vector<std::string> parameters, Client *client);
 		void command_PART(std::vector<std::string> parameters, Client *client);

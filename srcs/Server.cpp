@@ -56,6 +56,36 @@ std::string Server::get_password() const { return (_password); }
 bool Server::get_using_password() const { return (_using_password); }
 int Server::get_server_fd() const { return (_fds[0].fd); }
 
+std::vector<Client>::iterator Server::get_client(std::string to_search){
+	std::vector<Client>::iterator	client_it;
+
+	for (client_it = _clients.begin(); client_it != _clients.end(); client_it++)
+		if ((*client_it).get_nickname() == to_search)
+			break;
+	return (client_it);
+}
+
+int Server::get_client_id(std::string to_search){
+	std::vector<Client>::iterator	client_it;
+	int i = 0;
+
+	for (client_it = _clients.begin(); client_it != _clients.end(); client_it++) {
+		if ((*client_it).get_nickname() == to_search)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+std::vector<Channel>::iterator Server::get_channel(std::string to_search){
+	std::vector<Channel>::iterator	channel_it;
+
+	for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++)
+			if ((*channel_it).get_name() == to_search)
+				break;
+	return (channel_it);
+}
+
 void Server::set_network_name(std::string &val) {
 	_network_name = val;
 }
@@ -136,10 +166,18 @@ void Server::set_using_password(bool val) {
 	_using_password = val;
 }
 
+
+void Server::set_user(Client client) {
+	std::vector<Client>::iterator it = get_client(client.get_nickname());
+	if (it == _clients.end()) {
+		_clients.push_back(client);
+	}
+}
+
 void Server::command_JOIN(std::vector<std::string> parameters, Client *client) {
 	std::vector<std::string>		channels_string;
 	std::vector<std::string>		keys;
-	std::vector<Channel>::iterator	it;
+	std::vector<Channel>::iterator	channel_it;
 
 	if (parameters.size() < 1) {
 		ft_print_numerics(461);
@@ -149,27 +187,21 @@ void Server::command_JOIN(std::vector<std::string> parameters, Client *client) {
 	if (parameters.size() > 1)
 		keys = parse_comma(parameters[1]);
 	for (size_t i = 0; i < channels_string.size(); i++) {
-		for (it = _channels.begin(); it != _channels.end(); it++)
-			if ((*it).get_name() ==  channels_string[i])
-				break;
-		if (it == _channels.end()) {
+		channel_it = get_channel(channels_string[i]);
+		if (channel_it == _channels.end()) {
 			_channels.push_back(Channel(channels_string[i]));
-			it = _channels.begin();
-			for (; it != _channels.end(); it++) {
-				if ((*it).get_name() == channels_string[i])
-					break;
-			}
+			channel_it = get_channel(channels_string[i]);
 		}
 		if (keys.size() - 1 > i) // A check
-			(*it).set_user(client);
+			(*channel_it).set_user(client);
 		else
-			(*it).set_user(client, keys[i]);
+			(*channel_it).set_user(client, keys[i]);
 	}
 }
 
 void Server::command_PART(std::vector<std::string> parameters, Client *client) {
 	std::vector<std::string>		channels_string;
-	std::vector<Channel>::iterator	it;
+	std::vector<Channel>::iterator	channel_it;
 
 	if (parameters.size() < 1) {
 		ft_print_numerics(461);
@@ -177,59 +209,55 @@ void Server::command_PART(std::vector<std::string> parameters, Client *client) {
 	}
 	channels_string = parse_comma(parameters[0]);
 	for (size_t i = 0; i < channels_string.size(); i++) {
-		for (it = _channels.begin(); it != _channels.end(); it++)
-			if ((*it).get_name() ==  channels_string[i])
-				break;
-		if (it == _channels.end()) {
+		channel_it = get_channel(channels_string[i]);
+		if (channel_it == _channels.end()) {
 			ft_print_numerics(403);
 			continue ;
 		}
-		(*it).remove_user(client, &_channels);
+		(*channel_it).remove_user(client, &_channels);
+		std::cout << ":" << client->get_nickname() << " PART " << (*channel_it).get_name() << std::endl;
+
 	}
 }
 
 void Server::command_TOPIC(std::vector<std::string> parameters, Client *client) {
-	std::vector<Channel>::iterator	it;
-	std::map<Client*, std::string>::iterator it2;
+	std::vector<Channel>::iterator	channel_it;
+	std::map<Client*, std::string>::iterator client_it;
 
 	if (parameters.size() < 1 || parameters.size() > 2) {
 		ft_print_numerics(461);
 		return ;
 	}
-	for (it = _channels.begin(); it != _channels.end(); it++)
-		if ((*it).get_name() ==  parameters[0])
-			break;	
-	if (it == _channels.end()) {
+	channel_it = get_channel(parameters[0]);	
+	if (channel_it == _channels.end()) {
 		ft_print_numerics(403);
 		return ;
 	}
-	it2 = (*it).get_users().find(client);
-	if (it2 == (*it).get_users().end()) {
+	client_it = (*channel_it).get_users().find(client);
+	if (client_it == (*channel_it).get_users().end()) {
 		ft_print_numerics(442);
 		return ;
 	}
 	if (parameters.size() == 2)
-		(*it).set_topic(parameters[1]);
+		(*channel_it).set_topic(parameters[1]);
 	else
-		std::cout << (*it).get_topic();
+		std::cout << (*channel_it).get_topic();
 		// ft_print_numerics(332); // RPL_TOPIC (332) 
 }
 
 void Server::command_NAMES(std::vector<std::string> parameters) {
 	std::vector<std::string>		channels_string;
-	std::vector<Channel>::iterator	it;
+	std::vector<Channel>::iterator	channel_it;
 
 	if (parameters.size() < 1) {
-		for (it = _channels.begin(); it != _channels.end(); it++) {
+		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++) {
 			ft_print_numerics(353); //RPL_NAMREPLY (353) 
 		}
 	} else {
 		channels_string = parse_comma(parameters[0]);
 		for (size_t i = 0; i < channels_string.size(); i++) {
-			for (it = _channels.begin(); it != _channels.end(); it++)
-				if ((*it).get_name() ==  channels_string[i])
-					break;
-			if (it == _channels.end())
+			channel_it = get_channel(channels_string[i]);
+			if (channel_it == _channels.end())
 				continue ;
 			ft_print_numerics(353); //RPL_NAMREPLY (353) 
 		}
@@ -239,19 +267,17 @@ void Server::command_NAMES(std::vector<std::string> parameters) {
 
 void Server::command_LIST(std::vector<std::string> parameters) {
 	std::vector<std::string>		channels_string;
-	std::vector<Channel>::iterator	it;
+	std::vector<Channel>::iterator	channel_it;
 
 	if (parameters.size() < 1) {
-		for (it = _channels.begin(); it != _channels.end(); it++) {
+		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++) {
 			ft_print_numerics(353); //RPL_NAMREPLY (353) 
 		}
 	} else {
 		channels_string = parse_comma(parameters[0]);
 		for (size_t i = 0; i < channels_string.size(); i++) {
-			for (it = _channels.begin(); it != _channels.end(); it++)
-				if ((*it).get_name() ==  channels_string[i])
-					break;
-			if (it == _channels.end())
+			channel_it = get_channel(channels_string[i]);
+			if (channel_it == _channels.end())
 				continue ;
 			ft_print_numerics(353); //RPL_NAMREPLY (353) 
 		}
@@ -263,18 +289,20 @@ void Server::command_INVITE(Client *sender, std::vector<std::string> parameters)
 	std::vector<Channel>::iterator	channel_it;
 	std::vector<Client>::iterator	client_it;
 
-	if (parameters.size() != 2) {
+	if (parameters.size() < 2 || parameters.size() > 2) {
 		ft_print_numerics(461);
 	} else {
-		for (client_it = _clients.begin(); client_it != _clients.end(); client_it++)
-			if ((*client_it).get_nickname() ==  parameters[0])
-				break;
-		// Check ce qu'il faut faire si le nickname correspond a aucun Client
-		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++)
-			if ((*channel_it).get_name() ==  parameters[1])
-				break;
-		if (channel_it == _channels.end())
+		client_it = get_client(parameters[0]);
+		if (client_it == _clients.end()) {
+			ft_print_numerics(401);
+			return ;
+		}
+		channel_it = get_channel(parameters[1]);
+		if (channel_it == _channels.end()) {
+		// std::cout << "TEST" << std::endl;
 			ft_print_numerics(403);
+			return ;
+		}
 		if ((*channel_it).get_users().find(sender)->second.find("o") == std::string::npos) {
 			ft_print_numerics(482);  // ERR_CHANOPRIVSNEEDED (482)
 		} else {
@@ -285,6 +313,34 @@ void Server::command_INVITE(Client *sender, std::vector<std::string> parameters)
 	ft_print_numerics(366); // RPL_ENDOFNAMES (366) 
 }
 
-// void Server::command_KICK(Client *sender, std::vector<std::string> parameters) {
+void Server::command_KICK(Client *sender, std::vector<std::string> parameters) {
+	std::vector<Channel>::iterator	channel_it;
+	std::vector<std::string>		clients_string;
+	std::vector<Client>::iterator	client_it;
+	int	client_idx;
 
-// }
+	if (parameters.size() < 2) {
+		ft_print_numerics(461);
+	} else {
+		clients_string = parse_comma(parameters[1]);
+		channel_it = get_channel(parameters[0]);
+		if (channel_it == _channels.end()) {
+			ft_print_numerics(403);
+			return ;
+		}
+		if ((*channel_it).get_users().find(sender)->second.find("o") == std::string::npos) {
+			ft_print_numerics(482);  // ERR_CHANOPRIVSNEEDED (482)
+		} else {	
+			for (size_t i = 0; i < clients_string.size(); i++) {
+				client_it = get_client(clients_string[i]);
+				client_idx = get_client_id(clients_string[i]);
+				if (client_it == _clients.end()) {
+					ft_print_numerics(441);
+					continue; 
+				}
+				(*channel_it).remove_user(&_clients[client_idx], &_channels);
+				std::cout << ":" << sender->get_nickname() << " KICK #" << (*channel_it).get_name() << " " << (*client_it).get_nickname() << std::endl;
+			}
+		}
+	}
+}
