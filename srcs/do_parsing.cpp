@@ -181,13 +181,13 @@ void do_parsing(/*Server &server,*/ Client &sender, std::string message)
     for (size_t i = 0; i < msg.size(); i++)
     {
         msg[i]->set_sender(&sender);
-        std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
-        std::cout << "command = " << msg[i]->get_command() << std::endl;
-        std::cout << "parameter = " << msg[i]->get_parameter() << std::endl;
-        std::cout << "first = " << msg[i]->get_nb_parameter() << std::endl;
-        for (int j = 0; j < msg[i]->get_nb_parameter(); j++)
-            std::cout << "splited parameter = " << msg[i]->get_tab_parameter()[j] << std::endl;   
-        std::cout << std::endl;
+        // std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
+        // std::cout << "command = " << msg[i]->get_command() << std::endl;
+        // std::cout << "parameter = " << msg[i]->get_parameter() << std::endl;
+        // std::cout << "first = " << msg[i]->get_nb_parameter() << std::endl;
+        // for (int j = 0; j < msg[i]->get_nb_parameter(); j++)
+        //     std::cout << "splited parameter = " << msg[i]->get_tab_parameter()[j] << std::endl;   
+        // std::cout << std::endl;
         //fill_message(*msg[i]);
         do_command(/*server, expediteur, */*msg[i]);
     }
