@@ -238,10 +238,16 @@ void Server::command_TOPIC(std::vector<std::string> parameters, Client *client) 
 		ft_print_numerics(442);
 		return ;
 	}
+	if ((*channel_it).get_channel_modes().find("t") != std::string::npos) {
+		if ((*channel_it).get_users().find(client)->second.find("o") == std::string::npos) {
+			ft_print_numerics(482);
+			return ;
+		}
+	}
 	if (parameters.size() == 2)
 		(*channel_it).set_topic(parameters[1]);
 	else
-		std::cout << (*channel_it).get_topic();
+		std::cout << (*channel_it).get_topic() << std::endl;
 		// ft_print_numerics(332); // RPL_TOPIC (332) 
 }
 
@@ -269,20 +275,31 @@ void Server::command_LIST(std::vector<std::string> parameters) {
 	std::vector<std::string>		channels_string;
 	std::vector<Channel>::iterator	channel_it;
 
+	ft_print_numerics(321);	// RPL_LISTSTART (Pas sûr de devoir l'envoyer)
 	if (parameters.size() < 1) {
 		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++) {
-			ft_print_numerics(353); //RPL_NAMREPLY (353) 
+			if ((*channel_it).get_channel_modes().find('s') != std::string::npos) {
+				continue ;
+			} else if ((*channel_it).get_channel_modes().find('m') != std::string::npos) {
+				ft_print_numerics(322); //Print without Topic
+			} else
+				ft_print_numerics(322);
 		}
 	} else {
 		channels_string = parse_comma(parameters[0]);
 		for (size_t i = 0; i < channels_string.size(); i++) {
 			channel_it = get_channel(channels_string[i]);
 			if (channel_it == _channels.end())
+				ft_print_numerics(402);
+			if ((*channel_it).get_channel_modes().find('s') != std::string::npos) {
 				continue ;
-			ft_print_numerics(353); //RPL_NAMREPLY (353) 
+			} else if ((*channel_it).get_channel_modes().find('m') != std::string::npos) {
+				ft_print_numerics(322); //Print without Topic
+			} else
+				ft_print_numerics(322);
 		}
 	}
-	ft_print_numerics(366); // RPL_ENDOFNAMES (366) 
+	ft_print_numerics(323);	// RPL_LISTEND (Ce que l'on envoie a la fin de la commande LIST)
 }
 
 void Server::command_INVITE(Client *sender, std::vector<std::string> parameters) {
@@ -299,7 +316,6 @@ void Server::command_INVITE(Client *sender, std::vector<std::string> parameters)
 		}
 		channel_it = get_channel(parameters[1]);
 		if (channel_it == _channels.end()) {
-		// std::cout << "TEST" << std::endl;
 			ft_print_numerics(403);
 			return ;
 		}
@@ -343,4 +359,32 @@ void Server::command_KICK(Client *sender, std::vector<std::string> parameters) {
 			}
 		}
 	}
+}
+
+void Server::command_MODE_CHAN(Client *sender, std::vector<std::string> parameters) {
+	std::vector<Channel>::iterator	channel_it;
+	std::map<Client*, std::string>::iterator client_it;
+
+	if (parameters.size() > 0) {
+		channel_it = get_channel(parameters[0]);	
+		if (channel_it == _channels.end()) {
+			ft_print_numerics(403);
+			return ;
+		}
+		if (parameters.size() == 1) {
+			ft_print_numerics(324); // Renvoie les modes actuels
+			return ;
+		}
+		client_it = (*channel_it).get_users().find(sender);
+		if (client_it == (*channel_it).get_users().end()) {
+			ft_print_numerics(442);
+			return ;
+		}
+		if ((*channel_it).get_users().find(sender)->second.find("o") == std::string::npos) {
+			ft_print_numerics(482);
+			return ;
+		}
+		(*channel_it).set_channel_modes(parameters);
+	} else 
+		ft_print_numerics(461);
 }

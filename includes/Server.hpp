@@ -75,6 +75,7 @@ class Server {
 		void command_LIST(std::vector<std::string> parameters);
 		void command_INVITE(Client *sender, std::vector<std::string> parameters);
 		void command_KICK(Client *sender, std::vector<std::string> parameters);
+		void command_MODE_CHAN(Client *sender, std::vector<std::string> parameters);
 
 	private :
 		std::string _network_name;

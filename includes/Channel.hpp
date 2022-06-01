@@ -34,7 +34,7 @@ class Channel {
 		
 		void set_name(std::string val);
 		void set_user(Client *client, std::string key = std::string());
-		void set_channel_modes(std::string mode, std::vector<std::string> parameters);
+		void set_channel_modes(std::vector<std::string> parameters);
 		void set_mode(char mode, std::string parameter = std::string());
 		void set_user_mode(char mode, std::string parameter);
 		void add_invite(Client *client);
@@ -63,8 +63,5 @@ class Channel {
 };
 
 std::vector<std::string> parse_comma(std::string parameter);
-// void join_command(std::vector<std::string> parameters, std::vector<Channel> *channels, Client *client);
-// void join_channel(std::vector<Channel> *channels, Client *client, std::string channel, std::string key = std::string());
-void list_command(std::vector<Channel> channels, std::vector<std::string> parameters = std::vector<std::string>());
 
 #endif

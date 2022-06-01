@@ -68,6 +68,7 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 	std::map<Client*, std::string>::iterator user_it = get_user(client);
 	std::vector<Client*>::iterator user_ban_it;
 	std::vector<Client*>::iterator user_invite_it;
+
 	if (user_it == _users.end()) {
 		user_ban_it = search_user_ban(client);
 		if ((_channel_modes.find('l') == std::string::npos) || (_channel_modes.find('l') != std::string::npos && _users.size() < _user_limit)) {
@@ -114,6 +115,7 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 
 void Channel::set_mode(char mode, std::string parameter) {
 	size_t nb;
+
 	if (mode == 'o') {
 		if (parameter == "")
 			ft_print_numerics(461);
@@ -224,8 +226,13 @@ void Channel::unset_mode(char mode, std::string parameter) {
 		ft_print_numerics(472);
 }
 
-void Channel::set_channel_modes(std::string mode, std::vector<std::string> parameters) {
+void Channel::set_channel_modes(std::vector<std::string> parameters) {
 	const std::string modes = "opsitnmlbvk";
+	std::string mode = parameters[1];
+	std::vector<std::string> params;
+
+	if (parameters.size() > 2)
+		params = parse_comma(parameters[2]);
 	if (mode.size() > 1) {
 		if (mode[0] == '+') {
 			for (size_t i = 1; i < mode.size(); i++) {
@@ -234,8 +241,8 @@ void Channel::set_channel_modes(std::string mode, std::vector<std::string> param
 							ft_print_numerics(501); // Check si il faut mettre l'erreur
 							continue;
 					} else {
-						if (parameters.size() > 0 && i - 1 < parameters.size())
-							set_mode(mode[i], parameters[i - 1]);
+						if (params.size() > 0 && i - 1 < params.size())
+							set_mode(mode[i], params[i - 1]);
 						else
 							set_mode(mode[i]);
 						ft_print_numerics(472); // RPL_CHANNELMODEIS
@@ -250,8 +257,8 @@ void Channel::set_channel_modes(std::string mode, std::vector<std::string> param
 							ft_print_numerics(501); // Check si il faut mettre l'erreur
 							continue;
 					} else {
-						if (parameters.size() > 0 && i - 1 < parameters.size())
-							unset_mode(mode[i], parameters[i - 1]);
+						if (params.size() > 0 && i - 1 < params.size())
+							unset_mode(mode[i], params[i - 1]);
 						else
 							unset_mode(mode[i]);
 						ft_print_numerics(472); // RPL_CHANNELMODEIS
@@ -371,33 +378,4 @@ std::vector<std::string> parse_comma(std::string parameter) {
 	}
 	strings_parse.push_back(parameter.substr(idx, parameter.size() - idx));
 	return (strings_parse);
-}
-
-void list_command(std::vector<Channel> channels, std::vector<std::string> parameters) {
-	ft_print_numerics(321);	// RPL_LISTSTART (Pas sûr de devoir l'envoyer)
-	if (channels.size() < 1) {
-		ft_print_numerics(323);
-		return ;
-	}
-
-	if (parameters.size() < 1) {
-		for (std::vector<Channel>::iterator it = channels.begin(); it < channels.end(); it++) {
-			if ((*it).get_channel_modes().find('s') != std::string::npos) {
-				continue ;
-			} else if ((*it).get_channel_modes().find('m') != std::string::npos) {
-				ft_print_numerics(322); //Print without Topic
-			} else
-				ft_print_numerics(322);
-		}
-	} else {
-
-	}
-
-
-
-	ft_print_numerics(322);	// RPL_LIST (Ce que l'on doit envoyé pour chaque channel)
-
-
-	ft_print_numerics(323);	// RPL_LISTEND (Ce que l'on envoie a la fin de la commande LIST)
-
 }
