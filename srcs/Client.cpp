@@ -1,13 +1,13 @@
 #include "../includes/Client.hpp"
 
-Client::Client() : _logged(false){}
-Client::Client(std::string nickname) : _nickname(nickname), _logged(false) {};
-Client::Client(const Client &client) : _nickname(client._nickname), _username(client._username), _user_modes(client._user_modes), _fd(client._fd), _logged(client._logged), _buffer(client._buffer) {}
+Client::Client() : _logged(false), _away(false){}
+Client::Client(std::string nickname) : _nickname(nickname), _logged(false), _away(false) {};
+Client::Client(const Client &client) : _nickname(client._nickname), _username(client._username), _user_modes(client._user_modes), _fd(client._fd), _logged(client._logged), _away(client._away), _buffer(client._buffer) {}
 // Client::Client(const Client *client) {
 // 	*this = client;
 // }
 
-Client::Client(int &fd) : _fd(fd), _logged(false){}
+Client::Client(int &fd) : _fd(fd), _logged(false), _away(false) {}
 Client::~Client() {}
 
 bool Client::operator==(const Client& rhs) {
@@ -23,6 +23,8 @@ std::string Client::get_username() const { return (_username); }
 std::string Client::get_user_modes() const { return (_user_modes); }
 int			Client::get_fd() const { return (_fd); }
 bool		Client::get_logged() const { return (_logged); }
+bool		Client::get_away() const { return (_away); }
+std::string Client::get_away_msg() const { return (_away_msg); }
 std::string	Client::get_buffer() const { return (_buffer); }
 
 
@@ -74,6 +76,15 @@ void Client::set_fd(int &val) {
 
 void Client::set_logged(bool &val) {
 	_logged = val;
+}
+
+void Client::set_away(bool &val){
+	_away = val;
+}
+
+void Client::set_away_msg(std::string msg)
+{
+	_away_msg = msg;
 }
 
 void Client::append_buffer(char* buffer) {

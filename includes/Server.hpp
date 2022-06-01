@@ -68,7 +68,11 @@ class Server {
 		void command_JOIN(std::vector<std::string> parameters, Client *client);
 		void command_NICK(Client &client, Message &message);
 
-	private :
+		/*		rzh cmd			*/
+		void command_AWAY(Client &client, Message &message);
+		void command_PRIVMSG(Client &client, Message &message);
+
+	private:
 		std::string _network_name;
 		std::string _hostname;
 		std::string _port;
