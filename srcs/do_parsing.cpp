@@ -162,16 +162,35 @@ static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
     }
 }
 
-void do_parsing(/*Server &server, Client &expediteur,*/ std::string message)
+/*static void fill_message(Message &msg, Client &sender, Server &server)
+{
+    msg.set_sender(sender);
+    std::cout << "Message check: " << std::endl << "get_sender = " << msg.get_sender().get_username() << std::endl;
+}*/
+
+void do_parsing(/*Server &server,*/ Client &sender, std::string message)
 {
     std::vector<Message*> msg;
     std::vector<std::string> msg_list;
 
     msg_list = ft_split_message(message);
     for (size_t i = 0; i < msg_list.size(); i++)
+    {
         msg.push_back(ft_create_message(msg_list[i]));
+    }
     for (size_t i = 0; i < msg.size(); i++)
+    {
+        msg[i]->set_sender(&sender);
+        // std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
+        // std::cout << "command = " << msg[i]->get_command() << std::endl;
+        // std::cout << "parameter = " << msg[i]->get_parameter() << std::endl;
+        // std::cout << "first = " << msg[i]->get_nb_parameter() << std::endl;
+        // for (int j = 0; j < msg[i]->get_nb_parameter(); j++)
+        //     std::cout << "splited parameter = " << msg[i]->get_tab_parameter()[j] << std::endl;   
+        // std::cout << std::endl;
+        //fill_message(*msg[i]);
         do_command(/*server, expediteur, */*msg[i]);
+    }
     for (size_t i = 0; i < msg.size(); i++)
         delete msg[i];
     return;

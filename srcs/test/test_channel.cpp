@@ -2,11 +2,13 @@
 #include "../../includes/Channel.hpp"
 #include "../../includes/Client.hpp"
 #include "../../includes/Server.hpp"
+
 int main(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
 	Server server;
+
 	std::vector<std::string> channels_string;
 	std::vector<std::string> channels_string2;
 	std::vector<std::string> channels_string3;

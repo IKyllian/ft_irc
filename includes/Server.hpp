@@ -9,6 +9,7 @@
 
 class Channel;
 class Client;
+class Message;
 
 class Server {
 	public :
@@ -37,7 +38,6 @@ class Server {
 
 		std::vector<Client>	&get_clients();
 		std::vector<Client>::iterator get_client(std::string to_search);
-		int get_client_id(std::string to_search);
 		std::vector<Channel> &get_channels();
 		std::vector<Channel>::iterator get_channel(std::string to_search);
 		std::vector<struct pollfd> &get_fds();
@@ -68,15 +68,16 @@ class Server {
 		void set_using_password(bool val);
 		void set_user(Client client);
 
-		void command_JOIN(std::vector<std::string> parameters, Client *client);
-		void command_PART(std::vector<std::string> parameters, Client *client);
-		void command_TOPIC(std::vector<std::string> parameters, Client *client);
+		void command_JOIN(Client *client, std::vector<std::string> parameters);
+		void command_PART(Client *client, std::vector<std::string> parameters);
+		void command_TOPIC(Client *client, std::vector<std::string> parameters);
 		void command_NAMES(std::vector<std::string> parameters);
 		void command_LIST(std::vector<std::string> parameters);
 		void command_INVITE(Client *sender, std::vector<std::string> parameters);
 		void command_KICK(Client *sender, std::vector<std::string> parameters);
 		void command_MODE_CHAN(Client *sender, std::vector<std::string> parameters);
 
+		void command_NICK(Client &client, Message &message);
 	private :
 		std::string _network_name;
 		std::string _hostname;
@@ -102,6 +103,9 @@ class Server {
 		std::vector<struct pollfd>	_fds;
 		std::string					_password;
 		bool						_using_password;
+		
+		bool _nick_available(std::string nick) const;
+		bool _nick_isvalid(std::string nick) const;
 };
 
 #endif
