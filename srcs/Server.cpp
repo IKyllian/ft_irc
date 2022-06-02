@@ -603,10 +603,10 @@ bool Server::send_message(Client &target, std::string message)
 	
 	
 	std::cout << "sending: " << std::endl;
-	std::cout << message << std::endl;
+//	std::cout << message << std::endl;
 	std::cout << buffer << std::endl;
-	std::cout << "msg.len: " << message.length() << std::endl;
-	std::cout << "len: " << len << std::endl;
+	// std::cout << "msg.len: " << message.length() << std::endl;
+	// std::cout << "len: " << len << std::endl;
 
 // i = 0;
 // while (buffer[i])
@@ -616,9 +616,9 @@ bool Server::send_message(Client &target, std::string message)
 // }
 //std::cout << "wesh2 " << std::endl;
 
-std::cout << "wesh target.get_fd():" << target.get_fd() << std::endl;
+//std::cout << "wesh target.get_fd():" << target.get_fd() << std::endl;
 	ret = send(target.get_fd(), buffer, len, 0);
-std::cout << "wesh3 " << std::endl;
+//std::cout << "wesh3 " << std::endl;
 	if (ret < 0)
 	{
 		perror("  send() failed");
