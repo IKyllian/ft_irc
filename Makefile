@@ -7,7 +7,7 @@ SRCS		= 	srcs/main.cpp \
 				srcs/create_Message.cpp \
 				srcs/print_numerics.cpp \
 				srcs/do_parsing.cpp	\
-				# srcs/send.cpp \
+				#srcs/send.cpp \
 
 COMMAND		=	srcs/command/away.cpp \
 				srcs/command/privmsg.cpp \
