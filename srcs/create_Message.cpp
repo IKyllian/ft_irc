@@ -43,7 +43,7 @@ static void ft_split_parameter(Message &msg)
     size_t position = 0;
     size_t startpoint = 0;
     int nb = 0;
-
+./  
     while (position != std::string::npos)
     {
         position = msg.get_parameter().find(" ", position);

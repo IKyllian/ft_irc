@@ -8,6 +8,7 @@ int main(int argc, char **argv)
     // std::vector<std::string> msg_list;
      std::string str = "NICK a\r\nNICK b";
     Client client;
+    Server server;
     int nb = 5;
 
     client.set_nickname("dsdsa");
@@ -30,7 +31,7 @@ int main(int argc, char **argv)
     //     delete msg[i];
     // }
 
-    do_parsing(client ,str);
+    do_parsing(server, client ,str);
     /*               END TEST MESSAGE              */
 
     int socketFD = socket(AF_INET, SOCK_STREAM, 0);

@@ -29,7 +29,7 @@ class Client {
 		void set_user_modes(std::string mode);
 		void set_fd(int &val);
 		void set_logged(bool &val);
-		void set_away(bool &val);
+		void set_away(bool val);
 		void set_away_msg(std::string msg);
 		void append_buffer(char* buffer);
 

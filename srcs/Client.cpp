@@ -78,7 +78,7 @@ void Client::set_logged(bool &val) {
 	_logged = val;
 }
 
-void Client::set_away(bool &val){
+void Client::set_away(bool val){
 	_away = val;
 }
 
