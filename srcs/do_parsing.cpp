@@ -179,7 +179,7 @@ std::cout << "###inside do_parsing" << std::endl;
     for (size_t i = 0; i < msg.size(); i++)
     {
         msg[i]->set_sender(&sender);
-       // do_command(server, *msg[i]);
+        do_command(server, sender, *msg[i]);
         // std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
         // std::cout << "command = " << msg[i]->get_command() << std::endl;
         // std::cout << "parameter = " << msg[i]->get_parameter() << std::endl;

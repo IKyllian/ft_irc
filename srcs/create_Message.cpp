@@ -16,19 +16,19 @@ std::vector<std::string> ft_split_message(std::string str)
         if (position - startpoint > 0)
         {
             tmp = str.substr(startpoint, position);
-            // for (unsigned int i = 0; i < tmp.length(); i++)
-            // {
-                // std::cout << "i: " << i << " : " << tmp[i] << " : " << (int) tmp[i] << std::endl; 
-            // }
+            std::string tmp = str.substr(startpoint, position);
+            for (unsigned long i = 0; i < tmp.length(); i++)
+            {
+            	std::cout << "11111 i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
+            }
             if (position == std::string::npos)
             {
                 if (str.substr(startpoint, position).size() <= 0)
                     break;
-std::string tmp = str.substr(startpoint, position);
-for (unsigned long i = 0; i < tmp.length(); i++)
-{
-	std::cout << "i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
-}
+                for (unsigned long i = 0; i < tmp.length(); i++)
+                {
+                	std::cout << "22222i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
+                }    
                 msg_list.push_back(str.substr(startpoint, position));
                 break;
             }
