@@ -4,15 +4,11 @@
 #include <set>
 #include <iostream>
 #include <vector>
-<<<<<<< HEAD
 #include "Message.hpp"
 #include "Client.hpp"
 #include "Channel.hpp"
 #include "ft_irc.hpp"
-=======
-#include "Channel.hpp"
-#include "Client.hpp"
->>>>>>> master
+
 
 class Channel;
 class Client;
