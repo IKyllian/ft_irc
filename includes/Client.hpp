@@ -20,6 +20,7 @@ class Client {
 		std::string get_user_modes() const;
 		int			get_fd() const;
 		bool		get_logged() const;
+		bool		get_hasnick() const;
 		bool 		get_away() const;
 		std::string get_away_msg() const;
 		std::string	get_buffer() const;
@@ -29,6 +30,7 @@ class Client {
 		void set_user_modes(std::string mode);
 		void set_fd(int &val);
 		void set_logged(bool &val);
+		void set_hasnick(bool &val);
 		void set_away(bool val);
 		void set_away_msg(std::string msg);
 		void append_buffer(char* buffer);
@@ -41,6 +43,7 @@ class Client {
 		std::string _user_modes;
 		int			_fd;
 		bool		_logged;
+		bool		_hasnick;
 		bool 		_away;
 		std::string	_away_msg;
 		std::string	_buffer;

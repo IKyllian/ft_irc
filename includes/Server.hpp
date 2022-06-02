@@ -4,8 +4,11 @@
 #include <set>
 #include <iostream>
 #include <vector>
-#include "Channel.hpp"
+#include "Message.hpp"
 #include "Client.hpp"
+#include "Channel.hpp"
+#include "ft_irc.hpp"
+
 
 class Channel;
 class Client;
@@ -68,6 +71,10 @@ class Server {
 		void set_using_password(bool val);
 		void set_user(Client client);
 
+		bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
+		bool send_message(Client &client, std::string message);
+		
+		void command_NICK(Client &client, Message &message);
 		void command_JOIN(Client *client, std::vector<std::string> parameters);
 		void command_PART(Client *client, std::vector<std::string> parameters);
 		void command_TOPIC(Client *client, std::vector<std::string> parameters);
@@ -76,15 +83,13 @@ class Server {
 		void command_INVITE(Client *sender, std::vector<std::string> parameters);
 		void command_KICK(Client *sender, std::vector<std::string> parameters);
 		void command_MODE_CHAN(Client *sender, std::vector<std::string> parameters);
-
-		void command_NICK(Client &client, Message &message);
-
 		/*		rzh cmd			*/
 		void command_AWAY(Client &client, Message &message);
 		void command_PRIVMSG(Client &client, Message &message);
 		void command_WHO(Client &client, Message &message);
 
 	private:
+
 		std::string _network_name;
 		std::string _hostname;
 		std::string _port;
@@ -113,5 +118,6 @@ class Server {
 		bool _nick_available(std::string nick) const;
 		bool _nick_isvalid(std::string nick) const;
 };
+
 
 #endif

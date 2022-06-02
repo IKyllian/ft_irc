@@ -23,6 +23,7 @@ std::string Client::get_username() const { return (_username); }
 std::string Client::get_user_modes() const { return (_user_modes); }
 int			Client::get_fd() const { return (_fd); }
 bool		Client::get_logged() const { return (_logged); }
+bool		Client::get_hasnick() const { return (_hasnick); }
 bool		Client::get_away() const { return (_away); }
 std::string Client::get_away_msg() const { return (_away_msg); }
 std::string	Client::get_buffer() const { return (_buffer); }
@@ -76,6 +77,10 @@ void Client::set_fd(int &val) {
 
 void Client::set_logged(bool &val) {
 	_logged = val;
+}
+
+void Client::set_hasnick(bool &val) {
+	_hasnick = val;
 }
 
 void Client::set_away(bool val){
