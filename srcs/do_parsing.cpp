@@ -121,7 +121,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
     }
     else if (msg.get_command() == "WHO")
     {
-        //  do_WHO();
+        server.command_WHO(sender, msg);
     }
     else if (msg.get_command() == "WHOIS")
     {
