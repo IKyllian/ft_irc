@@ -1,16 +1,20 @@
 
-SRCS		= 	srcs/test/main.cpp \
+SRCS		= 	srcs/main.cpp \
 				srcs/Channel.cpp \
 				srcs/Server.cpp \
 				srcs/Client.cpp \
 				srcs/Message.cpp \
 				srcs/create_Message.cpp \
 				srcs/print_numerics.cpp \
-				srcs/do_parsing.cpp		
+				srcs/do_parsing.cpp	\
+				srcs/send.cpp \
 
-OBJS			= $(SRCS:.cpp=.o)
+COMMAND		=	srcs/command/away.cpp \
+				srcs/command/privmsg.cpp \
 
-DEPS			= $(SRCS:.cpp=.d)
+OBJS			= $(SRCS:.cpp=.o) $(COMMAND:.cpp=.o)
+
+DEPS			= $(SRCS:.cpp=.d) $(COMMAND:.cpp=.d)
 
 NAME			= ircserv
 CC				= clang++

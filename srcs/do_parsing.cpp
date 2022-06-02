@@ -1,6 +1,6 @@
 #include "../includes/ft_irc.hpp"
 
-static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
+static void do_command(Server &server, Client &sender, Message &msg)
 {
     /*(void)server;
     (void)receiver;*/
@@ -110,7 +110,7 @@ static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
     }
     else if (msg.get_command() == "PRIVMSG")
     {
-        //  do_PRIVMSG();
+        server.command_PRIVMSG(sender, msg);
     }
     else if (msg.get_command() == "NOTICE")
     {
@@ -142,7 +142,7 @@ static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
     }
     else if (msg.get_command() == "AWAY")
     {
-        //  do_AWAY();
+        server.command_AWAY(sender, msg);
     }
     else if (msg.get_command() == "LINKS")
     {
@@ -168,7 +168,7 @@ static void do_command(/*Server &server, Client &receiver,*/ Message &msg)
     std::cout << "Message check: " << std::endl << "get_sender = " << msg.get_sender().get_username() << std::endl;
 }*/
 
-void do_parsing(/*Server &server,*/ Client &sender, std::string message)
+void do_parsing(Server &server, Client &sender, std::string message)
 {
     std::vector<Message*> msg;
     std::vector<std::string> msg_list;
@@ -189,7 +189,7 @@ void do_parsing(/*Server &server,*/ Client &sender, std::string message)
         //     std::cout << "splited parameter = " << msg[i]->get_tab_parameter()[j] << std::endl;   
         // std::cout << std::endl;
         //fill_message(*msg[i]);
-        do_command(/*server, expediteur, */*msg[i]);
+        do_command(server, sender, *msg[i]);
     }
     for (size_t i = 0; i < msg.size(); i++)
         delete msg[i];
