@@ -11,12 +11,12 @@ Client::Client(int &fd) : _fd(fd), _logged(false), _away(false) {}
 Client::~Client() {}
 
 bool Client::operator==(const Client& rhs) {
-	return (get_username() == rhs.get_username());
+	return (get_nickname() == rhs.get_nickname());
 };
 
-bool Client::operator<(const Client &rhs) const {
-	return (get_username() < rhs.get_username());
-}
+// bool Client::operator<(const Client &rhs) const {
+// 	return (get_nickname() < rhs.get_nickname());
+// }
 
 std::string Client::get_nickname() const { return (_nickname); }
 std::string Client::get_username() const { return (_username); }

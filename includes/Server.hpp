@@ -4,8 +4,8 @@
 #include <set>
 #include <iostream>
 #include <vector>
-#include "Client.hpp"
 #include "Channel.hpp"
+#include "Client.hpp"
 
 class Channel;
 class Client;
@@ -37,7 +37,9 @@ class Server {
 		std::string get_datetime() const;
 
 		std::vector<Client>	&get_clients();
+		std::vector<Client>::iterator get_client(std::string to_search);
 		std::vector<Channel> &get_channels();
+		std::vector<Channel>::iterator get_channel(std::string to_search);
 		std::vector<struct pollfd> &get_fds();
 		std::string get_password() const;
 		bool get_using_password() const;
@@ -64,8 +66,17 @@ class Server {
 
 		void set_password(std::string val);
 		void set_using_password(bool val);
+		void set_user(Client client);
 
-		void command_JOIN(std::vector<std::string> parameters, Client *client);
+		void command_JOIN(Client *client, std::vector<std::string> parameters);
+		void command_PART(Client *client, std::vector<std::string> parameters);
+		void command_TOPIC(Client *client, std::vector<std::string> parameters);
+		void command_NAMES(std::vector<std::string> parameters);
+		void command_LIST(std::vector<std::string> parameters);
+		void command_INVITE(Client *sender, std::vector<std::string> parameters);
+		void command_KICK(Client *sender, std::vector<std::string> parameters);
+		void command_MODE_CHAN(Client *sender, std::vector<std::string> parameters);
+
 		void command_NICK(Client &client, Message &message);
 
 		/*		rzh cmd			*/
