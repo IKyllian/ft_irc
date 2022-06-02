@@ -141,7 +141,13 @@ void Channel::set_mode(char mode, std::string parameter) {
 	else if (mode == 'l') {
 		if (parameter == "")
 			ft_print_numerics(461);
-		std::istringstream(parameter) >> nb; // Pas de gestion d'erreur pour l'instant (ex: 45qwef)
+		for (size_t i = 0; i < parameter.size(); i++) {
+			if ((parameter[i] < 48 || parameter[i] > 57) && parameter[i] != ' ') {
+				std::cout << "Mode l : Parse Error" << std::endl;
+				return ;
+			}
+		}
+		std::istringstream(parameter) >> nb;
 		if (nb > SIZE_MAX)
 			ft_print_numerics(461);
 		else {

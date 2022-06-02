@@ -74,21 +74,39 @@ class Server {
 		bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
 		bool send_message(Client &client, std::string message);
 		
-		void command_NICK(Client &client, Message &message);
 		void command_JOIN(Client *client, std::vector<std::string> parameters);
+		void command_JOIN(Client *client, Message &message);
+
 		void command_PART(Client *client, std::vector<std::string> parameters);
+		void command_PART(Client *client, Message &message);
+
 		void command_TOPIC(Client *client, std::vector<std::string> parameters);
+		void command_TOPIC(Client *client, Message &message);
+
 		void command_NAMES(std::vector<std::string> parameters);
+		void command_NAMES(Message &message);
+
 		void command_LIST(std::vector<std::string> parameters);
+		void command_LIST(Message &message);
+
 		void command_INVITE(Client *sender, std::vector<std::string> parameters);
+		void command_INVITE(Client *sender, Message &message);
+
 		void command_KICK(Client *sender, std::vector<std::string> parameters);
+		void command_KICK(Client *sender, Message &message);
+
 		void command_MODE_CHAN(Client *sender, std::vector<std::string> parameters);
+		void command_MODE_CHAN(Client *sender, Message &message);
+
+		void command_MODE_USER(Client *sender, std::vector<std::string> parameters);
+		void command_MODE_USER(Client *sender, Message &message);
+
 		/*		rzh cmd			*/
 		void command_AWAY(Client &client, Message &message);
 		void command_PRIVMSG(Client &client, Message &message);
 
-	private:
-
+		void command_NICK(Client &client, Message &message);
+	private :
 		std::string _network_name;
 		std::string _hostname;
 		std::string _port;

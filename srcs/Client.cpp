@@ -14,10 +14,6 @@ bool Client::operator==(const Client& rhs) {
 	return (get_nickname() == rhs.get_nickname());
 };
 
-// bool Client::operator<(const Client &rhs) const {
-// 	return (get_nickname() < rhs.get_nickname());
-// }
-
 std::string Client::get_nickname() const { return (_nickname); }
 std::string Client::get_username() const { return (_username); }
 std::string Client::get_user_modes() const { return (_user_modes); }
@@ -44,7 +40,7 @@ void Client::set_user_modes(std::string mode) {
 			for (size_t i = 1; i < mode.size(); i++) {
 				if (modes.find(mode[i]) != std::string::npos) {
 					if (_user_modes.find(mode[i]) != std::string::npos) {
-							ft_print_numerics(501); // Check si il faut mettre l'erreur
+							ft_print_numerics(501);
 							continue;
 					} else {
 						ft_print_numerics(221); // RPL_UMODEIS
@@ -57,7 +53,7 @@ void Client::set_user_modes(std::string mode) {
 			for (size_t i = 1; i < mode.size(); i++) {
 				if (modes.find(mode[i]) != std::string::npos) {
 					if (_user_modes.find(mode[i]) == std::string::npos) {
-							ft_print_numerics(501); // Check si il faut mettre l'erreur
+							ft_print_numerics(501);
 							continue;
 					} else {
 						_user_modes.erase(_user_modes.find(mode[i]));
