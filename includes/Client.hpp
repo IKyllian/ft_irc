@@ -13,7 +13,7 @@ class Client {
 		~Client();
 
 		bool operator==(const Client& rhs);
-		bool operator<(const Client &other) const;
+		// bool operator<(const Client &other) const;
 
 		std::string get_nickname() const;
 		std::string get_username() const;

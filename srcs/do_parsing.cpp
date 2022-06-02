@@ -179,6 +179,15 @@ std::cout << "###inside do_parsing" << std::endl;
     {
         msg[i]->set_sender(&sender);
         do_command(server, *msg[i]);
+        // std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
+        // std::cout << "command = " << msg[i]->get_command() << std::endl;
+        // std::cout << "parameter = " << msg[i]->get_parameter() << std::endl;
+        // std::cout << "first = " << msg[i]->get_nb_parameter() << std::endl;
+        // for (int j = 0; j < msg[i]->get_nb_parameter(); j++)
+        //     std::cout << "splited parameter = " << msg[i]->get_tab_parameter()[j] << std::endl;   
+        // std::cout << std::endl;
+        //fill_message(*msg[i]);
+
     }
     for (size_t i = 0; i < msg.size(); i++)
         delete msg[i];

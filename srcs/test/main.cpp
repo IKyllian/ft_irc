@@ -6,7 +6,7 @@ int main(int argc, char **argv)
     /*                      TEST MESSAGE            */
     // std::vector<Message*> msg;
     // std::vector<std::string> msg_list;
-     std::string str = "\r\nNICK a\r\n";
+     std::string str = "NICK a\r\nNICK b";
     Client client;
     int nb = 5;
 

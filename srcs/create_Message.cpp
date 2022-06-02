@@ -7,6 +7,7 @@ std::vector<std::string> ft_split_message(std::string str)
     size_t old_position;
     size_t position = 0;
     size_t startpoint = 0;
+    std::string tmp;
 
     while (position != std::string::npos)
     {
@@ -14,6 +15,11 @@ std::vector<std::string> ft_split_message(std::string str)
         position = str.find("\r\n", position);
         if (position - startpoint > 0)
         {
+            tmp = str.substr(startpoint, position);
+            // for (unsigned int i = 0; i < tmp.length(); i++)
+            // {
+                // std::cout << "i: " << i << " : " << tmp[i] << " : " << (int) tmp[i] << std::endl; 
+            // }
             if (position == std::string::npos)
             {
                 if (str.substr(startpoint, position).size() <= 0)
@@ -34,7 +40,6 @@ for (unsigned long i = 0; i < tmp.length(); i++)
             startpoint = position;
         }
     }
-    std::cout << "msg list size = " << msg_list.size() << std::endl;
     return (msg_list);
 }
 
@@ -49,11 +54,6 @@ static void ft_split_parameter(Message &msg)
         position = msg.get_parameter().find(" ", position);
         if (position - startpoint > 0)
         {
-            if (position == std::string::npos)
-            {
-                msg.get_tab_parameter().push_back(msg.get_parameter().substr(startpoint, position));
-                break;
-            }
             msg.get_tab_parameter().push_back(msg.get_parameter().substr(startpoint, position - startpoint));
         }
         if (position != std::string::npos)
