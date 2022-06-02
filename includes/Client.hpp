@@ -21,6 +21,8 @@ class Client {
 		int			get_fd() const;
 		bool		get_logged() const;
 		bool		get_hasnick() const;
+		bool 		get_away() const;
+		std::string get_away_msg() const;
 		std::string	get_buffer() const;
 
 		void set_nickname(std::string val);
@@ -29,6 +31,8 @@ class Client {
 		void set_fd(int &val);
 		void set_logged(bool &val);
 		void set_hasnick(bool &val);
+		void set_away(bool val);
+		void set_away_msg(std::string msg);
 		void append_buffer(char* buffer);
 
 		std::string extract_command(size_t pos);
@@ -40,6 +44,8 @@ class Client {
 		int			_fd;
 		bool		_logged;
 		bool		_hasnick;
+		bool 		_away;
+		std::string	_away_msg;
 		std::string	_buffer;
 };
 

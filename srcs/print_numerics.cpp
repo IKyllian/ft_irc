@@ -3,7 +3,8 @@
 
 std::string ft_print_numerics(/*Client &user, Server &server, Channel &channel, Message &message*/int nb_message)
 {
-    //              Client VAR               //
+    std::string client_name = "weechat";
+    //              user VAR               //
     std::string username = "Kyllian";
     std::string user_account = "Kdolper";
     std::string realname = "Kyllian";
@@ -89,379 +90,386 @@ std::string ft_print_numerics(/*Client &user, Server &server, Channel &channel, 
     switch (nb_message)
     {
     case 1:
-        return (username + RPL_WELCOME(network_name, user_nick));
-        break;
+        return (client_name + RPL_WELCOME(network_name, user_nick));
+        
     case 2:
-        return (username + RPL_YOURHOST(network_name, user_nick));
-        break;
+        return (client_name + RPL_YOURHOST(network_name, user_nick));
+        
     case 3:
-        return (username + RPL_CREATED(datetime));
-        break;
+        return (client_name + RPL_CREATED(datetime));
+        
     case 4:
-        return (username + RPL_MYINFO(servername, version, user_modes, channel_modes));
-        break;
+        return (client_name + RPL_MYINFO(servername, version, user_modes, channel_modes));
+        
     case 5:
-        return (username + RPL_ISUPPORT(token));           //Need to create token: cf https://modern.ircdocs.horse/#rplisupport-005
-        break;
+        return (client_name + RPL_ISUPPORT(token));           //Need to create token: cf https://modern.ircdocs.horse/#rplisupport-005
+        
     case 10:
-        return (username + RPL_BOUNCE(hostname, port, infoServer));
-        break;
+        return (client_name + RPL_BOUNCE(hostname, port, infoServer));
+        
     case 221:
-        return (username + RPL_UMODEIS(user_modes));
-        break;
+        return (client_name + RPL_UMODEIS(user_modes));
+        
     case 251:
-        return (username + RPL_LUSERCLIENT(nb_user, invisible_user, server_connected));
-        break;
+        return (client_name + RPL_LUSERCLIENT(nb_user, invisible_user, server_connected));
+        
     case 252:
-        return (username + RPL_LUSEROP(nb_operator));
-        break;
+        return (client_name + RPL_LUSEROP(nb_operator));
+        
     case 253:
-        return (username + RPL_LUSERUNKNOWN(connexion));
-        break;
+        return (client_name + RPL_LUSERUNKNOWN(connexion));
+        
     case 254:
-        return (username + RPL_LUSERCHANNELS(nb_channel));
-        break;
+        return (client_name + RPL_LUSERCHANNELS(nb_channel));
+        
     case 255:
-        return (username + RPL_LUSERME(nb_clients, server_connected));
-        break;
+        return (client_name + RPL_LUSERME(nb_clients, server_connected));
+        
     case 256:
-        return (username + RPL_ADMINME(servername));
-        break;
+        return (client_name + RPL_ADMINME(servername));
+        
     case 257:
-        return (username + RPL_ADMINLOC1(locationServer));
-        break;
+        return (client_name + RPL_ADMINLOC1(locationServer));
+        
     case 258:
-        return (username + RPL_ADMINLOC2(hostInfo));
-        break;
+        return (client_name + RPL_ADMINLOC2(hostInfo));
+        
     case 259:
-        return (username + RPL_ADMINEMAIL(hostMail));
-        break;
+        return (client_name + RPL_ADMINEMAIL(hostMail));
+        
     case 263:
-        return (username + RPL_TRYAGAIN(command));
-        break;
+        return (client_name + RPL_TRYAGAIN(command));
+        
     case 265:
-        return (username + RPL_LOCALUSERS(local_user, max_user));
-        break;
+        return (client_name + RPL_LOCALUSERS(local_user, max_user));
+        
     case 266:
-        return (username + RPL_GLOBALUSERS(global_user, max_user));
-        break;
+        return (client_name + RPL_GLOBALUSERS(global_user, max_user));
+        
     case 276:
-        return (username + RPL_WHOISCERTFP(user_nick, user_fingerprint));
-        break;
+        return (client_name + RPL_WHOISCERTFP(user_nick, user_fingerprint));
+        
     case 300:
-        return (username + RPL_NONE(null));
-        break;
+        return (client_name + RPL_NONE(null));
+        
     case 301:
-        return (username + RPL_AWAY(user_nick, away_message));
-        break;
+        return (client_name + RPL_AWAY(user_nick, away_message));
+        
     case 302:
-        return (username + RPL_USERHOST(command));         //NEED TO CREATE A MESSAGE cf: https://modern.ircdocs.horse/#rpluserhost-302
-        break;
+        return (client_name + RPL_USERHOST(command));         //NEED TO CREATE A MESSAGE cf: https://modern.ircdocs.horse/#rpluserhost-302
+        
     case 305:
-        return (username + RPL_UNAWAY(null));
-        break;
+        return (client_name + RPL_UNAWAY(null));
+        
     case 306:
-        return (username + RPL_NOWAWAY(null));
-        break;
+        return (client_name + RPL_NOWAWAY(null));
+        
     case 352:
-        return (username + RPL_WHOREPLY(channel_name, username, hostname, servername, user_nick, user_flags, hopcount, realname));
-        break;
+        return (client_name + RPL_WHOREPLY(channel_name, username, hostname, servername, user_nick, user_flags, hopcount, realname));
+        
     case 315:
-        return (username + RPL_ENDOFWHO(mask));
-        break;
+        return (client_name + RPL_ENDOFWHO(mask));
+        
     case 307:
-        return (username + RPL_WHOISREGNICK(user_nick));
-        break;
+        return (client_name + RPL_WHOISREGNICK(user_nick));
+        
     case 311:
-        return (username + RPL_WHOISUSER(user_nick, username, hostname, realname));
-        break;
+        return (client_name + RPL_WHOISUSER(user_nick, username, hostname, realname));
+        
     case 312:
-        return (username + RPL_WHOISSERVER(user_nick, servername, infoServer));
-        break;
+        return (client_name + RPL_WHOISSERVER(user_nick, servername, infoServer));
+        
     case 313:
-        return (username + RPL_WHOISOPERATOR(user_nick));
-        break;
+        return (client_name + RPL_WHOISOPERATOR(user_nick));
+        
     case 314:
-        return (username + RPL_WHOWASUSER(user_nick, username, hostname, realname));
-        break;
+        return (client_name + RPL_WHOWASUSER(user_nick, username, hostname, realname));
+        
     case 317:
-        return (username + RPL_WHOISIDLE(user_nick, sec_away, sign_on));
-        break;
+        return (client_name + RPL_WHOISIDLE(user_nick, sec_away, sign_on));
+        
     case 318:
-        return (username + RPL_ENDOFWHOIS(user_nick));
-        break;
+        return (client_name + RPL_ENDOFWHOIS(user_nick));
+        
     case 319:
         // Potentiellement prefix sur channel_name
-        return (username + RPL_WHOISCHANNELS(user_nick, channel_name));
-        break;
+        return (client_name + RPL_WHOISCHANNELS(user_nick, channel_name));
+        
     case 320:
-        return (username + RPL_WHOISSPECIAL(user_nick));
-        break;
+        return (client_name + RPL_WHOISSPECIAL(user_nick));
+        
     case 321:
-        return (username + RPL_LISTSTART(null));
-        break;
+        return (client_name + RPL_LISTSTART(null));
+        
     case 322:
-        return (username + RPL_LIST(channel_name, client_count, channel_topic));
-        break;
+        return (client_name + RPL_LIST(channel_name, client_count, channel_topic));
+        
     case 323:
-        return (username + RPL_LISTEND(null));
-        break;
+        return (client_name + RPL_LISTEND(null));
+        
     case 324:
-        return (username + RPL_CHANNELMODEIS(channel_name, mode_string, mode_arguments));
-        break;
+        return (client_name + RPL_CHANNELMODEIS(channel_name, mode_string, mode_arguments));
+        
     case 329:
-        return (username + RPL_CREATIONTIME(channel_name, channel_creationTime));
-        break;
+        return (client_name + RPL_CREATIONTIME(channel_name, channel_creationTime));
+        
     case 330:
-        return (username + RPL_WHOISACCOUNT(user_nick, user_account));
-        break;
+        return (client_name + RPL_WHOISACCOUNT(user_nick, user_account));
+        
     case 331:
-        return (username + RPL_NOTOPIC(channel_name));
-        break;
+        return (client_name + RPL_NOTOPIC(channel_name));
+        
     case 332:
-        return (username + RPL_TOPIC(channel_name, channel_topic));
-        break;
+        return (client_name + RPL_TOPIC(channel_name, channel_topic));
+        
     case 333:
-        return (username + RPL_TOPICWHOTIME(channel_name, channel_whoSetTopic, channel_TimeSetTopic));
-        break;
+        return (client_name + RPL_TOPICWHOTIME(channel_name, channel_whoSetTopic, channel_TimeSetTopic));
+        
     case 336:
-        return (username + RPL_INVITELIST(channel_name));
-        break;
+        return (client_name + RPL_INVITELIST(channel_name));
+        
     case 337:
-        return (username + RPL_ENDOFINVITELIST(null));
-        break;
+        return (client_name + RPL_ENDOFINVITELIST(null));
+        
     case 341:
-        return (username + RPL_INVITING(user_nick, channel_topic));
-        break;
+        return (client_name + RPL_INVITING(user_nick, channel_topic));
+        
     case 346:
-        return (username + RPL_INVEXLIST(channel_name, mask_InviteExeptionList));
-        break;
+        return (client_name + RPL_INVEXLIST(channel_name, mask_InviteExeptionList));
+        
     case 347:
-        return (username + RPL_ENDOFINVEXLIST(channel_name));
-        break;
+        return (client_name + RPL_ENDOFINVEXLIST(channel_name));
+        
     case 348:
-        return (username + RPL_EXCEPTLIST(channel_name, mask_ExeptionList));
-        break;
+        return (client_name + RPL_EXCEPTLIST(channel_name, mask_ExeptionList));
+        
     case 349:
-        return (username + RPL_ENDOFEXCEPTLIST(channel_name));
-        break;
+        return (client_name + RPL_ENDOFEXCEPTLIST(channel_name));
+        
     case 351:
-        return (username + RPL_VERSION(version, servername, comment));
-        break;
+        return (client_name + RPL_VERSION(version, servername, comment));
+        
     case 353:
-        return (username + RPL_NAMREPLY(symbol, channel_name, user_nick));
-        break;
+        return (client_name + RPL_NAMREPLY(symbol, channel_name, user_nick));
+        
     case 366:
-        return (username + RPL_ENDOFNAMES(channel_name));
-        break;
+        return (client_name + RPL_ENDOFNAMES(channel_name));
+        
     case 364:
-        return (username + RPL_LINKS(servername, hopcount, infoServer));
-        break;
+        return (client_name + RPL_LINKS(servername, hopcount, infoServer));
+        
     case 365:
-        return (username + RPL_ENDOFLINKS(null));
-        break;
+        return (client_name + RPL_ENDOFLINKS(null));
+        
     case 367:
-        return (username + RPL_BANLIST(channel_name, banMask, banner_nick, ban_timeSet));           //
-        break;
+        return (client_name + RPL_BANLIST(channel_name, banMask, banner_nick, ban_timeSet));           //
+        
     case 368:
-        return (username + RPL_ENDOFBANLIST(channel_name));
-        break;
+        return (client_name + RPL_ENDOFBANLIST(channel_name));
+        
     case 369:
-        return (username + RPL_ENDOFWHOWAS(user_nick));
-        break;
+        return (client_name + RPL_ENDOFWHOWAS(user_nick));
+        
     case 371:
-        return (username + RPL_INFO(infoServer));          // Perharps other info
-        break;
+        return (client_name + RPL_INFO(infoServer));          // Perharps other info
+        
     case 374:
-        return (username + RPL_ENDOFINFO(null));
-        break;
+        return (client_name + RPL_ENDOFINFO(null));
+        
     case 375:
-        return (username + RPL_MOTDSTART(servername));
-        break;
+        return (client_name + RPL_MOTDSTART(servername));
+        
     case 372:
-        return (username + RPL_MOTD(motd));
-        break;
+        return (client_name + RPL_MOTD(motd));
+        
     case 376:
-        return (username + RPL_ENDOFMOTD(null));
-        break;
+        return (client_name + RPL_ENDOFMOTD(null));
+        
     case 378:
-        return (username + RPL_WHOISHOST(user_nick));          //Need to define ip ?
-        break;
+        return (client_name + RPL_WHOISHOST(user_nick));          //Need to define ip ?
+        
     case 379:
-        return (username + RPL_WHOISMODES(user_nick));         //Need to define available modes ?
-        break;
+        return (client_name + RPL_WHOISMODES(user_nick));         //Need to define available modes ?
+        
     case 381:
-        return (username + RPL_YOUREOPER(null));
-        break;
+        return (client_name + RPL_YOUREOPER(null));
+        
     case 382:
-        return (username + RPL_REHASHING(Rehashing_message));
-        break;
+        return (client_name + RPL_REHASHING(Rehashing_message));
+        
     case 391:
-        return (username + RPL_TIME(servername, actual_time));
-        break;
+        return (client_name + RPL_TIME(servername, actual_time));
+        
 	case 670:
-		return (username + RPL_STARTTLS(null));
-		break;
+		return (client_name + RPL_STARTTLS(null));
+		
 	case 671:
-		return (username + RPL_WHOISSECURE(user_nick));
-		break;
+		return (client_name + RPL_WHOISSECURE(user_nick));
+		
 	case 704:
-		return (username + RPL_HELPSTART(subject, help_msg));
-		break;
+		return (client_name + RPL_HELPSTART(subject, help_msg));
+		
 	case 705:
-		return (username + RPL_HELPTXT(subject, help_msg));
-		break;
+		return (client_name + RPL_HELPTXT(subject, help_msg));
+		
 	case 706:
-		return (username + RPL_ENDOFHELP(subject, help_msg));
-		break;
+		return (client_name + RPL_ENDOFHELP(subject, help_msg));
+		
 	case 900:
-		return (username + RPL_LOGGEDIN(user_nick, username, hostname, user_account, username));		// User = username ???
-		break;
+		return (client_name + RPL_LOGGEDIN(user_nick, username, hostname, user_account, username));		// User = username ???
+		
 	case 901:
-		return (username + RPL_LOGGEDOUT(user_nick, username, hostname, user_account));
-		break;
+		return (client_name + RPL_LOGGEDOUT(user_nick, username, hostname, user_account));
+		
 	case 903:
-		return (username + RPL_SASLSUCCESS(null));
-		break;
+		return (client_name + RPL_SASLSUCCESS(null));
+		
 	case 908:
-		return (username + RPL_SASLMECHS(SASL_mechanisms));
-		break;
+		return (client_name + RPL_SASLMECHS(SASL_mechanisms));
+		
 	case 400:
-        return (username + ERR_UNKNOWNERROR(command, command_info));
-        break;
+        return (client_name + ERR_UNKNOWNERROR(command, command_info));
+        
 	case 401:
-		return (username + ERR_NOSUCHNICK(user_nick));
-		break;
+		return (client_name + ERR_NOSUCHNICK(user_nick));
+		
 	case 402:
-		return (username + ERR_NOSUCHSERVER(servername));
-		break;
+		return (client_name + ERR_NOSUCHSERVER(servername));
+		
 	case 403:
-		return (username + ERR_NOSUCHCHANNEL(channel_name));
-		break;
+		return (client_name + ERR_NOSUCHCHANNEL(channel_name));
+		
 	case 404:
-		return (username + ERR_CANNOTSENDTOCHAN(channel_name));
-		break;
+		return (client_name + ERR_CANNOTSENDTOCHAN(channel_name));
+		
 	case 405:
-		return (username + ERR_TOOMANYCHANNELS(channel_name));
-		break;
+		return (client_name + ERR_TOOMANYCHANNELS(channel_name));
+		
 	case 406:
-		return (username + ERR_WASNOSUCHNICK(null));
-		break;
+		return (client_name + ERR_WASNOSUCHNICK(null));
+		
 	case 409:
-		return (username + ERR_NOORIGIN(null));
-		break;
-	case 417:
-		return (username + ERR_INPUTTOOLONG(null));
-		break;
+		return (client_name + ERR_NOORIGIN(null));
+
+    case 411:
+        return (client_name + ERR_NORECIPIENT(command));
+
+    case 412:
+        return (client_name + ERR_NOTEXTTOSEND(null));
+
+    case 417:
+        return (client_name + ERR_INPUTTOOLONG(null));
+		
 	case 421:
-		return (username + ERR_UNKNOWNCOMMAND(command));
-		break;
+		return (client_name + ERR_UNKNOWNCOMMAND(command));
+		
 	case 422:
-		return (username + ERR_NOMOTD(null));
-		break;
+		return (client_name + ERR_NOMOTD(null));
+		
     case 431:
-		return (username + ERR_NONICKNAMEGIVEN(null));
-        break;
+		return (client_name + ERR_NONICKNAMEGIVEN(null));
+        
 	case 432:
-		return (username + ERR_ERRONEUSNICKNAME(user_nick));
-		break;
+		return (client_name + ERR_ERRONEUSNICKNAME(user_nick));
+		
 	case 433:
-		return (username + ERR_NICKNAMEINUSE(user_nick));
-		break;
+		return (client_name + ERR_NICKNAMEINUSE(user_nick));
+		
 	case 441:
-		return (username + ERR_USERNOTINCHANNEL(user_nick, channel_name));
-		break;
+		return (client_name + ERR_USERNOTINCHANNEL(user_nick, channel_name));
+		
 	case 442:
-		return (username + ERR_NOTONCHANNEL(channel_name));
-		break;
+		return (client_name + ERR_NOTONCHANNEL(channel_name));
+		
 	case 443:
-        return (username + ERR_UNKNOWNERROR(command, command_info));
-        break;
+        return (client_name + ERR_UNKNOWNERROR(command, command_info));
+        
 	case 451:
-		return (username + ERR_NOTREGISTERED(null));
-		break;
+		return (client_name + ERR_NOTREGISTERED(null));
+		
 	case 461:
-		return (username + ERR_NEEDMOREPARAMS(command));
-		break;
+		return (client_name + ERR_NEEDMOREPARAMS(command));
+		
 	case 462:
-		return (username + ERR_ALREADYREGISTERED(null));
-		break;
+		return (client_name + ERR_ALREADYREGISTERED(null));
+		
 	case 464:
-		return (username + ERR_PASSWDMISMATCH(null));
-		break;
+		return (client_name + ERR_PASSWDMISMATCH(null));
+		
 	case 465:
-		return (username + ERR_YOUREBANNEDCREEP(null));
-		break;
+		return (client_name + ERR_YOUREBANNEDCREEP(null));
+		
 	case 471:
-		return (username + ERR_CHANNELISFULL(channel_name));
-		break;
+		return (client_name + ERR_CHANNELISFULL(channel_name));
+		
 	case 472:
-		return (username + ERR_UNKNOWNMODE(mode_char));
-		break;
+		return (client_name + ERR_UNKNOWNMODE(mode_char));
+		
 	case 473:
-		return (username + ERR_INVITEONLYCHAN(channel_name));
-		break;
+		return (client_name + ERR_INVITEONLYCHAN(channel_name));
+		
 	case 474:
-		return (username + ERR_BANNEDFROMCHAN(channel_name));
-		break;
+		return (client_name + ERR_BANNEDFROMCHAN(channel_name));
+		
 	case 475:
-		return (username + ERR_BADCHANNELKEY(channel_name));
-		break;
+		return (client_name + ERR_BADCHANNELKEY(channel_name));
+		
 	case 476:
-		return (username + ERR_BADCHANMASK(channel_name));
-		break;
+		return (client_name + ERR_BADCHANMASK(channel_name));
+		
 	case 481:
-		return (username + ERR_NOPRIVILEGES(null));
-		break;
+		return (client_name + ERR_NOPRIVILEGES(null));
+		
 	case 482:
-		return (username + ERR_CHANOPRIVSNEEDED(channel_name));
-		break;
+		return (client_name + ERR_CHANOPRIVSNEEDED(channel_name));
+		
 	case 483:
-		return (username + ERR_CANTKILLSERVER(null));
-		break;
+		return (client_name + ERR_CANTKILLSERVER(null));
+		
 	case 491:
-		return (username + ERR_NOOPERHOST(null));
-		break;
+		return (client_name + ERR_NOOPERHOST(null));
+		
 	case 501:
-		return (username + ERR_UMODEUNKNOWNFLAG(null));
-		break;
+		return (client_name + ERR_UMODEUNKNOWNFLAG(null));
+		
 	case 502:
-		return (username + ERR_USERSDONTMATCH(null));
-		break;
+		return (client_name + ERR_USERSDONTMATCH(null));
+		
 	case 524:
-		return (username + ERR_HELPNOTFOUND(subject));
-		break;
+		return (client_name + ERR_HELPNOTFOUND(subject));
+		
 	case 525:
-		return (username + ERR_INVALIDKEY(target));
-		break;
+		return (client_name + ERR_INVALIDKEY(target));
+		
 	case 691:
-		return (username + ERR_STARTTLS(null));
-		break;
+		return (client_name + ERR_STARTTLS(null));
+		
 	case 696:
-		return (username + ERR_INVALIDMODEPARAM(target, mode_char, parameter, description));
-		break;
+		return (client_name + ERR_INVALIDMODEPARAM(target, mode_char, parameter, description));
+		
 	case 723:
-		return (username + ERR_NOPRIVS(privilege));
-		break;
+		return (client_name + ERR_NOPRIVS(privilege));
+		
 	case 902:
-		return (username + ERR_NICKLOCKED(null));
-		break;
+		return (client_name + ERR_NICKLOCKED(null));
+		
 	case 904:
-		return (username + ERR_SASLFAIL(null));
-		break;
+		return (client_name + ERR_SASLFAIL(null));
+		
 	case 905:
-		return (username + ERR_SASLTOOLONG(null));
-		break;
+		return (client_name + ERR_SASLTOOLONG(null));
+		
 	case 906:
-		return (username + ERR_SASLABORTED(null));
-		break;
+		return (client_name + ERR_SASLABORTED(null));
+		
 	case 907:
-		return (username + ERR_SASLALREADY(null));
-		break;
+		return (client_name + ERR_SASLALREADY(null));
+		
 
 	default:
         std::cout << "Numeric not found" << std::endl;
         break;
+        
     }
     return ("");
 }

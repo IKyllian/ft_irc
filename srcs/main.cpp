@@ -63,11 +63,10 @@ int handle_incoming_message(Server& server, int fd)
 	std::cout << "command:" << std::endl
 			<< message << std::endl;
 	std::cout << "--------------" << std::endl;
-//AJOUTER CALL POUR LE PARSING
-std::cout << "juste avant parsing: fd du client = " << server.get_clients()[i].get_fd() << std::endl;
-do_parsing(server, server.get_clients()[i], message);
-// do_parsing(Server &server, Client& expediteur, std::string message);
-// do_parsing(server, server.get_clients()[i], message);
+
+	//AJOUTER CALL POUR LE PARSING
+	do_parsing(server, server.get_clients()[i], message);
+	// do_parsing(server, server.get_clients()[i], message);
 	return ret;
 }
 

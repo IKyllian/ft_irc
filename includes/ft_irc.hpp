@@ -43,6 +43,9 @@ Message                     *ft_create_message(std::string str);
 std::vector<std::string>    ft_split_message(std::string str);
 void                        do_parsing(Server &server, Client& expediteur, std::string message);
 
+
+//bool send_message(Server &server, Client &receiver, std::string message, int msgnum);
+
 // bool						send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
 // bool						send_message(Client &target, std::string message);
 #endif
