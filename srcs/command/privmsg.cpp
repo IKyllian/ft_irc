@@ -7,12 +7,13 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg)
     switch (msg.get_nb_parameter())
     {
     case 0:
-        ft_print_numerics(411);
+        send_message(*this, sender, ft_print_numerics(411), 411);
         break;
     case 1:
-        ft_print_numerics(412);
+        send_message(*this, sender, ft_print_numerics(412), 412);
         break;
     default:
+    
         // Split sur ',' qui va créer un tableau de string
         // Check potentiel préfix dans les strings et agir en conséquence
         // Check sur la classe Server tout les CHANNEL et tout les USERS

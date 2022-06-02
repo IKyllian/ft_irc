@@ -59,6 +59,7 @@ int handle_incoming_message(Server& server, int fd)
 			<< message;
 	std::cout << "--------------" << std::endl;
 	//AJOUTER CALL POUR LE PARSING
+	message = "AWAY\r\n";
 	do_parsing(server, server.get_clients()[i], message);
 	// do_parsing(server, server.get_clients()[i], message);
 	return ret;

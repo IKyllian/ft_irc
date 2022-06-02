@@ -464,8 +464,6 @@ std::string ft_print_numerics(/*Client &user, Server &server, Channel &channel, 
 		
 	case 907:
 		return (client_name + ERR_SASLALREADY(null));
-		
-
 	default:
         std::cout << "Numeric not found" << std::endl;
         break;
