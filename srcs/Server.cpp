@@ -391,160 +391,20 @@ bool Server::_nick_isvalid(std::string nick) const {
 	std::string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`|^_-{}[]\\";
 	size_t ret;
 
+
+std::cout << "@@@@inside _nick_isvalid " << std::endl;
 for (unsigned long i = 0; i < nick.length(); i++)
 {
-	std::cout << "i: " << i << "nick[i]: " << nick[i] << "| (int): " << (int) nick[i] << std::endl;
+	std::cout << "i: " << i << " nick[i]: " << nick[i] << " | (int): " << (int) nick[i] << std::endl;
 }
 
 
 	ret = nick.find_first_not_of(valid);
-	if (ret != std::string::npos || ret >= nick.length())
+std::cout << "ret: " << ret << " npos: " <<  std::string::npos << std::endl;
+	if (ret != std::string::npos || ret < nick.length())
 		return false;
 	return true;
 
-}
-
-void Server::command_NICK(Client &client, Message &message) {
-//std::cout << "message.get_tab_parameter()[0]:" << message.get_tab_parameter()[0] << std::endl;
-	std::string new_nick = message.get_tab_parameter()[0];
-	std::string answer;
-
-// for (unsigned long i = 0; i < new_nick.length(); i++)
-// {
-// 	std::cout << "i:" << i << " : " << new_nick[i] << " : " << (int) new_nick[i] << std::endl;
-// }
-// std::cout << "newnick.len: " << new_nick.length() << std::endl;
-// std::cout << "###inside command_NICK" << std::endl;
-
-
-
-	if (message.get_tab_parameter().size() == 0)
-	{
-std::cout << ">>>no nick given" << std::endl;
-	    //    431    ERR_NONICKNAMEGIVEN
-        //       ":No nickname given"
-        //  - Returned when a nickname parameter expected for a
-        //    command and isn't found.
-
-		if (client.get_hasnick())
-		{
-			answer = ":";
-			answer += this->get_hostname();
-			answer += " 431 ";
-			answer += client.get_nickname();
-			answer += " ";
-			answer += ":No nickname given";
-
-			send_message(client, answer);
-
-		}
-		else
-		{
-			answer = ":";
-			answer += this->get_hostname();
-			answer += " 431 * ";
-			answer += ":No nickname given";
-			send_message(client, answer);
-
-		}
-
-	}
-	else if (!_nick_available(new_nick))
-	{
-std::cout << ">>>nick not available" << std::endl;
-		//    433    ERR_NICKNAMEINUSE
-		//           "<nick> :Nickname is already in use"
-		//      - Returned when a NICK message is processed that results
-		//        in an attempt to change to a currently existing
-		//        nickname.
-
-		//send_message(*this, client, /* print numerics demander a Romain */, 433);
-			answer = ":";
-			answer += this->get_hostname();
-			answer += " 433 ";
-			if (client.get_hasnick())
-			{
-				answer += client.get_nickname();
-			}
-			else
-			{
-				answer += "*";
-			}
-			answer += ":Nickname is already in use";
-
-			send_message(client, answer);
-	}
-	else if (!_nick_isvalid(new_nick))
-	{
-std::cout << ">>>nick invalid" << std::endl;
-		//        432    ERR_ERRONEUSNICKNAME
-        //       "<nick> :Erroneous nickname"
-        //  - Returned after receiving a NICK message which contains
-        //    characters which do not fall in the defined set.  See
-        //    section 2.3.1 for details on valid nicknames.
-
-		// send_message(*this, client, /* print numerics demander a Romain */, 432);
-	}
-	else if (client.get_user_modes().find('r') != std::string::npos)
-	{
-std::cout << ">>>user restricted" << std::endl;
-		//    484    ERR_RESTRICTED
-		//           ":Your connection is restricted!"
-		//      - Sent by the server to a user upon connection to indicate
-		//        the restricted nature of the connection (user mode "+r").
-		// send_message(*this, client, /* print numerics demander a Romain */, 484);
-	}
-	else 
-	{
-std::cout << ">>>changing nickname" << std::endl;
-		//set nickname
-		client.set_nickname(new_nick);
-
-		    //    001    RPL_WELCOME
-            //   "Welcome to the Internet Relay Network
-            //    <nick>!<user>@<host>"
-			std::string a = "<header>";
-			std::string b = "Welcome to the Internet Relay Network <nick>!<user>@<host>";
-			std::string c = "001";
-	//	send_message(*this, message, a, b, c);
-		send_message(*this, message, "<header>", "Welcome to the Internet Relay Network <nick>!<user>@<host>", "001");
-		//send_message(); //for valid nick change
-		//response
-	}
-
-
-
-//test response
-std::cout << "************" << std::endl;
-std::cout << "NICK client fd = " << client.get_fd() << std::endl;
-		send_message(client, ":irc.example.com 001 abc :Welcome to the Internet Relay Network abc!abc@polaris.cs.uchicago.edu");
-
-
-	    //    437    ERR_UNAVAILRESOURCE
-        //       "<nick/channel> :Nick/channel is temporarily unavailable"
-        //  - Returned by a server to a user trying to join a channel
-        //    currently blocked by the channel delay mechanism.
-        //  - Returned by a server to a user trying to change nickname
-        //    when the desired nickname is blocked by the nick delay
-        //    mechanism.
-
-		//        436    ERR_NICKCOLLISION
-        //       "<nick> :Nickname collision KILL from <user>@<host>"
-        //  - Returned by a server to a client when it detects a
-        //    nickname collision (registered of a NICK that
-        //    already exists by another server).
-
-
-
-// "send_message
-// (Server&,
-// Message&,
-// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >,
-// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >,
-// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >)
-// ", referenced from:
-
-std::cout << "###end of command_NICK" << std::endl;
 }
 
 

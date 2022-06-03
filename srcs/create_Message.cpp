@@ -17,18 +17,18 @@ std::vector<std::string> ft_split_message(std::string str)
         {
             tmp = str.substr(startpoint, position);
             std::string tmp = str.substr(startpoint, position);
-            for (unsigned long i = 0; i < tmp.length(); i++)
-            {
-            	std::cout << "11111 i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
-            }
+            // for (unsigned long i = 0; i < tmp.length(); i++)
+            // {
+            // 	std::cout << "11111 i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
+            // }
             if (position == std::string::npos)
             {
                 if (str.substr(startpoint, position).size() <= 0)
                     break;
-                for (unsigned long i = 0; i < tmp.length(); i++)
-                {
-                	std::cout << "22222i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
-                }    
+                // for (unsigned long i = 0; i < tmp.length(); i++)
+                // {
+                // 	std::cout << "22222i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
+                // }    
                 msg_list.push_back(str.substr(startpoint, position));
                 break;
             }
@@ -94,7 +94,7 @@ Message *ft_create_message(std::string str)
         startpoint = position;
         position = str.length();
         str_to_pass = str.substr(startpoint, position - startpoint);
-        std::cout << str_to_pass << std::endl;
+ //       std::cout << str_to_pass << std::endl;
         msg->set_parameter(str_to_pass);
         position++;
         startpoint = position;

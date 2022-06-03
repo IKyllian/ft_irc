@@ -12,6 +12,7 @@ SRCS		= 	srcs/main.cpp \
 COMMAND		=	srcs/command/away.cpp \
 				srcs/command/privmsg.cpp \
 				srcs/command/who.cpp \
+				srcs/command/nick.cpp
 
 OBJS			= $(SRCS:.cpp=.o) $(COMMAND:.cpp=.o)
 

@@ -1,8 +1,25 @@
 #include "../includes/numerics.hpp"
 #include "../includes/ft_irc.hpp"
+#include "../includes/Server.hpp"
 
-std::string ft_print_numerics(/*Client &user, Server &server, Channel &channel, Message &message*/int nb_message)
+
+std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message)
 {
+    (void) nb_message;
+    return "fonction juste pour que ca compile en attendant d'avoir tout modif";
+}
+
+
+std::string Server::print_numerics(int num, Client &sender, Client &receiver, Channel *channel, Message *message)
+{
+    (void) num;
+    (void) sender;
+    (void) receiver;
+    (void) channel;
+    (void) message;
+
+
+
     std::string client_name = "weechat";
     //              user VAR               //
     std::string username = "Kyllian";
@@ -87,7 +104,7 @@ std::string ft_print_numerics(/*Client &user, Server &server, Channel &channel, 
 	std::string description = "Description";
     std::string null = "";
 
-    switch (nb_message)
+    switch (num)
     {
     case 1:
         return (client_name + RPL_WELCOME(network_name, user_nick));

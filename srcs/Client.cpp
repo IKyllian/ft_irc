@@ -100,8 +100,19 @@ void Client::append_buffer(char* buffer) {
 std::string Client::extract_command(size_t pos) {
 	std::string command;
 
-	command = _buffer.substr(0, pos + 1);
+	command = _buffer.substr(0, pos + 2);
 	_buffer = _buffer.substr(pos + 2, - 1);
+
+// std::cout << "######commamnd:" << std::endl;
+// 	for (unsigned long k = 0; k < command.length(); k++)
+// 	{
+// 		std::cout << "i: " << k << " command[k]: " << command[k] << " (int): " << (int) command[k] << std::endl;
+// 	}
+// std::cout << "######buffer:" << std::endl;
+// 	for (unsigned long k = 0; k < _buffer.length(); k++)
+// 	{
+// 		std::cout << "i: " << k << " _buffer[k]: " << _buffer[k] << " (int): " << (int) _buffer[k] << std::endl;
+// 	}
 
 	return command;
 }
