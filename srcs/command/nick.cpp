@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 13:25:54 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/03 13:59:39 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/03 14:50:09 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,6 @@ std::cout << ">>>changing nickname" << std::endl;
 
 	}
 
-
-
 //test response
 // std::cout << "************" << std::endl;
 // std::cout << "NICK client fd = " << client.get_fd() << std::endl;
@@ -134,15 +132,4 @@ std::cout << ">>>changing nickname" << std::endl;
         //    nickname collision (registered of a NICK that
         //    already exists by another server).
 
-
-
-// "send_message
-// (Server&,
-// Message&,
-// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >,
-// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >,
-// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >)
-// ", referenced from:
-
-std::cout << "###end of command_NICK" << std::endl;
 }

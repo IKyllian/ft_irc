@@ -30,9 +30,6 @@ Server::Server(const Server &server):
 
 Server::~Server() {}
 
-
-
-
 std::string Server::get_network_name() const { return (_network_name); }
 std::string Server::get_hostname() const { return (_hostname); }
 std::string Server::get_port() const { return (_port); }
@@ -446,14 +443,8 @@ bool Server::send_message(Client &target, std::string message)
 	unsigned long 		i;
 	char				buffer[65535];
 	size_t				len;
-	//std::string			str;
 
 	memset(&buffer, 0, sizeof(buffer));
-
-
-
-	//strcpy(buffer, str.c_str());
-	
 	for (i = 0; i < message.length(); i++)
 	{
 		buffer[i] = message[i];
@@ -461,24 +452,10 @@ bool Server::send_message(Client &target, std::string message)
 	buffer[i] = '\0';
 	len = i;
 	
-	
 	std::cout << "sending: " << std::endl;
-//	std::cout << message << std::endl;
 	std::cout << buffer << std::endl;
-	// std::cout << "msg.len: " << message.length() << std::endl;
-	// std::cout << "len: " << len << std::endl;
 
-// i = 0;
-// while (buffer[i])
-// {
-// 	std::cout << buffer[i] << std::endl;
-// 	i++;
-// }
-//std::cout << "wesh2 " << std::endl;
-
-//std::cout << "wesh target.get_fd():" << target.get_fd() << std::endl;
 	ret = send(target.get_fd(), buffer, len, 0);
-//std::cout << "wesh3 " << std::endl;
 	if (ret < 0)
 	{
 		perror("  send() failed");
@@ -486,5 +463,4 @@ bool Server::send_message(Client &target, std::string message)
 	}
 
 	return true;
-
 }
