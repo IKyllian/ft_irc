@@ -170,7 +170,7 @@ void do_parsing(Server &server, Client &sender, std::string message)
     std::vector<Message*> msg;
     std::vector<std::string> msg_list;
     (void) sender;
-std::cout << "###inside do_parsing" << std::endl;
+//std::cout << "###inside do_parsing" << std::endl;
     msg_list = ft_split_message(message);
     for (size_t i = 0; i < msg_list.size(); i++)
     {

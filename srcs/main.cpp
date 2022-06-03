@@ -61,10 +61,10 @@ int handle_incoming_message(Server& server, int fd)
 	
 	message = server.get_clients()[i].extract_command(pos);
 
-	for (unsigned long k = 0; k < message.length(); k++)
-	{
-		std::cout << "i: " << k << " message[k]: " << message[k] << " (int): " << (int) message[k] << std::endl;
-	}
+	// for (unsigned long k = 0; k < message.length(); k++)
+	// {
+	// 	std::cout << "i: " << k << " message[k]: " << message[k] << " (int): " << (int) message[k] << std::endl;
+	// }
 	std::cout << "command:" << std::endl
 			<< message << std::endl;
 	std::cout << "--------------" << std::endl;

@@ -94,7 +94,7 @@ Message *ft_create_message(std::string str)
         startpoint = position;
         position = str.length();
         str_to_pass = str.substr(startpoint, position - startpoint);
-        std::cout << str_to_pass << std::endl;
+ //       std::cout << str_to_pass << std::endl;
         msg->set_parameter(str_to_pass);
         position++;
         startpoint = position;
