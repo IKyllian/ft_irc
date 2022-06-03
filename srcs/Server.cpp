@@ -406,21 +406,10 @@ for (unsigned long i = 0; i < nick.length(); i++)
 
 void Server::command_NICK(Client &client, Message &message) {
 //std::cout << "message.get_tab_parameter()[0]:" << message.get_tab_parameter()[0] << std::endl;
-	std::string new_nick = message.get_tab_parameter()[0];
+
 	std::string answer;
-
-// for (unsigned long i = 0; i < new_nick.length(); i++)
-// {
-// 	std::cout << "i:" << i << " : " << new_nick[i] << " : " << (int) new_nick[i] << std::endl;
-// }
-// std::cout << "newnick.len: " << new_nick.length() << std::endl;
-// std::cout << "###inside command_NICK" << std::endl;
-
-
-
 	if (message.get_tab_parameter().size() == 0)
 	{
-std::cout << ">>>no nick given" << std::endl;
 	    //    431    ERR_NONICKNAMEGIVEN
         //       ":No nickname given"
         //  - Returned when a nickname parameter expected for a
@@ -447,9 +436,11 @@ std::cout << ">>>no nick given" << std::endl;
 			send_message(client, answer);
 
 		}
-
+		return;
 	}
-	else if (!_nick_available(new_nick))
+	std::string new_nick = message.get_tab_parameter()[0];
+
+	if (!_nick_available(new_nick))
 	{
 std::cout << ">>>nick not available" << std::endl;
 		//    433    ERR_NICKNAMEINUSE
