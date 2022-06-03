@@ -132,8 +132,8 @@
 #define ERR_SASLTOOLONG(NULL)(NULL + " :SASL message too long")																																									// 905		
 #define ERR_SASLABORTED(NULL)(NULL + " :SASL authentication aborted")																																								// 906			
 #define ERR_SASLALREADY(NULL)(NULL + " :You have already authenticated using SASL")																																				// 907							
-#define ERR_NONICKNAMEGIVEN(NULL)(NULL + " :No nickname given")
-#define ERR_NORECIPIENT(command)(": No recipient given " + command)
-#define ERR_NOTEXTTOSEND(NULL)(NULL + ": No recipient given ")
+#define ERR_NONICKNAMEGIVEN(NULL)(NULL + " :No nickname given")	                      
+#define ERR_NORECIPIENT(command)(": No recipient given " + command)	                     
+#define ERR_NOTEXTTOSEND(NULL)(NULL + ": No recipient given ")	                      
 
 #endif

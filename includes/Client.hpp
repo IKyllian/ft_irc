@@ -4,6 +4,8 @@
 #include <iostream>
 #include "ft_irc.hpp"
 
+class Channel;
+
 class Client {
 	public :
 		Client();
@@ -24,6 +26,7 @@ class Client {
 		bool 		get_away() const;
 		std::string get_away_msg() const;
 		std::string	get_buffer() const;
+		std::vector<Channel*>	&get_channel();
 
 		void set_nickname(std::string val);
 		void set_username(std::string val);
@@ -38,6 +41,7 @@ class Client {
 		std::string extract_command(size_t pos);
 
 	private :
+		std::vector<Channel*> _channel;
 		std::string _nickname;
 		std::string _username;
 		std::string _user_modes;

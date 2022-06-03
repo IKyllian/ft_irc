@@ -18,15 +18,16 @@ bool Client::operator==(const Client& rhs) {
 // 	return (get_nickname() < rhs.get_nickname());
 // }
 
-std::string Client::get_nickname() const { return (_nickname); }
-std::string Client::get_username() const { return (_username); }
-std::string Client::get_user_modes() const { return (_user_modes); }
-int			Client::get_fd() const { return (_fd); }
-bool		Client::get_logged() const { return (_logged); }
-bool		Client::get_hasnick() const { return (_hasnick); }
-bool		Client::get_away() const { return (_away); }
-std::string Client::get_away_msg() const { return (_away_msg); }
-std::string	Client::get_buffer() const { return (_buffer); }
+std::string 			Client::get_nickname() const { return (_nickname); }
+std::string 			Client::get_username() const { return (_username); }
+std::string 			Client::get_user_modes() const { return (_user_modes); }
+int						Client::get_fd() const { return (_fd); }
+bool					Client::get_logged() const { return (_logged); }
+bool					Client::get_hasnick() const { return (_hasnick); }
+bool					Client::get_away() const { return (_away); }
+std::string 			Client::get_away_msg() const { return (_away_msg); }
+std::string				Client::get_buffer() const { return (_buffer); }
+std::vector<Channel*>	&Client::get_channel() { return (_channel); };
 
 
 void Client::set_nickname(std::string val) {

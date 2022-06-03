@@ -65,7 +65,8 @@ int handle_incoming_message(Server& server, int fd)
 	std::cout << "--------------" << std::endl;
 
 	//AJOUTER CALL POUR LE PARSING
-	message = "AWAY\r\n";
+    std::string tmp = message;
+	message += "\n";
 	do_parsing(server, server.get_clients()[i], message);
 	// do_parsing(server, server.get_clients()[i], message);
 	return ret;
@@ -160,7 +161,6 @@ bool init_server(Server &server, int ac, char** av)
 	}
 	else
 		server.set_using_password(false);
-
 	//use DEFINES to set base server settings
 	std::string test = "kikaro.42.fr";
 	server.set_hostname(test);
