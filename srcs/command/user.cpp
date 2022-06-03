@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 14:50:32 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/03 15:42:23 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/03 16:34:45 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,15 @@
 
 void Server::command_USER(Client &client, Message &message)
 {
-        std::string answer;
-        
+	std::string answer;
+
 	if (message.get_tab_parameter().size() < 4)
 	{
+		answer = ":";
+		answer += this->get_hostname();
+		answer += " ";
+		answer += print_numerics(461, client, client, NULL, *message);
+		send_message(client, answer);
 		//        461    ERR_NEEDMOREPARAMS
         //       "<command> :Not enough parameters"
 
@@ -29,18 +34,24 @@ void Server::command_USER(Client &client, Message &message)
 	else if (client.get_realname() == "")
 	{
 		//already logged
-
+		answer = ":";
+		answer += this->get_hostname();
+		answer += " ";
+		answer += print_numerics(462, client, client);
+		send_message(client, answer);
 		//        462    ERR_ALREADYREGISTRED
         //       ":Unauthorized command (already registered)"
-
         //  - Returned by the server to any link which tries to
         //    change part of the registered details (such as
         //    password or user details from second USER message).
 	}
-        else 
-        {
-                //do stuff
-        }
+	else 
+	{
+			//do stuff
+
+			//recup les differents arguments, realname peut avoir des espaces
+			//mode mask ?
+	}
 }
 
 /*
