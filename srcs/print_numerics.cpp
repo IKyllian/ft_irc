@@ -1,7 +1,9 @@
 #include "../includes/numerics.hpp"
 #include "../includes/ft_irc.hpp"
 #include "../includes/Server.hpp"
-
+#include "../includes/Client.hpp"
+#include "../includes/Message.hpp"
+#include "../includes/Channel.hpp"
 
 std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message)
 {
@@ -21,26 +23,28 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 
 
     std::string client_name = "weechat";
-    //              user VAR               //
-    std::string username = "Kyllian";
-    std::string user_account = "Kdolper";
-    std::string realname = "Kyllian";
-    std::string user_nick = "Ikyllian";
-    std::string user_modes = "iorw";
-//PAS DANS LA CLASSE
-    std::string user_fingerprint = "fingerprint";
     std::string user_flags = "H*";                       //H for present, G for gone, OPTIONAL * for server operator, member prefix, usermode
-    std::string away_message = "F*** this sh** i'm out";
+    std::string user_fingerprint = "fingerprint"; //wtf is this shit ?
     std::string hopcount = "5";                                 //nb of intermediate server 
     std::string sec_away = "353";                        // seconds since last active
     std::string sign_on = "666";                         // unix timestamp, when joined the network
-//UPDATE 16/05
 	std::string privilege = "Oper priv";
 
+
+    //              user VAR               //
+    std::string username = sender.get_username(); //"Kyllian";
+    std::string user_account = sender.get_username();//"Kdolper";
+    std::string realname =  sender.get_realname();//"Kyllian";
+    std::string user_nick = sender.get_nickname();//"Ikyllian";
+    std::string user_modes = sender.get_user_modes();// "iorw";
+//PAS DANS LA CLASSE
+    std::string away_message = sender.get_away_msg(); // "F*** this sh** i'm out";
+//UPDATE 16/05
+
     //              SERVER VAR              //
-    std::string network_name = NETWORK_NAME;
-    std::string hostname = "KKR";
-    std::string port = "127.0.0.1";
+    std::string network_name = get_network_name();//NETWORK_NAME;
+    std::string hostname = get_hostname();//"KKR";
+    std::string port = get_port();//"127.0.0.1";
     std::string infoServer = "KKR info server";
     std::string servername = "Delire avec des gens chelou";
     std::string locationServer = "Lyon 42 Charbonnière";

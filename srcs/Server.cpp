@@ -74,15 +74,15 @@ std::vector<Channel>::iterator Server::get_channel(std::string to_search){
 	return (channel_it);
 }
 
-void Server::set_network_name(std::string &val) {
+void Server::set_network_name(std::string val) {
 	_network_name = val;
 }
 
-void Server::set_hostname(std::string &val) {
+void Server::set_hostname(std::string val) {
 	_hostname = val;
 }
 
-void Server::set_port(std::string &val) {
+void Server::set_port(std::string val) {
 	_port = val;
 }
 
@@ -90,7 +90,7 @@ void Server::set_infoServer(std::string &val) {
 	_infoServer = val;
 }
 
-void Server::set_servername(std::string &val) {
+void Server::set_servername(std::string val) {
 	_servername = val;
 }
 

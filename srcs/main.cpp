@@ -157,8 +157,6 @@ bool init_socket(Server &server, char** av)
 
 bool init_server(Server &server, int ac, char** av)
 {
-	std::string hostname = "kikaro.42.fr"; // HOSTNAME
-
 	if (ac == 3)
 	{
 		server.set_using_password(true);
@@ -167,7 +165,9 @@ bool init_server(Server &server, int ac, char** av)
 	else
 		server.set_using_password(false);
 
-	server.set_hostname(hostname);
+	server.set_hostname(HOST_NAME);
+	server.set_network_name(NETWORK_NAME);
+	server.set_port(av[1]);
 	return true;	
 }
 

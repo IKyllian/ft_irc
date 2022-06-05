@@ -1,8 +1,6 @@
 #ifndef     NUMERICS_HPP
 # define    NUMERICS_HPP
 
-#define NETWORK_NAME "KIKIKAKARORO"
-
 //												RPL MESSAGES												//
 
 #define RPL_WELCOME(networkname, nick)(" :Welcome to the " + networkname + " Network, " + nick)																															// 001
