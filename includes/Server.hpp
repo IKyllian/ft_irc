@@ -79,6 +79,7 @@ class Server {
 
 		void command_NICK(Client &client, Message &message);
 		void command_USER(Client &client, Message &message);
+		void command_PASSWORD(Client &client, Message &message);
 
 		void command_JOIN(Client *client, std::vector<std::string> parameters);
 		void command_PART(Client *client, std::vector<std::string> parameters);

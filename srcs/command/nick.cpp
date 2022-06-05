@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 13:25:54 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/05 16:52:28 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/05 17:17:55 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 void Server::command_NICK(Client &client, Message &message) {
 
 	std::string answer;
+
+	// TODO rajouter password check
+	// if (!client.get_authentified())
+	// {
+	// 	return;
+	// }
 
 	if (message.get_tab_parameter().size() == 0)
 	{
@@ -103,16 +109,16 @@ std::cout << ">>>user restricted" << std::endl;
 std::cout << ">>>changing nickname" << std::endl;
 		client.set_nickname(new_nick);
 
-		answer = ":";
-		answer += this->get_hostname();
-		answer += " ";
-		answer += print_numerics(001, client, client);
-		send_message(client, answer);
-		
+		//check if NICK + USER + PASSWORD valid
 		if (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
 		{
 			//RPL WELCOME ?
 			client.set_logged(true);
+			answer = ":";
+			answer += this->get_hostname();
+			answer += " ";
+			answer += print_numerics(001, client, client);
+			send_message(client, answer);
 		}
 	}
 
