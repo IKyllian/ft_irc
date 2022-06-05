@@ -24,6 +24,8 @@ std::string Client::get_realname() const { return (_realname); }
 std::string Client::get_user_modes() const { return (_user_modes); }
 int			Client::get_fd() const { return (_fd); }
 bool		Client::get_logged() const { return (_logged); }
+bool		Client::get_registered() const { return (_registered); }
+bool		Client::get_authentified() const { return (_authentified); }
 bool		Client::get_hasnick() const { return (_hasnick); }
 bool		Client::get_away() const { return (_away); }
 std::string Client::get_away_msg() const { return (_away_msg); }
@@ -32,6 +34,7 @@ std::string	Client::get_buffer() const { return (_buffer); }
 
 void Client::set_nickname(std::string val) {
 	_nickname = val;
+	set_hasnick(true);
 }
 
 void Client::set_username(std::string val) {
@@ -80,11 +83,19 @@ void Client::set_fd(int &val) {
 	_fd = val;
 }
 
-void Client::set_logged(bool &val) {
+void Client::set_logged(bool val) {
 	_logged = val;
 }
 
-void Client::set_hasnick(bool &val) {
+void Client::set_registered(bool val) {
+	_registered = val;
+}
+
+void Client::set_authentified(bool val) {
+	_authentified = val;
+}
+
+void Client::set_hasnick(bool val) {
 	_hasnick = val;
 }
 
