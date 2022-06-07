@@ -70,6 +70,8 @@ int handle_incoming_message(Server& server, int fd)
 	std::cout << "--------------" << std::endl;
 
 	//AJOUTER CALL POUR LE PARSING
+    std::string tmp = message;
+	message += "\n";
 	do_parsing(server, server.get_clients()[i], message);
 	// do_parsing(server, server.get_clients()[i], message);
 	return ret;

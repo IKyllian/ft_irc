@@ -43,9 +43,9 @@ class Message {
 	std::string 				_payload;
 	std::string 				_prefix;
     std::string 				_command;
-	std::string 				_command_info;
-    std::string 				_mask;
-	std::string 				_subject;
+	//std::string 				_command_info;
+    //std::string 				_mask;
+	//std::string 				_subject;
 	std::string					_parameter;
 	int							_nb_parameter;
 	std::vector<std::string>	_tab_parameter;

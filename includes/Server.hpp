@@ -92,6 +92,7 @@ class Server {
 		/*		rzh cmd			*/
 		void command_AWAY(Client &client, Message &message);
 		void command_PRIVMSG(Client &client, Message &message);
+		void command_WHO(Client &client, Message &message);
 
 	private:
 
