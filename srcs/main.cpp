@@ -60,6 +60,11 @@ int handle_incoming_message(Server& server, int fd)
 	}
 	
 	message = server.get_clients()[i].extract_command(pos);
+
+	// for (unsigned long k = 0; k < message.length(); k++)
+	// {
+	// 	std::cout << "i: " << k << " message[k]: " << message[k] << " (int): " << (int) message[k] << std::endl;
+	// }
 	std::cout << "command:" << std::endl
 			<< message << std::endl;
 	std::cout << "--------------" << std::endl;
@@ -160,9 +165,9 @@ bool init_server(Server &server, int ac, char** av)
 	else
 		server.set_using_password(false);
 
-	//use DEFINES to set base server settings
-	std::string test = "kikaro.42.fr";
-	server.set_hostname(test);
+	server.set_hostname(HOST_NAME);
+	server.set_network_name(NETWORK_NAME);
+	server.set_port(av[1]);
 	return true;	
 }
 

@@ -48,11 +48,11 @@ class Server {
 		bool get_using_password() const;
 		int get_server_fd() const;
 
-		void set_network_name(std::string &val);
-		void set_hostname(std::string &val);
-		void set_port(std::string &val);
+		void set_network_name(std::string val);
+		void set_hostname(std::string val);
+		void set_port(std::string val);
 		void set_infoServer(std::string &val);
-		void set_servername(std::string &val);
+		void set_servername(std::string val);
 		void set_locationServer(std::string &val);
 		void set_hostInfo(std::string &val);
 		void set_hostMail(std::string &val);
@@ -74,6 +74,13 @@ class Server {
 		bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
 		bool send_message(Client &client, std::string message);
 		
+		std::string print_numerics(int num, Client &sender, Client &receiver, Channel *channel = NULL, Message *message = NULL);
+
+
+		void command_NICK(Client &client, Message &message);
+		void command_USER(Client &client, Message &message);
+		void command_PASSWORD(Client &client, Message &message);
+
 		void command_JOIN(Client *client, std::vector<std::string> parameters);
 		void command_JOIN(Client *client, Message &message);
 
@@ -105,7 +112,6 @@ class Server {
 		void command_AWAY(Client &client, Message &message);
 		void command_PRIVMSG(Client &sender, Message &msg);
 
-		void command_NICK(Client &client, Message &message);
 	private :
 		std::string _network_name;
 		std::string _hostname;
