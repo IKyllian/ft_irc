@@ -1,4 +1,3 @@
-
 SRCS		= 	srcs/main.cpp \
 				srcs/Channel.cpp \
 				srcs/Server.cpp \

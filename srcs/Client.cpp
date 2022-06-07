@@ -53,7 +53,7 @@ void Client::set_user_modes(std::string mode) {
 			for (size_t i = 1; i < mode.size(); i++) {
 				if (modes.find(mode[i]) != std::string::npos) {
 					if (_user_modes.find(mode[i]) != std::string::npos) {
-							ft_print_numerics(501); // Check si il faut mettre l'erreur
+							ft_print_numerics(501);
 							continue;
 					} else {
 						ft_print_numerics(221); // RPL_UMODEIS
@@ -66,7 +66,7 @@ void Client::set_user_modes(std::string mode) {
 			for (size_t i = 1; i < mode.size(); i++) {
 				if (modes.find(mode[i]) != std::string::npos) {
 					if (_user_modes.find(mode[i]) == std::string::npos) {
-							ft_print_numerics(501); // Check si il faut mettre l'erreur
+							ft_print_numerics(501);
 							continue;
 					} else {
 						_user_modes.erase(_user_modes.find(mode[i]));
