@@ -103,7 +103,7 @@ class Server {
 
 		/*		rzh cmd			*/
 		void command_AWAY(Client &client, Message &message);
-		void command_PRIVMSG(Client &client, Message &message);
+		void command_PRIVMSG(Client &sender, Message &msg);
 
 		void command_NICK(Client &client, Message &message);
 	private :

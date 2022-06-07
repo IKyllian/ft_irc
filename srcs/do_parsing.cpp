@@ -113,7 +113,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
     }
     else if (msg.get_command() == "PRIVMSG")
     {
-        server.command_PRIVMSG(sender, msg);
+        // server.command_PRIVMSG(sender, msg);
     }
     else if (msg.get_command() == "NOTICE")
     {
