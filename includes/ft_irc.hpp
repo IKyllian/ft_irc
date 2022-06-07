@@ -1,6 +1,10 @@
 #ifndef		FT_IRC_HPP
 # define	FT_IRC_HPP
 
+//                                              DEFINES                                                   //
+
+#define NETWORK_NAME "KIKIKAKARORO"
+#define HOST_NAME "kikaro.42.fr"
 //											LIBRAIRIE RÉSEAU											//
 
 #include <sys/socket.h>			// Socket Pour Linux/Mac
@@ -33,6 +37,7 @@
 //                                              OTHERS                                                   //
 
 #include "numerics.hpp"
+
 
 class Server;
 class Channel;

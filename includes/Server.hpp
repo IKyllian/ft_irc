@@ -48,11 +48,11 @@ class Server {
 		bool get_using_password() const;
 		int get_server_fd() const;
 
-		void set_network_name(std::string &val);
-		void set_hostname(std::string &val);
-		void set_port(std::string &val);
+		void set_network_name(std::string val);
+		void set_hostname(std::string val);
+		void set_port(std::string val);
 		void set_infoServer(std::string &val);
-		void set_servername(std::string &val);
+		void set_servername(std::string val);
 		void set_locationServer(std::string &val);
 		void set_hostInfo(std::string &val);
 		void set_hostMail(std::string &val);
@@ -78,6 +78,9 @@ class Server {
 
 
 		void command_NICK(Client &client, Message &message);
+		void command_USER(Client &client, Message &message);
+		void command_PASSWORD(Client &client, Message &message);
+
 		void command_JOIN(Client *client, std::vector<std::string> parameters);
 		void command_PART(Client *client, std::vector<std::string> parameters);
 		void command_TOPIC(Client *client, std::vector<std::string> parameters);
