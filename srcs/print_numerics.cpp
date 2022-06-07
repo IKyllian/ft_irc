@@ -486,8 +486,6 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		
 	case 907:
 		return (client_name + ERR_SASLALREADY(null));
-		
-
 	default:
         std::cout << "Numeric not found" << std::endl;
         break;

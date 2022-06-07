@@ -1,7 +1,7 @@
 #include "../includes/Message.hpp"
 
 Message::Message() {}
-Message::Message(const Message &message) :_sender(message._sender), _receiver(message._receiver), _payload(message._payload), _prefix(message._prefix),  _command(message._command), _command_info(message._command_info), _mask(message._mask), _subject(message._subject), _parameter(message._parameter) {}
+Message::Message(const Message &message) :_sender(message._sender), _receiver(message._receiver), _payload(message._payload), _prefix(message._prefix),  _command(message._command),/* _command_info(message._command_info), _mask(message._mask), _subject(message._subject),*/ _parameter(message._parameter) {}
 Message::~Message() {}
 
 void Message::set_sender(Client *val) {
