@@ -8,6 +8,7 @@
 std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message)
 {
     (void) nb_message;
+    std::cout << "Nb message = " << nb_message << std::endl;
     return "fonction juste pour que ca compile en attendant d'avoir tout modif";
 }
 

@@ -2,12 +2,14 @@
 #include "../../includes/Channel.hpp"
 #include "../../includes/Client.hpp"
 #include "../../includes/Server.hpp"
+#include "../../includes/Server.hpp"
 
 int main(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
 	Server server;
+	Message message;
 
 	std::vector<std::string> channels_string;
 	std::vector<std::string> channels_string2;
@@ -16,15 +18,33 @@ int main(int argc, char **argv)
 	std::vector<std::string> channels_string5;
 	std::vector<std::string> chans;
 	std::vector<std::string> mode_parameters;
+	std::vector<std::string> mode_parameters2;
 	std::vector<std::string> mode_user;
 	std::vector<std::string> topic;
 	std::vector<std::string> topic2;
 	std::vector<std::string> topic3;
+	std::vector<std::string> private_msg;
+	std::vector<std::string> private_msg2;
+
+	// Private Message
+	private_msg.push_back("#@chan,channel2");
+	private_msg.push_back("Ceci est un message de test");
+
+
+	private_msg2.push_back("Romain, qw");
+	private_msg2.push_back("Ceci est un message de test");
+
 	// Mode Message
 	mode_parameters.push_back("chan");
-	mode_parameters.push_back("+klti");
+	mode_parameters.push_back("+kltin");
 	mode_parameters.push_back("1234, 5 8");
 	// mode_parameters.push_back("Kyllian");
+
+
+	// Mode Message
+	mode_parameters2.push_back("chan");
+	mode_parameters2.push_back("+v");
+	mode_parameters2.push_back("Romain");
 
 	mode_user.push_back("Kyllian");
 	mode_user.push_back("+oic");
@@ -59,6 +79,8 @@ int main(int argc, char **argv)
 	topic2.push_back("Ceci est un deuxieme topic");
 
 	topic3.push_back("chan");
+
+
 
 	// std::vector<Channel> channels;
 	std::string name = "myChannel";
@@ -108,6 +130,7 @@ int main(int argc, char **argv)
 
 	server.command_JOIN(&client1, channels_string3);
 	server.command_JOIN(&client2, channels_string3);
+	server.command_JOIN(&client2, channels_string2);
 
 	std::cout << "Invite list size = " << server.get_channels()[0].get_invite_list().size() << std::endl;
 
@@ -121,11 +144,22 @@ int main(int argc, char **argv)
 	
 	server.command_TOPIC(&client1, topic3);
 
-	server.command_PART(&client2, chans);
+	// server.command_PART(&client2, chans);
 
 
 	std::cout << "Users size = " << server.get_channels()[0].get_users().size() << std::endl;
 
+	message.get_tab_parameter().insert(message.get_tab_parameter().begin(), private_msg.begin(), private_msg.end());
+	message.set_nb_parameter(2);
+
+	// std::cout << "Parameter [0] = " << message.get_tab_parameter()[0] << std::endl;
+
+	
+    std::cout << "Size" << message.get_nb_parameter() << std::endl;
+	
+	server.command_MODE_CHAN(&client1, mode_parameters2);
+
+	server.command_PRIVMSG(client3, message);
 
     return (0);
 }
