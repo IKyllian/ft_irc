@@ -5,6 +5,11 @@
 
 #define NETWORK_NAME "KIKIKAKARORO"
 #define HOST_NAME "kikaro.42.fr"
+#define SERVER_NAME "Delire avec des gens chelou"
+#define VERSION "1.0"
+#define SERVER_LOCATION "Lyon 42 Charbonnière"
+#define SERVER_LOCATION2 "78 Rte de Paris"
+#define HOSTMAIL "skritch@jemenbatlescouilles.fr"
 //											LIBRAIRIE RÉSEAU											//
 
 #include <sys/socket.h>			// Socket Pour Linux/Mac

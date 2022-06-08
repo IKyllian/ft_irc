@@ -39,15 +39,15 @@ std::string Server::get_locationServer() const { return (_locationServer); }
 std::string Server::get_hostInfo() const { return (_hostInfo); }
 std::string Server::get_hostMail() const { return (_hostMail); }
 std::string Server::get_version() const { return (_version); }
-std::string Server::get_token() const { return (_token); }
-std::string Server::get_connexion() const { return (_connexion); }
-std::string Server::get_nb_user() const { return (_nb_user); }
-std::string Server::get_nb_clients() const { return (_nb_clients); }
+// std::string Server::get_token() const { return (_token); }
+// std::string Server::get_connexion() const { return (_connexion); }
+// std::string Server::get_nb_user() const { return (_nb_user); }
+// std::string Server::get_nb_clients() const { return (_nb_clients); }
 std::string Server::get_nb_operator() const { return (_nb_operator); }
 std::string Server::get_invisible_user() const { return (_invisible_user); }
-std::string Server::get_server_connected() const { return (_server_connected); }
-std::string Server::get_nb_channel() const { return (_nb_channel); }
-std::string Server::get_datetime() const { return (_datetime); }
+// std::string Server::get_server_connected() const { return (_server_connected); }
+// std::string Server::get_nb_channel() const { return (_nb_channel); }
+// std::string Server::get_datetime() const { return (_datetime); }
 
 std::vector<Client>	&Server::get_clients() { return (_clients); }
 std::vector<Channel> &Server::get_channels() { return (_channels); }
@@ -94,37 +94,37 @@ void Server::set_servername(std::string val) {
 	_servername = val;
 }
 
-void Server::set_locationServer(std::string &val) {
+void Server::set_locationServer(std::string val) {
 	_locationServer = val;
 }
 
-void Server::set_hostInfo(std::string &val) {
+void Server::set_hostInfo(std::string val) {
 	_hostInfo = val;
 }
 
-void Server::set_hostMail(std::string &val) {
+void Server::set_hostMail(std::string val) {
 	_hostMail = val;
 }
 
-void Server::set_version(std::string &val) {
+void Server::set_version(std::string val) {
 	_version = val;
 }
 
-void Server::set_token(std::string &val) {
-	_token = val;
-}
+// void Server::set_token(std::string &val) {
+// 	_token = val;
+// }
 
-void Server::set_connexion(std::string &val) {
-	_connexion = val;
-}
+// void Server::set_connexion(std::string &val) {
+// 	_connexion = val;
+// }
 
-void Server::set_nb_user(std::string &val) {
-	_nb_user = val;
-}
+// void Server::set_nb_user(std::string &val) {
+// 	_nb_user = val;
+// }
 
-void Server::set_nb_clients(std::string &val) {
-	_nb_clients = val;
-}
+// void Server::set_nb_clients(std::string &val) {
+// 	_nb_clients = val;
+// }
 
 void Server::set_nb_operator(std::string &val) {
 	_nb_operator = val;
@@ -134,17 +134,17 @@ void Server::set_invisible_user(std::string &val) {
 	_invisible_user = val;
 }
 
-void Server::set_server_connected(std::string &val) {
-	_server_connected = val;
-}
+// void Server::set_server_connected(std::string &val) {
+// 	_server_connected = val;
+// }
 
-void Server::set_nb_channel(std::string &val) {
-	_nb_channel = val;
-}
+// void Server::set_nb_channel(std::string &val) {
+// 	_nb_channel = val;
+// }
 
-void Server::set_datetime(std::string &val) {
-	_datetime = val;
-}
+// void Server::set_datetime(std::string &val) {
+// 	_datetime = val;
+// }
 
 void Server::set_password(std::string val) {
 	_password = val;
