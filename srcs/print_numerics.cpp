@@ -72,18 +72,38 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 
 
     //              CHAN VAR                //
-    std::string channel_modes = "beI,kfL,lj,psmntirRcOAQKVCuzNSMTGZ";
-    //PAS DANS LA CLASSE
-    std::string channel_name = "J'aime les pommes";
-    std::string client_count = "5";
-    std::string channel_topic = "Les pommes";
-    std::string channel_creationTime = "123";
-    std::string channel_whoSetTopic = "acasunno";
-    std::string channel_TimeSetTopic = "5623";
-    std::string mask_InviteExeptionList = "Blablabla";  //cf: https://modern.ircdocs.horse/#invite-exception-channel-mode
-    std::string mask_ExeptionList = "Blobloblo";        //cf: https://modern.ircdocs.horse/#exception-channel-mode
-    std::string symbol = "=";                          // = Public channel                 @ Secret channel           * Private channel
+    if (!channel)
+    {
+        std::string channel_modes = "ERROR channel not set";
+        std::string channel_name = "ERROR channel not set";
+        std::string client_count = "ERROR channel not set";
+        std::string channel_topic = "ERROR channel not set";
+        //PAS DANS LA CLASSE
+        std::string channel_creationTime = "ERROR channel not set";
+        std::string channel_whoSetTopic = "ERROR channel not set";
+        std::string channel_TimeSetTopic = "ERROR channel not set";
+        std::string mask_InviteExeptionList = "ERROR channel not set";  //cf: https://modern.ircdocs.horse/#invite-exception-channel-mode
+        std::string mask_ExeptionList = "ERROR channel not set";        //cf: https://modern.ircdocs.horse/#exception-channel-mode
+        std::string symbol = "ERROR channel not set";                          // = Public channel                 @ Secret channel           * Private channel
 
+        std::cerr << "ERROR channel not set when calling print numerics" << std::endl;
+    }
+    else
+    {
+        std::string channel_modes = (*channel).get_channel_modes();
+        std::string channel_name = (*channel).get_name();
+        std::string client_count = std::to_string((*channel).get_users().size());
+        std::string channel_topic = (*channel).get_topic();
+        //PAS DANS LA CLASSE
+        std::string channel_creationTime = "123";
+        std::string channel_whoSetTopic = "acasunno";
+        std::string channel_TimeSetTopic = "5623";
+        std::string mask_InviteExeptionList = "Blablabla";  //cf: https://modern.ircdocs.horse/#invite-exception-channel-mode
+        std::string mask_ExeptionList = "Blobloblo";        //cf: https://modern.ircdocs.horse/#exception-channel-mode
+        std::string symbol = "=";                          // = Public channel                 @ Secret channel           * Private channel
+        
+    }
+  
     //              BAN VAR                 //
     std::string banMask = "Banmask";                     // BanMask ???? For 367
     std::string banner_nick = "Ikyllian";
