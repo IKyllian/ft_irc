@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Client.hpp"
 #include "ft_irc.hpp"
+#include "Server.hpp"
 #include <sstream> // pour convertir string en int 
 
 class Client;

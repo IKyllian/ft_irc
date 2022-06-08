@@ -75,7 +75,7 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 			if (_users_ban.end() == user_ban_it) {
 				if (_channel_modes.find('k') != std::string::npos) {
 					if (key != _password) {
-						ft_print_numerics(475);
+						send_message(*client, ft_print_numerics(475));
 						return ;
 					}
 				}
@@ -86,11 +86,11 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 						_invite_list.erase(user_invite_it);
 						std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
 						if (topic.size() > 0)
-							ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic 
+							send_message(*client, ft_print_numerics(332)); // send RPL_TOPIC to inform the client that the channel have topic 
 						else
-							ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
+							send_message(*client, ft_print_numerics(331)); // send RPL_NOTOPIC to inform the client that the channel does not have topic
 					} else
-						ft_print_numerics(473);
+						send_message(*client, ft_print_numerics(473));
 				} else {
 					if (_users.size() == 0)
 						_users.insert(std::pair<Client*, std::string>(client, "o"));
@@ -98,19 +98,18 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 						_users.insert(std::pair<Client*, std::string>(client, ""));
 					std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
 					if (topic.size() > 0)
-						ft_print_numerics(332); // send RPL_TOPIC to inform the client that the channel have topic
+						send_message(*client, ft_print_numerics(332)); // send RPL_TOPIC to inform the client that the channel have topic
 					// Check si il faut envoyer RPL_NOTOPIC si pas de Topic dans le channel (Dans la doc de Join c'est marqué non mais dans Topic c'est marqué oui)
 					// else
-					// 	ft_print_numerics(331); // send RPL_NOTOPIC to inform the client that the channel does not have topic
+					// 	send_message(*client, ft_print_numerics(331)); // send RPL_NOTOPIC to inform the client that the channel does not have topic
 				// Then send a list of users currently joined to the channel
 				}
 			} else
-				ft_print_numerics(474);
+				send_message(*client, ft_print_numerics(474));
 		} else
-			ft_print_numerics(471);
+			send_message(*client, ft_print_numerics(471));
 	} else
 		std::cout << "User already joined this channel" << std::endl; // Check ce qu'il faut renvoyer si le user a deja join le channel
-	
 }
 
 void Channel::set_mode(char mode, std::string parameter) {
@@ -309,7 +308,7 @@ void Channel::add_invite(Client *client) {
 	std::map<Client*, std::string>::iterator it3;
 	if (it2 == _users_ban.end()) {
 		if (_users.find(client) != _users.end()) {
-			ft_print_numerics(443);
+			send_message(*client, ft_print_numerics(443));
 			return ;
 		}
 		if (it == _invite_list.end())
@@ -328,7 +327,7 @@ void Channel::remove_user(Client *client, std::vector<Channel> *channels) {
 			break ;
 	}
 	if (_users.end() == it) {
-		ft_print_numerics(442);
+		send_message(*client, ft_print_numerics(442));
 	}
 	else {
 		_users.erase(it);

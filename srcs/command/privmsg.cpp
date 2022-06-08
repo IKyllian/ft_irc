@@ -2,6 +2,21 @@
 #include "../../includes/Channel.hpp"
 #include "../../includes/ft_irc.hpp"
 
+std::string build_message(std::string sender, std::string target, std::string message, int is_chan) {
+    std::string answer;
+
+    answer += ":";
+    answer += sender;
+    answer += " PRIVMSG ";
+    if (is_chan)
+     answer += "#";
+    answer += target;
+    answer += ":";
+    answer += message;
+
+    return (answer);
+}
+
 void    Server::command_PRIVMSG(Client &sender, Message &msg)
 {
     std::vector<std::string> targets;
@@ -24,12 +39,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg)
         for (size_t i = 0; i < targets.size(); i++) {
             if (targets[i].find("#") != std::string::npos) {
                 chan = targets[i];
-                if (chan.find("+") != std::string::npos && chan.find("@") != std::string::npos) { // À revoir (exemple : #+@++chan)
-                    targets[i] = chan.substr(chan.find("#") + 3);
-                } else if (chan.find("+") != std::string::npos || chan.find("@") != std::string::npos)
-                    targets[i] = chan.substr(chan.find("#") + 2);
-                else
-                    targets[i] = chan.substr(chan.find("#") + 1);
+                targets[i] = chan.substr(chan.find("#") + 1);
             }
             client_it = get_client(targets[i]);
             if (client_it == _clients.end())
@@ -43,7 +53,8 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg)
             if (client_it != _clients.end()) {
                 if ((*client_it).get_away())
                     send_message(sender, ft_print_numerics(301));
-                std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*client_it).get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
+                send_message(sender, build_message(sender.get_nickname(), (*client_it).get_nickname(), msg.get_tab_parameter()[1], 0));
+                // std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*client_it).get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
                 //send message
             } else if (channel_it != _channels.end()) {
                 for (std::vector<Client*>::iterator ban_user_it = (*channel_it).get_users_ban().begin(); ban_user_it != (*channel_it).get_users_ban().end(); ban_user_it++)
@@ -57,19 +68,21 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg)
                 }
                 for (std::map<Client *, std::string>::iterator it = (*channel_it).get_users().begin(); it != (*channel_it).get_users().end(); it++) {
                     if (chan != "") {
-                        if (chan.find("@") != std::string::npos && chan.find("#") < chan.find("@") && ((*it).second.find("o") == std::string::npos)) {        
+                        if (chan.find("@") != std::string::npos && chan.find("@") < chan.find("#") && ((*it).second.find("o") == std::string::npos)) {   
                             send_message(sender, ft_print_numerics(404));
                             continue ;
                         }
-                        else if (chan.find("+") != std::string::npos && chan.find("#") < chan.find("+") && ((*it).second.find("v") == std::string::npos && (*it).second.find("o") == std::string::npos)) {
+                        else if (chan.find("+") != std::string::npos && chan.find("+") < chan.find("#") && ((*it).second.find("v") == std::string::npos && (*it).second.find("o") == std::string::npos)) {
                             send_message(sender, ft_print_numerics(404));
                             continue ;
                         } else
+                            // send_message(sender, build_message(sender.get_nickname(), (*it).first->get_nickname(), msg.get_tab_parameter()[1]), 0);
                             std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*it).first->get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
                         // send message
-                    } else        
-                        std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*it).first->get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
+                    }
                 }
+                // send_message(sender,  build_message(sender.get_nickname(), (*it).first->get_nickname(), msg.get_tab_parameter()[1], 1));
+                //  std::cout << ":" << sender.get_nickname() << " PRIVMSG #" << (*channel_it).get_name() << " :" << msg.get_tab_parameter()[1] << std::endl;
             }
             chan = "";
         }

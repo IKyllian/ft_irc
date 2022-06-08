@@ -36,28 +36,27 @@ void Server::command_TOPIC(Client *client, Message &message) {
 	std::map<Client*, std::string>::iterator client_it;
 
 	if (message.get_tab_parameter().size() < 1 || message.get_tab_parameter().size() > 2) {
-		ft_print_numerics(461);
+		send_message(*client, ft_print_numerics(461));
 		return ;
 	}
 	channel_it = get_channel(message.get_tab_parameter()[0]);	
 	if (channel_it == _channels.end()) {
-		ft_print_numerics(403);
+		send_message(*client, ft_print_numerics(403));
 		return ;
 	}
 	client_it = (*channel_it).get_users().find(client);
 	if (client_it == (*channel_it).get_users().end()) {
-		ft_print_numerics(442);
+		send_message(*client, ft_print_numerics(442));
 		return ;
 	}
 	if ((*channel_it).get_channel_modes().find("t") != std::string::npos) {
 		if ((*channel_it).get_users().find(client)->second.find("o") == std::string::npos) {
-			ft_print_numerics(482);
+			send_message(*client, ft_print_numerics(482));
 			return ;
 		}
 	}
 	if (message.get_tab_parameter().size() == 2)
 		(*channel_it).set_topic(message.get_tab_parameter()[1]);
 	else
-		std::cout << (*channel_it).get_topic() << std::endl;
-		// ft_print_numerics(332); // RPL_TOPIC (332) 
+		send_message(*client, ft_print_numerics(332)); // RPL_TOPIC (332)
 }

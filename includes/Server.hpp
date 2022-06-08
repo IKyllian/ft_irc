@@ -71,8 +71,7 @@ class Server {
 		void set_using_password(bool val);
 		void set_user(Client client);
 
-		bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
-		bool send_message(Client &client, std::string message);
+		
 		
 		std::string print_numerics(int num, Client &sender, Client &receiver, Channel *channel = NULL, Message *message = NULL);
 
@@ -143,5 +142,7 @@ class Server {
 		bool _nick_isvalid(std::string nick) const;
 };
 
+bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
+bool send_message(Client &client, std::string message);
 
 #endif

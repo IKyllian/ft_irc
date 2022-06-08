@@ -2,7 +2,6 @@
 #include "../../includes/Channel.hpp"
 #include "../../includes/Client.hpp"
 #include "../../includes/Server.hpp"
-#include "../../includes/Server.hpp"
 
 int main(int argc, char **argv)
 {
@@ -27,7 +26,7 @@ int main(int argc, char **argv)
 	std::vector<std::string> private_msg2;
 
 	// Private Message
-	private_msg.push_back("#@chan,channel2");
+	private_msg.push_back("+#chan");
 	private_msg.push_back("Ceci est un message de test");
 
 
@@ -159,7 +158,7 @@ int main(int argc, char **argv)
 	
 	server.command_MODE_CHAN(&client1, mode_parameters2);
 
-	server.command_PRIVMSG(client3, message);
+	server.command_PRIVMSG(client2, message);
 
     return (0);
 }
