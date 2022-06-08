@@ -1,4 +1,5 @@
 #include "../includes/ft_irc.hpp"
+#include "../includes/Command.hpp"
 #include "../includes/Server.hpp"
 
 
@@ -165,6 +166,26 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
     }
 }
 
+void    fill_server_command(Server &server)
+{
+    server.get_commands().push_back(Command Away("AWAY", "The AWAY command lets clients indicate that their user is away."));
+    server.get_commands().push_back(Command Help("HELP", "The HELP command is used to return documentation about the commands it implements."));
+    server.get_commands().push_back(Command Invite("INVITE", "The INVITE command is used to invite a user to a channel."));
+    server.get_commands().push_back(Command Join("JOIN", "The JOIN command indicates that the client wants to join the given channel."));
+    server.get_commands().push_back(Command Kick("KICK", "The KICK command can be used to request the forced removal of a user from a channel."));
+    server.get_commands().push_back(Command List("LIST", "The LIST command is used to get a list of channels along with some information about each channel."));
+    server.get_commands().push_back(Command Mode("MODE", "The MODE command is used to set or remove options (or modes) from a given target."));
+    server.get_commands().push_back(Command Names("NAMES", "The NAMES command is used to view the nicknames joined to a channel and their channel membership prefixes."));
+    server.get_commands().push_back(Command Nick("NICK", "he NICK command is used to give the client a nickname or change the previous one."));
+    server.get_commands().push_back(Command Part("PART", "The PART command removes the client from the given channel(s)."));
+    server.get_commands().push_back(Command Pass("PASS", "The PASS command is used to set a ‘connection password’."));
+    server.get_commands().push_back(Command Privmsg("PRIVMSG", "The PRIVMSG command is used to send private messages between users, as well as to send messages to channels."));
+    server.get_commands().push_back(Command Topic("TOPIC", "The TOPIC command is used to change or view the topic of the given channel."));
+    server.get_commands().push_back(Command User("USER", "The USER command is used at the beginning of a connection to specify the username and realname of a new user."));
+    server.get_commands().push_back(Command Who("WHO", "The WHO command is used to query a list of users who match the provided mask."));
+    server.get_commands().push_back(Command Whois("WHOIS", "The WHOIS command is used to query information about particular users."));
+}
+
 void do_parsing(Server &server, Client &sender, std::string message)
 {
     std::vector<Message*> msg;
@@ -179,6 +200,7 @@ void do_parsing(Server &server, Client &sender, std::string message)
     for (size_t i = 0; i < msg.size(); i++)
     {
         msg[i]->set_sender(&sender);
+        fill_server_command(server);
         do_command(server, sender, *msg[i]);
         // std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
         // std::cout << "command = " << msg[i]->get_command() << std::endl;
