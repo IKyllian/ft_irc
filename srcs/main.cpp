@@ -170,6 +170,11 @@ bool init_server(Server &server, int ac, char** av)
 	server.set_hostname(HOST_NAME);
 	server.set_network_name(NETWORK_NAME);
 	server.set_port(av[1]);
+	server.set_servername(SERVER_NAME);
+	server.set_version(VERSION);
+	server.set_locationServer(SERVER_LOCATION);
+	server.set_hostInfo(SERVER_LOCATION2);
+	server.set_hostMail(HOSTMAIL);
 	return true;	
 }
 
