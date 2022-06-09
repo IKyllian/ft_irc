@@ -8,9 +8,9 @@ void Message::set_sender(Client *val) {
 	_sender = val;
 }
 
-// void Message::set_receiver(Client &val) {
-// 	*_receiver = val;
-// }
+void Message::set_receiver(Client *val) {
+	_receiver = val;
+}
 
 // void Message::set_payload(std::string &val) {
 // 	_payload = val;

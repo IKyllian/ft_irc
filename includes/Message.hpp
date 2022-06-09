@@ -27,11 +27,11 @@ class Message {
 		//std::string 				get_subject() const;
 
 		void set_sender(Client *val);
+		void set_receiver(Client *val);
 		void set_prefix(std::string &val);
 		void set_command(std::string &val);
 		void set_parameter(std::string &val);
 		void set_nb_parameter(int val);
-		//void set_receiver(Client &val);
 		//void set_payload(std::string &val);
 		//void set_command_info(std::string &val);
 		//void set_mask(std::string &val);
