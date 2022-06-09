@@ -57,6 +57,10 @@ void Server::command_TOPIC(Client *client, Message &message) {
 	}
 	if (message.get_tab_parameter().size() == 2)
 		(*channel_it).set_topic(message.get_tab_parameter()[1]);
-	else
-		send_message(*client, ft_print_numerics(332)); // RPL_TOPIC (332)
+	else {
+		if ((*channel_it).get_topic() == "")
+			send_message(*client, ft_print_numerics(331)); // RPL_NOTOPIC (332)
+		else
+			send_message(*client, ft_print_numerics(332)); // RPL_TOPIC (332)
+	}
 }

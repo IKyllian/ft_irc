@@ -1,5 +1,17 @@
 #include "../../includes/ft_irc.hpp"
 
+std::string build_invite_message(std::string sender, std::string receiver, std::string channel) {
+	std::string str;
+
+	str += ":";
+	str += sender;
+	str += " Invite ";
+	str += receiver;
+	str += " #";
+	str += channel;
+	return str;
+}
+
 // void Server::command_INVITE(Client *sender, std::vector<std::string> parameters) {
 // 	std::vector<Channel>::iterator	channel_it;
 // 	std::vector<Client>::iterator	client_it;
@@ -49,6 +61,7 @@ void Server::command_INVITE(Client *sender, Message &message) {
 		} else {
 			(*channel_it).add_invite(&(*client_it));
 			send_message(*sender, ft_print_numerics(341)); //RPL_NAMREPLY (353) 
+			send_message(*sender, build_invite_message(sender->get_nickname(), (*client_it).get_nickname(), (*channel_it).get_name()));
 		}
 	}
 	send_message(*sender, ft_print_numerics(366)); // RPL_ENDOFNAMES (366) 

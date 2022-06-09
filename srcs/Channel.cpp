@@ -156,8 +156,8 @@ void Channel::set_mode(char mode, std::string parameter) {
 	} else if (mode == 'b') {
 		std::map<Client*, std::string>::iterator it = _users.begin();
 		for (; it != _users.end(); it++)
-		if ((*it).first->get_nickname() == parameter)
-			break;
+			if ((*it).first->get_nickname() == parameter)
+				break;
 		if (it == _users.end())
 			ft_print_numerics(401);
 		else {
