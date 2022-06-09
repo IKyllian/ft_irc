@@ -13,6 +13,7 @@
 class Channel;
 class Client;
 class Message;
+class Command;
 
 class Server {
 	public :
@@ -114,7 +115,6 @@ class Server {
 		void command_PRIVMSG(Client &sender, Message &msg);
 		void command_WHO(Client &client, Message &message);
 		void command_WHOIS(Client &client, Message &message);
-{
 
 	private :
 		std::string _network_name;
