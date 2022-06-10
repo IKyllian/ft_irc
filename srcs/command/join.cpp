@@ -38,7 +38,8 @@ void Server::command_JOIN(Client *client, Message &message, Server &server) {
 	if (message.get_tab_parameter().size() > 1)
 		keys = parse_comma(message.get_tab_parameter()[1]);
 	for (size_t i = 0; i < channels_string.size(); i++) {
-		channels_string[i] = channels_string[i].substr(channels_string[i].find("#") + 1);
+		if (channels_string[i].size() > 0 && channels_string[i][0] != '#' && channels_string[i][0] != '&')
+			continue ;
 		channel_it = get_channel(channels_string[i]);
 		if (channel_it == _channels.end()) {
 			_channels.push_back(Channel(channels_string[i], &server));

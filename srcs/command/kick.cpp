@@ -39,6 +39,8 @@ void Server::command_KICK(Client *sender, Message &message) {
 		send_message(*sender, ft_print_numerics(461));
 	} else {
 		clients_string = parse_comma(message.get_tab_parameter()[1]);
+		if (message.get_tab_parameter()[0].size() > 0 && message.get_tab_parameter()[0][0] != '#' && message.get_tab_parameter()[0][0] != '&')
+			return ;
 		channel_it = get_channel(message.get_tab_parameter()[0]);
 		if (channel_it == _channels.end()) {
 			send_message(*sender, ft_print_numerics(403));

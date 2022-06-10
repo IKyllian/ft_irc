@@ -39,6 +39,8 @@ void Server::command_INVITE(Client *sender, Message &message) {
 			send_message(*sender, ft_print_numerics(401));
 			return ;
 		}
+		if (message.get_tab_parameter()[1].size() > 0 && message.get_tab_parameter()[1][0] != '#' && message.get_tab_parameter()[1][0] != '&')
+			return ;
 		channel_it = get_channel(message.get_tab_parameter()[1]);
 		if (channel_it == _channels.end()) {
 			send_message(*sender, ft_print_numerics(403));

@@ -37,7 +37,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg)
                 if (client_it != _clients.end()) {
                     if ((*client_it).get_away())
                         send_message(sender, ft_print_numerics(301));
-                    send_message(sender, build_command_message(sender.get_nickname(), "", (*client_it).get_nickname(), "PRIVMSG", msg.get_tab_parameter()[1], 0));
+                    send_message(sender, build_command_message(sender.get_nickname(), "", (*client_it).get_nickname(), "PRIVMSG", msg.get_tab_parameter()[1]));
                     // std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*client_it).get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
                     //send message
                 } else if (channel_it != _channels.end()) {
@@ -65,7 +65,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg)
                             // send message
                         }
                     }
-                    send_message(sender, build_command_message(sender.get_nickname(), "", (*channel_it).get_name(), "PRIVMSG", msg.get_tab_parameter()[1], 0));
+                    send_message(sender, build_command_message(sender.get_nickname(), "", (*channel_it).get_name(), "PRIVMSG", msg.get_tab_parameter()[1]));
                     // send_message(sender,  build_message(sender.get_nickname(), (*it).first->get_nickname(), msg.get_tab_parameter()[1], 1));
                     //  std::cout << ":" << sender.get_nickname() << " PRIVMSG #" << (*channel_it).get_name() << " :" << msg.get_tab_parameter()[1] << std::endl;
                 }
