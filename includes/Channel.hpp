@@ -48,7 +48,7 @@ class Channel {
 		void set_user_limit(int limit);
 		void set_server(Server *server);
 		
-		void remove_user(Client *client, std::vector<Channel> *channels);
+		int remove_user(Client *client, std::vector<Channel> *channels);
 		void remove_invite(Client *client);
 		void ban_user(Client *client);
 		void unban_user(Client *client);

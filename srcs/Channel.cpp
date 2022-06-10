@@ -334,7 +334,7 @@ void Channel::add_invite(Client *client) {
 	// RPL_INVITING (341)
 }
 
-void Channel::remove_user(Client *client, std::vector<Channel> *channels) {
+int Channel::remove_user(Client *client, std::vector<Channel> *channels) {
 	// std::map<Client*, std::string>::iterator it = _users.find(client);
 	std::map<Client*, std::string>::iterator it;
 	std::vector<Channel>::iterator it2;
@@ -343,9 +343,8 @@ void Channel::remove_user(Client *client, std::vector<Channel> *channels) {
 		if ((*it).first->get_nickname() == client->get_nickname())
 			break ;
 	}
-	if (_users.end() == it) {
-		send_message(*client, ft_print_numerics(442));
-	}
+	if (_users.end() == it)
+		return (-1);
 	else {
 		_users.erase(it);
 		remove_invite(client);
@@ -356,7 +355,7 @@ void Channel::remove_user(Client *client, std::vector<Channel> *channels) {
 			if (it2 != channels->end())
 				channels->erase(it2);
 		}
-		// std::cout << ":" << client->get_nickname() << " PART " << get_name() << std::endl;
+		return (0);
 	}
 }
 
