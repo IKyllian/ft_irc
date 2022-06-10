@@ -5,7 +5,7 @@ void Server::command_WHOIS(Client &sender, Message &msg)
 {
     if (msg.get_nb_parameter() < 1)
     {
-        send_message(sender, ft_print_numerics(/*sender, */ 401) + "\n");
+        send_message(sender, print_numerics(401, sender, sender, NULL, &msg) + "\n");
         return ;
     }
     else

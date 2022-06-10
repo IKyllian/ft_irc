@@ -31,7 +31,7 @@ void Server::command_JOIN(Client *client, Message &message) {
 	std::vector<Channel>::iterator	channel_it;
 
 	if (message.get_tab_parameter().size() < 1) {
-		ft_print_numerics(461);
+		send_message(*client, print_numerics(461, *client, *client, NULL, &message));
 		return ;
 	}
 	channels_string = parse_comma(message.get_tab_parameter()[0]);

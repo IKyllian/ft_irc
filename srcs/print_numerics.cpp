@@ -21,6 +21,11 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	(void) channel;
 	(void) message;
 
+	std::string str_num;
+  	std::stringstream ss;  
+  
+  	ss << num;  
+  	ss >> str_num;  
 
 //TODO
 // + TODO channel
@@ -74,7 +79,11 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string username = sender.get_username();;
 	std::string user_account = sender.get_username();
 
-	std::string client_name = sender.get_nickname();
+	std::string client_name = ":" + sender.get_nickname() + "@" + sender.get_username() + "!" + "127.0.0.1" + " " + str_num + " " + sender.get_nickname();
+	/*if (message)
+	{
+		client_name += message->get_command() + " ";
+	}*/
 	std::string user_nick = sender.get_nickname();
 
 	//              SERVER VAR              //

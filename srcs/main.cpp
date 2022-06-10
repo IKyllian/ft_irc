@@ -253,6 +253,7 @@ int main(int ac, char **av)
 					}
 					std::cout << "New incomig connection: " << fd.fd << std::endl;
 					fd.events = POLLIN;
+					send(fd.fd, ":127.0.0.1 001 rowhou :Welcome to the Internet Relay Network nick!user@host\r\n", 78, 0);
 					server.get_fds().push_back(fd);
 				}
 			}
