@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 14:50:32 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/05 17:16:05 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/10 16:31:04 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ void Server::command_USER(Client &client, Message &message)
 		//    indicate to the client that it didn't supply enough
 		//    parameters.
 		answer = ":";
-		answer += this->get_hostname();
+		answer += client.get_fullidentity();
 		answer += " ";
-		if (!client.get_hasnick())
-		{
-			answer += "* USER :Not enough parameters";
-		}
-		else
-		{
+		// if (!client.get_hasnick())
+		// {
+		// 	answer += "* USER :Not enough parameters";
+		// }
+		// else
+		// {
 			answer += print_numerics(461, client, client, NULL, &message);
-		}
+		// }
 		send_message(client, answer);
 	}
 	else if (!(client.get_realname() == ""))
@@ -53,16 +53,16 @@ void Server::command_USER(Client &client, Message &message)
 		//    change part of the registered details (such as
 		//    password or user details from second USER message).
 		answer = ":";
-		answer += this->get_hostname();
+		answer += client.get_fullidentity();
 		answer += " ";
-		if (!client.get_hasnick())
-		{
-			answer += "*  :You may not reregister";
-		}
-		else
-		{
+		// if (!client.get_hasnick())
+		// {
+		// 	answer += "*  :You may not reregister";
+		// }
+		// else
+		// {
 			answer += print_numerics(462, client, client);
-		}
+		// }
 		send_message(client, answer);
 	}
 	else 
@@ -82,13 +82,20 @@ void Server::command_USER(Client &client, Message &message)
 		answer = "";
 		client.set_registered(true);
 
+std::cout << std::boolalpha 
+<< " hasnick: " << client.get_hasnick() << std::endl
+<< " serv using pw: " << get_using_password() << std::endl
+<< " client gave pw: " << client.get_authentified() << std::endl
+<< " if result: " << (client.get_hasnick() && ( !get_using_password() ||  client.get_authentified() ))
+<< std::endl;
+
 		//check if NICK + USER + PASSWORD valid
 		if (client.get_hasnick() && ( !get_using_password() ||  client.get_authentified() ))
 		{
 			//RPL WELCOME ?
 			client.set_logged(true);
 			answer = ":";
-			answer += this->get_hostname();
+			answer += client.get_fullidentity();
 			answer += " ";
 			answer += print_numerics(001, client, client);
 			send_message(client, answer);

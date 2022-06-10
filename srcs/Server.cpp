@@ -57,7 +57,7 @@ std::string Server::get_password() const { return (_password); }
 bool Server::get_using_password() const { return (_using_password); }
 int Server::get_server_fd() const { return (_fds[0].fd); }
 
-std::vector<Client>::iterator Server::get_client(std::string to_search){
+std::vector<Client>::iterator Server::get_client(std::string to_search) {
 	std::vector<Client>::iterator	client_it;
 
 	for (client_it = _clients.begin(); client_it != _clients.end(); client_it++)
@@ -66,7 +66,16 @@ std::vector<Client>::iterator Server::get_client(std::string to_search){
 	return (client_it);
 }
 
-std::vector<Channel>::iterator Server::get_channel(std::string to_search){
+std::vector<Client>::iterator Server::get_client_by_fd(int search) {
+	std::vector<Client>::iterator	client_it;
+
+	for (client_it = _clients.begin(); client_it != _clients.end(); client_it++)
+		if ((*client_it).get_fd() == search)
+			break;
+	return (client_it);
+}
+
+std::vector<Channel>::iterator Server::get_channel(std::string to_search) {
 	std::vector<Channel>::iterator	channel_it;
 
 	for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++)
@@ -177,15 +186,15 @@ bool Server::_nick_isvalid(std::string nick) const {
 	size_t ret;
 
 
-std::cout << "@@@@inside _nick_isvalid " << std::endl;
-for (unsigned long i = 0; i < nick.length(); i++)
-{
-	std::cout << "i: " << i << " nick[i]: " << nick[i] << " | (int): " << (int) nick[i] << std::endl;
-}
+// std::cout << "@@@@inside _nick_isvalid " << std::endl;
+// for (unsigned long i = 0; i < nick.length(); i++)
+// {
+// 	std::cout << "i: " << i << " nick[i]: " << nick[i] << " | (int): " << (int) nick[i] << std::endl;
+// }
 
 
 	ret = nick.find_first_not_of(valid);
-std::cout << "ret: " << ret << " npos: " <<  std::string::npos << std::endl;
+//std::cout << "ret: " << ret << " npos: " <<  std::string::npos << std::endl;
 	if (ret != std::string::npos || ret < nick.length())
 		return false;
 	return true;
@@ -199,7 +208,7 @@ bool send_message(Server &server, Message &msg_data, std::string header, std::st
 	char				buffer[65535];
 	std::string			str;
 	// std::stringstream	ss;
-std::cout << "###inside send_message" << std::endl;
+// std::cout << "###inside send_message" << std::endl;
 	// ss << msgnum;
 (void) server;
 

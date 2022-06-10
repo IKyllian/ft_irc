@@ -38,11 +38,25 @@ int handle_incoming_message(Server& server, int fd)
 		if (fd == server.get_clients()[i].get_fd())
 			break;
 	}
+
+
 	if (i == server.get_clients().size())
 	{
-		std::cout << "Client " << fd << " is new, adding to client list" << std::endl;
-		server.get_clients().push_back(Client(fd));
+		std::cerr << "### Something went very wrong, client not in list ###" << std::endl;
 	}
+
+// 	if (i == server.get_clients().size())
+// 	{
+// 		std::cout << "Client " << fd << " is new, adding to client list" << std::endl;
+// 		server.get_clients().push_back(Client(fd));
+
+// struct sockaddr_in *addr_in = (struct sockaddr_in *)res;
+// 		char *s = inet_ntoa(addr_in->sin_addr);
+// 		char *s = inet_ntoa(server.get_fds()[i + 1].);
+// printf("IP address: %s\n", s);
+// 	}
+
+
 	do
 	{
 		memset(&buffer, 0, sizeof(buffer));
@@ -191,7 +205,7 @@ int main(int ac, char **av)
 
 	Server			server;
 	bool			running = true;
-	bool			removeFD = false;
+	//bool			removeFD = false;
 	int				ret;
 	struct pollfd	fd;
 	unsigned long	i, j;
@@ -232,7 +246,8 @@ int main(int ac, char **av)
 					running = false;
 					break;
 				}
-				removeFD = true;
+				//removeFD = true;
+				server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
 				break;
 			}
 
@@ -240,8 +255,14 @@ int main(int ac, char **av)
 			{
 				while (true)
 				{
+					struct sockaddr	addr;
+					struct sockaddr_in *addr_in;
+					socklen_t socklen = 0;
+					char *s;
+
 					memset(&fd, 0 , sizeof(fd));
-					fd.fd = accept(server.get_server_fd(), NULL, NULL);
+//remplacer le check errno par un try/catch ?
+					fd.fd = accept(server.get_server_fd(), &addr, &socklen);
 					if (fd.fd < 0)
 					{
 						if (errno != EWOULDBLOCK)
@@ -253,8 +274,20 @@ int main(int ac, char **av)
 					}
 					std::cout << "New incomig connection: " << fd.fd << std::endl;
 					fd.events = POLLIN;
-					send(fd.fd, ":127.0.0.1 001 rowhou :Welcome to the Internet Relay Network nick!user@host\r\n", 78, 0);
+					//send(fd.fd, ":127.0.0.1 001 kzennoun :Welcome to the Internet Relay Network nick!user@host\r\n", 79, 0);
 					server.get_fds().push_back(fd);
+					server.get_clients().push_back(Client(fd.fd));
+					addr_in = (struct sockaddr_in *)&addr;
+					s = inet_ntoa(addr_in->sin_addr);
+std::cout << "hostname is: " << s << "|" << std::endl;
+					server.get_clients()[server.get_clients().size() - 1].set_hostname(s);
+
+// std::cout << std::boolalpha 
+// << " register: " << server.get_clients()[server.get_clients().size() - 1].get_registered() << std::endl
+// << " hasnick: " << server.get_clients()[server.get_clients().size() - 1].get_hasnick() << std::endl
+// << " serv using pw: " << server.get_using_password() << std::endl
+// << " client gave pw: " << server.get_clients()[server.get_clients().size() - 1].get_authentified() << std::endl
+// << std::endl;
 				}
 			}
 			else // client fd
@@ -268,30 +301,29 @@ int main(int ac, char **av)
 						//EWOULDBLOCK 35
 						if (errno == EWOULDBLOCK)
 							break;
-						removeFD = true;
+						//removeFD = true;
+						server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
 						break;
 					}
 				} //end while reading incoming message		
 			}
 		} // end checking all fds in pollfd vector
 
-		if (removeFD)
-		{
-			removeFD = false;
-			std::cout << "Closing fd " << server.get_fds()[i].fd << std::endl;
+
 			for (j = 0; j < server.get_clients().size(); j++)
 			{
-				if (server.get_fds()[i].fd == server.get_clients()[j].get_fd())
+				if (server.get_clients()[j].get_fd() == -1)
 				{
-					std::cout << "Removing Client: " << server.get_clients()[j].get_fd() << std::endl;
+					std::cout << "Removing Client: " << server.get_clients()[j].get_nickname() << std::endl;
 					server.get_clients().erase(server.get_clients().begin() + j);
 					//TODO faire des trucs ? (enlever le user des channels ?)
-					break;
+					std::cout << "Closing fd " << server.get_fds()[j + 1].fd << std::endl;
+					close(server.get_fds()[j + 1].fd);
+					server.get_fds().erase(server.get_fds().begin() + j + 1);
+
 				}
 			}
-			close(server.get_fds()[i].fd);
-			server.get_fds().erase(server.get_fds().begin() + i);
-		}
+	
 	} // end main loop
 	std::cout << "Closing all remaining fd" << std::endl;
 	for (i = 0; i < server.get_fds().size(); i++)

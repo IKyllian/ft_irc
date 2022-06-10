@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 13:25:54 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/05 17:17:55 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/10 16:26:52 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,22 @@ void Server::command_NICK(Client &client, Message &message) {
 
 	if (message.get_tab_parameter().size() == 0)
 	{
-		if (client.get_hasnick())
-		{
+		// if (client.get_hasnick())
+		// {
 			answer = ":";
-			answer += this->get_hostname();
+			answer += client.get_fullidentity();
 			answer += " ";
 			answer += print_numerics(431, client, client);
 			send_message(client, answer);
-		}
-		else
-		{
-			answer = ":";
-			answer += this->get_hostname();
-			answer += " 431 * ";
-			answer += ":No nickname given";
-			send_message(client, answer);
-		}
+		// }
+		// else
+		// {
+		// 	answer = ":";
+		// 	answer += this->get_hostname();
+		// 	answer += " 431 * ";
+		// 	answer += ":No nickname given";
+		// 	send_message(client, answer);
+		// }
 		return;
 	}
 
@@ -48,74 +48,79 @@ void Server::command_NICK(Client &client, Message &message) {
 
 	if (!_nick_available(new_nick))
 	{
-std::cout << ">>>nick not available" << std::endl;
-			answer = ":";
-			answer += this->get_hostname();
-			answer += " 433 ";
-			if (client.get_hasnick())
-			{
-				answer += client.get_nickname();
-			}
-			else
-			{
-				answer += "*";
-			}
-			answer += ":Nickname is already in use";
+//std::cout << ">>>nick not available" << std::endl;
+			// if (client.get_hasnick())
+			// {
+				answer = ":";
+				answer += client.get_fullidentity();
+				answer += " ";		
+				answer += print_numerics(433, client, client);
+			// }
+			// else
+			// {
+			// 	answer = ":";
+			// 	answer += this->get_hostname();
+			// 	answer += " 433 * :Nickname is already in use";
+			// }
 
 			send_message(client, answer);
 	}
 	else if (!_nick_isvalid(new_nick))
 	{
-std::cout << ">>>nick invalid" << std::endl;
+//std::cout << ">>>nick invalid" << std::endl;
 
-		if (client.get_hasnick())
-		{
+		// if (client.get_hasnick())
+		// {
 			answer = ":";
-			answer += this->get_hostname();
+			answer += client.get_fullidentity();
 			answer += " ";
 			answer += print_numerics(432, client, client);
-		}
-		else
-		{
-			answer = ":";
-			answer += this->get_hostname();
-			answer += " 432 * ";
-			answer += ":Erroneous nickname";
-		}
+		// }
+		// else
+		// {
+		// 	answer = ":";
+		// 	answer += this->get_hostname();
+		// 	answer += " 432 * :Erroneous nickname";
+		// }
 			send_message(client, answer);
 	}
 	else if (client.get_user_modes().find('r') != std::string::npos)
 	{
-std::cout << ">>>user restricted" << std::endl;
+//std::cout << ">>>user restricted" << std::endl;
 
-		if (client.get_hasnick())
-		{
+		// if (client.get_hasnick())
+		// {
 			answer = ":";
-			answer += this->get_hostname();
+			answer += client.get_fullidentity();
 			answer += " ";
 			answer += print_numerics(484, client, client);
-		}
-		else
-		{
-			answer = ":";
-			answer += this->get_hostname();
-			answer += " 484 * ";
-			answer += ":Your connection is restricted!";
-		}
+		// }
+		// else
+		// {
+		// 	answer = ":";
+		// 	answer += this->get_hostname();
+		// 	answer += " 484 * :Your connection is restricted!";
+		// }
 			send_message(client, answer);
 	}
 	else 
 	{
-std::cout << ">>>changing nickname" << std::endl;
+//std::cout << ">>>changing nickname" << std::endl;
 		client.set_nickname(new_nick);
 
 		//check if NICK + USER + PASSWORD valid
+std::cout << std::boolalpha << std::endl
+<< " register: " << client.get_registered() << std::endl
+<< " serv using pw: " << get_using_password() << std::endl
+<< " client gave pw: " << client.get_authentified() << std::endl
+<< " if result: " << (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
+<< std::endl;
 		if (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
 		{
 			//RPL WELCOME ?
 			client.set_logged(true);
 			answer = ":";
-			answer += this->get_hostname();
+			answer += client.get_fullidentity();
 			answer += " ";
 			answer += print_numerics(001, client, client);
 			send_message(client, answer);
