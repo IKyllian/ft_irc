@@ -1,17 +1,5 @@
 #include "../../includes/ft_irc.hpp"
 
-std::string build_kick_message(std::string sender, std::string receiver, std::string channel) {
-	std::string str;
-
-	str += ":";
-	str += sender;
-	str += " KICK #";
-	str += channel;
-	str += " ";
-	str += receiver;
-	return str;
-}
-
 // void Server::command_KICK(Client *sender, std::vector<std::string> parameters) {
 // 	std::vector<Channel>::iterator	channel_it;
 // 	std::vector<std::string>		clients_string;
@@ -66,7 +54,7 @@ void Server::command_KICK(Client *sender, Message &message) {
 					continue; 
 				}
 				(*channel_it).remove_user(&(*client_it), &_channels);
-			send_message(*sender, build_kick_message(sender->get_nickname(), (*client_it).get_nickname(), (*channel_it).get_name()));
+			send_message(*sender, build_command_message(sender->get_nickname(), (*client_it).get_nickname(), (*channel_it).get_name(), "KICK"));
 			}
 		}
 	}

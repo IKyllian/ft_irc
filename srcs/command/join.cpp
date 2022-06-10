@@ -1,15 +1,5 @@
 #include "../../includes/ft_irc.hpp"
 
-std::string build_join_message(std::string client, std::string channel) {
-	std::string str;
-
-	str += ":";
-	str += client;
-	str += " JOIN #";
-	str += channel;
-	return str;
-}
-
 // void Server::command_JOIN(Client *client, std::vector<std::string> parameters) {
 // 	std::vector<std::string>		channels_string;
 // 	std::vector<std::string>		keys;
@@ -57,7 +47,7 @@ void Server::command_JOIN(Client *client, Message &message) {
 			(*channel_it).set_user(client);
 		else
 			(*channel_it).set_user(client, keys[i]);
-		send_message(*client, build_join_message(client->get_nickname(), (*channel_it).get_name()));
+		send_message(*client, build_command_message(client->get_nickname(), "", (*channel_it).get_name(), "JOIN"));
 		send_message(*client, ft_print_numerics(332));
 		for (std::map<Client*, std::string>::iterator user_it = (*channel_it).get_users().begin(); user_it != (*channel_it).get_users().end(); user_it++)
 			send_message(*client, ft_print_numerics(353));

@@ -2,21 +2,6 @@
 #include "../../includes/Channel.hpp"
 #include "../../includes/ft_irc.hpp"
 
-std::string build_message(std::string sender, std::string target, std::string message, int is_chan) {
-    std::string answer;
-
-    answer += ":";
-    answer += sender;
-    answer += " PRIVMSG ";
-    if (is_chan)
-     answer += "#";
-    answer += target;
-    answer += ":";
-    answer += message;
-
-    return (answer);
-}
-
 void    Server::command_PRIVMSG(Client &sender, Message &msg)
 {
     std::vector<std::string> targets;
@@ -52,7 +37,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg)
                 if (client_it != _clients.end()) {
                     if ((*client_it).get_away())
                         send_message(sender, ft_print_numerics(301));
-                    send_message(sender, build_message(sender.get_nickname(), (*client_it).get_nickname(), msg.get_tab_parameter()[1], 0));
+                    send_message(sender, build_command_message(sender.get_nickname(), (*client_it).get_nickname(), "PRIVMSG", msg.get_tab_parameter()[1], 0));
                     // std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*client_it).get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
                     //send message
                 } else if (channel_it != _channels.end()) {

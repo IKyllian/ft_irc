@@ -1,14 +1,5 @@
 #include "../../includes/ft_irc.hpp"
 
-std::string build_part_message(std::string client, std::string channel) {
-	std::string str;
-
-	str += ":";
-	str += client;
-	str += " PART #";
-	str += channel;
-	return str;
-}
 // void Server::command_PART(Client *client, std::vector<std::string> parameters) {
 // 	std::vector<std::string>		channels_string;
 // 	std::vector<Channel>::iterator	channel_it;
@@ -46,6 +37,6 @@ void Server::command_PART(Client *client, Message &message) {
 			continue ;
 		}
 		(*channel_it).remove_user(client, &_channels);
-		send_message(*client, build_part_message(client->get_nickname(), (*channel_it).get_name()));
+		send_message(*client, build_command_message(client->get_nickname(), "", (*channel_it).get_name(), "PART"));
 	}
 }
