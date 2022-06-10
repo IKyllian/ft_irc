@@ -7,7 +7,21 @@ Client::Client(const Client &client) : _nickname(client._nickname), _username(cl
 // 	*this = client;
 // }
 
-Client::Client(int &fd) : _nickname("*"), _username("*"), _realname(""), _hostname("*"), _user_modes(""), _fd(fd), _logged(false), _registered(false), _authentified(false), _hasnick(false), _away(false), _away_msg(""), _buffer("")  {}
+Client::Client(int &fd) : 
+	_nickname("*"), 
+	_username("*"), 
+	_realname(""),
+	_hostname("*"), 
+	_user_modes(""), 
+	_fd(fd), 
+	_logged(false), 
+	_registered(false), 
+	_authentified(false), 
+	_hasnick(false), 
+	_away(false), 
+	_away_msg(""), 
+	_buffer("")  {}
+	
 Client::~Client() {}
 
 bool Client::operator==(const Client& rhs) {
@@ -86,7 +100,7 @@ void Client::set_user_modes(std::string mode) {
 		ft_print_numerics(221); // RPL_CHANNELMODEIS (Si aucun mode n'est donné, renvoie juste les modes actuels)
 }
 
-void Client::set_fd(int &val) {
+void Client::set_fd(int val) {
 	_fd = val;
 }
 

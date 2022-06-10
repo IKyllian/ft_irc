@@ -37,7 +37,7 @@ class Client {
 		void set_realname(std::string val);
 		void set_hostname(std::string val);
 		void set_user_modes(std::string mode);
-		void set_fd(int &val);
+		void set_fd(int val);
 		void set_logged(bool val);
 		void set_registered(bool val);
 		void set_authentified(bool val);

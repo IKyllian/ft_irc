@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 13:25:54 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/10 15:04:30 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/10 16:26:52 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void Server::command_NICK(Client &client, Message &message) {
 
 	if (!_nick_available(new_nick))
 	{
-std::cout << ">>>nick not available" << std::endl;
+//std::cout << ">>>nick not available" << std::endl;
 			// if (client.get_hasnick())
 			// {
 				answer = ":";
@@ -67,7 +67,7 @@ std::cout << ">>>nick not available" << std::endl;
 	}
 	else if (!_nick_isvalid(new_nick))
 	{
-std::cout << ">>>nick invalid" << std::endl;
+//std::cout << ">>>nick invalid" << std::endl;
 
 		// if (client.get_hasnick())
 		// {
@@ -86,7 +86,7 @@ std::cout << ">>>nick invalid" << std::endl;
 	}
 	else if (client.get_user_modes().find('r') != std::string::npos)
 	{
-std::cout << ">>>user restricted" << std::endl;
+//std::cout << ">>>user restricted" << std::endl;
 
 		// if (client.get_hasnick())
 		// {
@@ -105,15 +105,15 @@ std::cout << ">>>user restricted" << std::endl;
 	}
 	else 
 	{
-std::cout << ">>>changing nickname" << std::endl;
+//std::cout << ">>>changing nickname" << std::endl;
 		client.set_nickname(new_nick);
 
 		//check if NICK + USER + PASSWORD valid
-std::cout << std::boolalpha 
-<< "register: " << client.get_registered() 
-<< " serv using pw: " << get_using_password() 
-<< "client gave pw: " << client.get_authentified() 
-<< "if result: " << (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
+std::cout << std::boolalpha << std::endl
+<< " register: " << client.get_registered() << std::endl
+<< " serv using pw: " << get_using_password() << std::endl
+<< " client gave pw: " << client.get_authentified() << std::endl
+<< " if result: " << (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
 << std::endl;
 		if (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
 		{

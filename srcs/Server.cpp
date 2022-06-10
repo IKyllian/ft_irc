@@ -186,15 +186,15 @@ bool Server::_nick_isvalid(std::string nick) const {
 	size_t ret;
 
 
-std::cout << "@@@@inside _nick_isvalid " << std::endl;
-for (unsigned long i = 0; i < nick.length(); i++)
-{
-	std::cout << "i: " << i << " nick[i]: " << nick[i] << " | (int): " << (int) nick[i] << std::endl;
-}
+// std::cout << "@@@@inside _nick_isvalid " << std::endl;
+// for (unsigned long i = 0; i < nick.length(); i++)
+// {
+// 	std::cout << "i: " << i << " nick[i]: " << nick[i] << " | (int): " << (int) nick[i] << std::endl;
+// }
 
 
 	ret = nick.find_first_not_of(valid);
-std::cout << "ret: " << ret << " npos: " <<  std::string::npos << std::endl;
+//std::cout << "ret: " << ret << " npos: " <<  std::string::npos << std::endl;
 	if (ret != std::string::npos || ret < nick.length())
 		return false;
 	return true;
@@ -208,7 +208,7 @@ bool Server::send_message(Server &server, Message &msg_data, std::string header,
 	char				buffer[65535];
 	std::string			str;
 	// std::stringstream	ss;
-std::cout << "###inside send_message" << std::endl;
+// std::cout << "###inside send_message" << std::endl;
 	// ss << msgnum;
 (void) server;
 

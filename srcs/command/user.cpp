@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 14:50:32 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/10 14:02:37 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/10 16:31:04 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,13 @@ void Server::command_USER(Client &client, Message &message)
 		client.set_realname(answer);
 		answer = "";
 		client.set_registered(true);
+
+std::cout << std::boolalpha 
+<< " hasnick: " << client.get_hasnick() << std::endl
+<< " serv using pw: " << get_using_password() << std::endl
+<< " client gave pw: " << client.get_authentified() << std::endl
+<< " if result: " << (client.get_hasnick() && ( !get_using_password() ||  client.get_authentified() ))
+<< std::endl;
 
 		//check if NICK + USER + PASSWORD valid
 		if (client.get_hasnick() && ( !get_using_password() ||  client.get_authentified() ))

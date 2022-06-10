@@ -205,7 +205,7 @@ int main(int ac, char **av)
 
 	Server			server;
 	bool			running = true;
-	bool			removeFD = false;
+	//bool			removeFD = false;
 	int				ret;
 	struct pollfd	fd;
 	unsigned long	i, j;
@@ -246,7 +246,8 @@ int main(int ac, char **av)
 					running = false;
 					break;
 				}
-				removeFD = true;
+				//removeFD = true;
+				server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
 				break;
 			}
 
@@ -280,6 +281,13 @@ int main(int ac, char **av)
 					s = inet_ntoa(addr_in->sin_addr);
 std::cout << "hostname is: " << s << "|" << std::endl;
 					server.set_hostname(s);
+
+std::cout << std::boolalpha 
+<< " register: " << server.get_clients()[server.get_clients().size() - 1].get_registered() << std::endl
+<< " hasnick: " << server.get_clients()[server.get_clients().size() - 1].get_hasnick() << std::endl
+<< " serv using pw: " << server.get_using_password() << std::endl
+<< " client gave pw: " << server.get_clients()[server.get_clients().size() - 1].get_authentified() << std::endl
+<< std::endl;
 				}
 			}
 			else // client fd
@@ -293,30 +301,29 @@ std::cout << "hostname is: " << s << "|" << std::endl;
 						//EWOULDBLOCK 35
 						if (errno == EWOULDBLOCK)
 							break;
-						removeFD = true;
+						//removeFD = true;
+						server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
 						break;
 					}
 				} //end while reading incoming message		
 			}
 		} // end checking all fds in pollfd vector
 
-		if (removeFD)
-		{
-			removeFD = false;
-			std::cout << "Closing fd " << server.get_fds()[i].fd << std::endl;
+
 			for (j = 0; j < server.get_clients().size(); j++)
 			{
-				if (server.get_fds()[i].fd == server.get_clients()[j].get_fd() || server.get_clients()[j].get_fd() == -1)
+				if (server.get_clients()[j].get_fd() == -1)
 				{
-					std::cout << "Removing Client: " << server.get_clients()[j].get_fd() << std::endl;
+					std::cout << "Removing Client: " << server.get_clients()[j].get_nickname() << std::endl;
 					server.get_clients().erase(server.get_clients().begin() + j);
 					//TODO faire des trucs ? (enlever le user des channels ?)
-					break;
+					std::cout << "Closing fd " << server.get_fds()[j + 1].fd << std::endl;
+					close(server.get_fds()[j + 1].fd);
+					server.get_fds().erase(server.get_fds().begin() + j + 1);
+
 				}
 			}
-			close(server.get_fds()[i].fd);
-			server.get_fds().erase(server.get_fds().begin() + i);
-		}
+	
 	} // end main loop
 	std::cout << "Closing all remaining fd" << std::endl;
 	for (i = 0; i < server.get_fds().size(); i++)
