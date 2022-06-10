@@ -47,10 +47,5 @@ void Server::command_JOIN(Client *client, Message &message) {
 			(*channel_it).set_user(client);
 		else
 			(*channel_it).set_user(client, keys[i]);
-		send_message(*client, build_command_message(client->get_nickname(), "", (*channel_it).get_name(), "JOIN"));
-		send_message(*client, ft_print_numerics(332));
-		for (std::map<Client*, std::string>::iterator user_it = (*channel_it).get_users().begin(); user_it != (*channel_it).get_users().end(); user_it++)
-			send_message(*client, ft_print_numerics(353));
-		send_message(*client, ft_print_numerics(366));
 	}
 }

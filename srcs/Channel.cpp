@@ -84,11 +84,15 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 					if (user_invite_it != _invite_list.end()) { // Check si le user a recu une invitation
 						_users.insert(std::pair<Client*, std::string>(client, ""));
 						_invite_list.erase(user_invite_it);
-						std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
+
+						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
-							send_message(*client, ft_print_numerics(332)); // send RPL_TOPIC to inform the client that the channel have topic 
+							send_message(*client, ft_print_numerics(332));
 						else
-							send_message(*client, ft_print_numerics(331)); // send RPL_NOTOPIC to inform the client that the channel does not have topic
+							send_message(*client, ft_print_numerics(331));
+						for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
+							send_message(*client, ft_print_numerics(353));
+						send_message(*client, ft_print_numerics(366));
 					} else
 						send_message(*client, ft_print_numerics(473));
 				} else {
@@ -96,9 +100,15 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 						_users.insert(std::pair<Client*, std::string>(client, "o"));
 					else
 						_users.insert(std::pair<Client*, std::string>(client, ""));
-					std::cout << ":" << client->get_nickname() << " JOIN " << get_name() << std::endl;
-					if (topic.size() > 0)
-						send_message(*client, ft_print_numerics(332)); // send RPL_TOPIC to inform the client that the channel have topic
+
+						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
+						if (topic.size() > 0)
+							send_message(*client, ft_print_numerics(332));
+						else
+							send_message(*client, ft_print_numerics(331));
+						for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
+							send_message(*client, ft_print_numerics(353));
+						send_message(*client, ft_print_numerics(366));
 					// Check si il faut envoyer RPL_NOTOPIC si pas de Topic dans le channel (Dans la doc de Join c'est marqué non mais dans Topic c'est marqué oui)
 					// else
 					// 	send_message(*client, ft_print_numerics(331)); // send RPL_NOTOPIC to inform the client that the channel does not have topic
