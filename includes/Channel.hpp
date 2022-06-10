@@ -6,14 +6,18 @@
 #include <iostream>
 #include "Client.hpp"
 #include "ft_irc.hpp"
+#include "Server.hpp"
+#include "Message.hpp"
 #include <sstream> // pour convertir string en int 
 
 class Client;
+class Message;
+class Server;
 
 class Channel {
 	public :
 		Channel();
-		Channel(std::string &name);
+		Channel(std::string &name,Server *server);
 		Channel(const Channel &channel);
 		~Channel();
 
@@ -31,9 +35,10 @@ class Channel {
 		std::string get_password() const;
 		std::string get_topic() const;
 		int get_user_limit() const;
+		Server& get_server() const;
 		
 		void set_name(std::string val);
-		void set_user(Client *client, std::string key = std::string());
+		void set_user(Client *client, Message &message, std::string key = std::string());
 		void set_channel_modes(std::vector<std::string> parameters);
 		void set_mode(char mode, std::string parameter = std::string());
 		void set_user_mode(char mode, std::string parameter);
@@ -41,6 +46,7 @@ class Channel {
 		void set_password(std::string password = std::string());
 		void set_topic(std::string new_topic = std::string());
 		void set_user_limit(int limit);
+		void set_server(Server *server);
 		
 		void remove_user(Client *client, std::vector<Channel> *channels);
 		void remove_invite(Client *client);
@@ -60,6 +66,7 @@ class Channel {
 		std::string _channel_modes;
 		std::vector<Client*> _users_ban;
 		std::vector<Client*> _invite_list;
+		Server *_server;
 };
 
 std::vector<std::string> parse_comma(std::string parameter);

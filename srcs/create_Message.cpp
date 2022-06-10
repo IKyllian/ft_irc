@@ -103,3 +103,26 @@ Message *ft_create_message(std::string str)
     }
     return (msg);
 }
+
+std::string build_command_message(std::string sender, std::string receiver, std::string target, std::string command, std::string message, int is_chan) {
+    std::string answer;
+
+	answer += ":";
+	answer += sender;
+    answer += " ";
+	answer += command;
+    answer += " ";
+    if (command == "INVITE") {
+	    answer += receiver;
+        answer += " ";
+    }
+    if (is_chan)
+	    answer += "#";
+	answer += target;
+    if (command == "PRIVMSG") {
+        answer += " :";
+        answer += message;
+    }
+
+    return answer;
+}

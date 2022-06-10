@@ -192,7 +192,7 @@ std::cout << "ret: " << ret << " npos: " <<  std::string::npos << std::endl;
 }
 
 
-bool Server::send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum)
+bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum)
 {
 	int					ret, len;
 	char				buffer[65535];
@@ -224,7 +224,7 @@ std::cout << buffer << std::endl;
 	return true;
 }
 
-bool Server::send_message(Client &target, std::string message)
+bool send_message(Client &target, std::string message)
 {
 	int					ret;
 	unsigned long 		i;

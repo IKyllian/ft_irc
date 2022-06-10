@@ -26,7 +26,7 @@ void Server::command_NAMES(Message &message) {
 
 	if (message.get_tab_parameter().size() < 1) {
 		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++) {
-			ft_print_numerics(353); //RPL_NAMREPLY (353) 
+			send_message(message.get_sender(), ft_print_numerics(353)); //RPL_NAMREPLY (353) 
 		}
 	} else {
 		channels_string = parse_comma(message.get_tab_parameter()[0]);
@@ -34,8 +34,8 @@ void Server::command_NAMES(Message &message) {
 			channel_it = get_channel(channels_string[i]);
 			if (channel_it == _channels.end())
 				continue ;
-			ft_print_numerics(353); //RPL_NAMREPLY (353) 
+			send_message(message.get_sender(), ft_print_numerics(353)); //RPL_NAMREPLY (353) 
 		}
 	}
-	ft_print_numerics(366); // RPL_ENDOFNAMES (366) 
+	send_message(message.get_sender(), ft_print_numerics(366)); // RPL_ENDOFNAMES (366) 
 }

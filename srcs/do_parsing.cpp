@@ -49,7 +49,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "JOIN")
 	{
-		server.command_JOIN(&(msg.get_sender()), msg);
+		server.command_JOIN(&(msg.get_sender()), msg, server);
 	}
 	else if (msg.get_command() == "TOPIC")
 	{
