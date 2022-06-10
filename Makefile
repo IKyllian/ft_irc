@@ -3,6 +3,7 @@ SRCS		= 	srcs/main.cpp \
 				srcs/Server.cpp \
 				srcs/Client.cpp \
 				srcs/Message.cpp \
+				srcs/Command.cpp \
 				srcs/create_Message.cpp \
 				srcs/print_numerics.cpp \
 				srcs/do_parsing.cpp	\
@@ -11,6 +12,8 @@ SRCS		= 	srcs/main.cpp \
 COMMAND		=	srcs/command/away.cpp \
 				srcs/command/privmsg.cpp \
 				srcs/command/who.cpp \
+				srcs/command/whois.cpp \
+				srcs/command/help.cpp \
 				srcs/command/nick.cpp \
 				srcs/command/join.cpp \
 				srcs/command/part.cpp \
@@ -20,6 +23,8 @@ COMMAND		=	srcs/command/away.cpp \
 				srcs/command/invite.cpp \
 				srcs/command/kick.cpp \
 				srcs/command/mode.cpp \
+				srcs/command/user.cpp \
+				srcs/command/password.cpp \
 
 OBJS			= $(SRCS:.cpp=.o) $(COMMAND:.cpp=.o)
 

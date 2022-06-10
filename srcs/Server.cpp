@@ -51,6 +51,7 @@ std::string Server::get_invisible_user() const { return (_invisible_user); }
 
 std::vector<Client>	&Server::get_clients() { return (_clients); }
 std::vector<Channel> &Server::get_channels() { return (_channels); }
+std::vector<Command> &Server::get_commands() { return (_commands); }
 std::vector<struct pollfd> &Server::get_fds() { return (_fds); };
 std::string Server::get_password() const { return (_password); }
 bool Server::get_using_password() const { return (_using_password); }
