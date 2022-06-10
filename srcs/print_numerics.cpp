@@ -68,7 +68,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string datetime = "20/05/2022";
 	std::string actual_time = "22";             //Le temps actuel (Potentiellement a faire en dehors de la classe server)
 //FIN TODO
-
+	std::string no_channel = "*";
 
 
 	//              user VAR               //
@@ -245,7 +245,12 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		return (client_name + RPL_NOWAWAY(null));
 		
 	case 352:
-		return (client_name + RPL_WHOREPLY(channel_name, username, hostname, servername, user_nick, user_flags, hopcount, realname));
+	{
+		if (!channel)
+			return (client_name + RPL_WHOREPLY(no_channel, username, hostname, servername, user_nick, user_flags, hopcount, realname));
+		else
+			return (client_name + RPL_WHOREPLY(channel_name, username, hostname, servername, user_nick, user_flags, hopcount, realname));
+	}
 		
 	case 315:
 		return (client_name + RPL_ENDOFWHO(mask));

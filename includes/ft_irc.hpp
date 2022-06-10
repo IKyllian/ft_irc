@@ -5,7 +5,7 @@
 
 #define NETWORK_NAME "KIKIKAKARORO"
 #define HOST_NAME "kikaro.42.fr"
-#define SERVER_NAME "Delire avec des gens chelou"
+#define SERVER_NAME "Delire"
 #define VERSION "1.0"
 #define SERVER_LOCATION "Lyon 42 Charbounnière"
 #define SERVER_LOCATION2 "78 Rte de Paris"
@@ -39,7 +39,6 @@
 #include "Client.hpp"
 #include "Message.hpp"
 #include "Server.hpp"
-#include "Command.hpp"
 
 //                                              OTHERS                                                   //
 
@@ -48,7 +47,6 @@
 class Server;
 class Channel;
 class Message;
-class Command;
 
 std::string                 ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message);
 Message                     *ft_create_message(std::string str);
