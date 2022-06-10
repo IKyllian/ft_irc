@@ -42,6 +42,7 @@ class Server {
 
 		std::vector<Client>	&get_clients();
 		std::vector<Client>::iterator get_client(std::string to_search);
+		std::vector<Client>::iterator get_client_by_fd(int search);
 		std::vector<Channel> &get_channels();
 		std::vector<Channel>::iterator get_channel(std::string to_search);
 		std::vector<Command> &get_commands();

@@ -79,7 +79,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string username = sender.get_username();;
 	std::string user_account = sender.get_username();
 
-	std::string client_name = ":" + sender.get_nickname() + "@" + sender.get_username() + "!" + "127.0.0.1" + " " + str_num + " " + sender.get_nickname();
+	std::string client_name = sender.get_nickname();
 	/*if (message)
 	{
 		client_name += message->get_command() + " ";
@@ -104,7 +104,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string nb_clients = std::to_string(get_clients().size());
 	std::string local_user = std::to_string(get_clients().size());
 
-	std::string full_identity = sender.get_nickname() + "!" + sender.get_username() + "@" + "127.0.0.1";
+	std::string full_identity = sender.get_fullidentity();
 
 
 	//              MESSAGE VAR              //

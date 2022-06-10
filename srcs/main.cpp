@@ -38,11 +38,25 @@ int handle_incoming_message(Server& server, int fd)
 		if (fd == server.get_clients()[i].get_fd())
 			break;
 	}
+
+
 	if (i == server.get_clients().size())
 	{
-		std::cout << "Client " << fd << " is new, adding to client list" << std::endl;
-		server.get_clients().push_back(Client(fd));
+		std::cerr << "### Something went very wrong, client not in list ###" << std::endl;
 	}
+
+// 	if (i == server.get_clients().size())
+// 	{
+// 		std::cout << "Client " << fd << " is new, adding to client list" << std::endl;
+// 		server.get_clients().push_back(Client(fd));
+
+// struct sockaddr_in *addr_in = (struct sockaddr_in *)res;
+// 		char *s = inet_ntoa(addr_in->sin_addr);
+// 		char *s = inet_ntoa(server.get_fds()[i + 1].);
+// printf("IP address: %s\n", s);
+// 	}
+
+
 	do
 	{
 		memset(&buffer, 0, sizeof(buffer));
@@ -240,8 +254,14 @@ int main(int ac, char **av)
 			{
 				while (true)
 				{
+					struct sockaddr	addr;
+					struct sockaddr_in *addr_in;
+					socklen_t socklen = 0;
+					char *s;
+
 					memset(&fd, 0 , sizeof(fd));
-					fd.fd = accept(server.get_server_fd(), NULL, NULL);
+//remplacer le check errno par un try/catch ?
+					fd.fd = accept(server.get_server_fd(), &addr, &socklen);
 					if (fd.fd < 0)
 					{
 						if (errno != EWOULDBLOCK)
@@ -253,8 +273,13 @@ int main(int ac, char **av)
 					}
 					std::cout << "New incomig connection: " << fd.fd << std::endl;
 					fd.events = POLLIN;
-					send(fd.fd, ":127.0.0.1 001 rowhou :Welcome to the Internet Relay Network nick!user@host\r\n", 78, 0);
+					//send(fd.fd, ":127.0.0.1 001 kzennoun :Welcome to the Internet Relay Network nick!user@host\r\n", 79, 0);
 					server.get_fds().push_back(fd);
+					server.get_clients().push_back(Client(fd.fd));
+					addr_in = (struct sockaddr_in *)&addr;
+					s = inet_ntoa(addr_in->sin_addr);
+std::cout << "hostname is: " << s << "|" << std::endl;
+					server.set_hostname(s);
 				}
 			}
 			else // client fd
@@ -281,7 +306,7 @@ int main(int ac, char **av)
 			std::cout << "Closing fd " << server.get_fds()[i].fd << std::endl;
 			for (j = 0; j < server.get_clients().size(); j++)
 			{
-				if (server.get_fds()[i].fd == server.get_clients()[j].get_fd())
+				if (server.get_fds()[i].fd == server.get_clients()[j].get_fd() || server.get_clients()[j].get_fd() == -1)
 				{
 					std::cout << "Removing Client: " << server.get_clients()[j].get_fd() << std::endl;
 					server.get_clients().erase(server.get_clients().begin() + j);

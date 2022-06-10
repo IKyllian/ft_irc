@@ -7,7 +7,7 @@ Client::Client(const Client &client) : _nickname(client._nickname), _username(cl
 // 	*this = client;
 // }
 
-Client::Client(int &fd) : _fd(fd), _logged(false), _away(false) {}
+Client::Client(int &fd) : _nickname("*"), _username("*"), _realname(""), _hostname("*"), _user_modes(""), _fd(fd), _logged(false), _registered(false), _authentified(false), _hasnick(false), _away(false), _away_msg(""), _buffer("")  {}
 Client::~Client() {}
 
 bool Client::operator==(const Client& rhs) {
@@ -17,10 +17,12 @@ bool Client::operator==(const Client& rhs) {
 // bool Client::operator<(const Client &rhs) const {
 // 	return (get_nickname() < rhs.get_nickname());
 // }
-
+//:<nickname>@<username>!<hostname>
 std::string 			Client::get_nickname() const { return (_nickname); }
 std::string 			Client::get_username() const { return (_username); }
 std::string 			Client::get_realname() const { return (_realname); }
+std::string 			Client::get_hostname() const { return (_hostname); }
+std::string				Client::get_fullidentity() const { return  (get_nickname() + "@" + get_username() + "!" + get_hostname()); }
 std::string 			Client::get_user_modes() const { return (_user_modes); }
 int						Client::get_fd() const { return (_fd); }
 bool					Client::get_logged() const { return (_logged); }
@@ -44,6 +46,10 @@ void Client::set_username(std::string val) {
 
 void Client::set_realname(std::string val) {
 	_realname = val;
+}
+
+void Client::set_hostname(std::string val) {
+	_hostname = val;
 }
 
 void Client::set_user_modes(std::string mode) {
