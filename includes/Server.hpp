@@ -21,6 +21,8 @@ class Server {
 		Server(const Server &server);
 		~Server();
 
+		
+
 		std::string get_network_name() const;
 		std::string get_hostname() const;
 		std::string get_port() const;
@@ -83,7 +85,7 @@ class Server {
 		void command_PASSWORD(Client &client, Message &message);
 
 		// void command_JOIN(Client *client, std::vector<std::string> parameters);
-		void command_JOIN(Client *client, Message &message);
+		void command_JOIN(Client *client, Message &message, Server &server);
 
 		// void command_PART(Client *client, std::vector<std::string> parameters);
 		void command_PART(Client *client, Message &message);

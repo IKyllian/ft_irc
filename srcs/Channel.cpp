@@ -1,12 +1,13 @@
 #include "../includes/Channel.hpp"
 
-Channel::Channel() {}
-Channel::Channel(std::string &name) : _name(name), _user_limit(0) {}
+Channel::Channel(){}
+Channel::Channel(std::string &name, Server *server) : _name(name), _user_limit(0), _server(server) {}
 Channel::Channel(const Channel &channel) : _name(channel._name) {
 	_users.clear();
 	_users = channel._users;
 	// users.insert(channel.users.begin(), channel.users.end());
 	_channel_modes = channel._channel_modes;
+	_server = channel._server;
 }
 
 Channel::~Channel() {
@@ -40,9 +41,15 @@ std::string									Channel::get_channel_modes() const { return (_channel_modes)
 std::string 								Channel::get_password() const { return (_password); }
 std::string 								Channel::get_topic() const { return (topic); };
 int 										Channel::get_user_limit() const { return (_user_limit); }
+Server 										&Channel::get_server() const { return (*_server); }
 
 void Channel::set_name(std::string val) {
 	_name = val;
+}
+
+
+void Channel::set_server(Server *server) {
+	_server = server;
 }
 
 void Channel::set_password(std::string password) {
@@ -64,7 +71,7 @@ void Channel::set_topic(std::string new_topic) {
 	//RPL_TOPICWHOTIME (333)
 }
 
-void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a add un user au channel
+void Channel::set_user(Client* client, Message &message, std::string key) { // Fonction qui sert a add un user au channel
 	std::map<Client*, std::string>::iterator user_it = get_user(client);
 	std::vector<Client*>::iterator user_ban_it;
 	std::vector<Client*>::iterator user_invite_it;
@@ -87,14 +94,14 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
-							send_message(*client, ft_print_numerics(332));
+							send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
 						else
-							send_message(*client, ft_print_numerics(331));
+							send_message(*client, _server->print_numerics(331, *client, *client, this, &message));
 						for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
-							send_message(*client, ft_print_numerics(353));
-						send_message(*client, ft_print_numerics(366));
+							send_message(*client, _server->print_numerics(353, *client, *client, this, &message));
+						send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
 					} else
-						send_message(*client, ft_print_numerics(473));
+						send_message(*client, _server->print_numerics(473, *client, *client, this, &message));
 				} else {
 					if (_users.size() == 0)
 						_users.insert(std::pair<Client*, std::string>(client, "o"));
@@ -103,12 +110,12 @@ void Channel::set_user(Client* client, std::string key) { // Fonction qui sert a
 
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
-							send_message(*client, ft_print_numerics(332));
+							send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
 						else
-							send_message(*client, ft_print_numerics(331));
+							send_message(*client, _server->print_numerics(331, *client, *client, this, &message));
 						for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
-							send_message(*client, ft_print_numerics(353));
-						send_message(*client, ft_print_numerics(366));
+							send_message(*client, _server->print_numerics(353, *client, *client, this, &message));
+						send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
 					// Check si il faut envoyer RPL_NOTOPIC si pas de Topic dans le channel (Dans la doc de Join c'est marqué non mais dans Topic c'est marqué oui)
 					// else
 					// 	send_message(*client, ft_print_numerics(331)); // send RPL_NOTOPIC to inform the client that the channel does not have topic

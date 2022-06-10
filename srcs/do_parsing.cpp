@@ -50,7 +50,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "JOIN")
 	{
-		server.command_JOIN(&(msg.get_sender()), msg);
+		server.command_JOIN(&(msg.get_sender()), msg, server);
 	}
 	else if (msg.get_command() == "TOPIC")
 	{
@@ -214,6 +214,7 @@ void do_parsing(Server &server, Client &sender, std::string message)
 	{
 		msg.push_back(ft_create_message(msg_list[i]));
 	}
+	std::cout << "msg size = " << msg.size() << std::endl;
 	for (size_t i = 0; i < msg.size(); i++)
 	{
 		msg[i]->set_sender(&sender);

@@ -88,6 +88,7 @@ Message *ft_create_message(std::string str)
     position = str.find(' ', position);
     str_to_pass = str.substr(startpoint, position - startpoint);
     msg->set_command(str_to_pass);
+    msg->set_nb_parameter(0);
     if (position != std::string::npos)
     {
         position++;

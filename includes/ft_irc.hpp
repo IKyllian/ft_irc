@@ -32,6 +32,7 @@
 #include <cerrno>
 #include <vector>
 #include <cstdlib>
+#include <sstream>
 
 //                                             Class HPP                                                   //
 #include "Channel.hpp"

@@ -30,9 +30,9 @@
 #define RPL_UNAWAY(NULL)(NULL + " :You are no longer marked as being away")																																						// 305
 #define RPL_NOWAWAY(NULL)(NULL + " :You have been marked as being away")																																							// 306
 #define RPL_WHOREPLY(channel, username, host, server, nick, flags, hopcount, realname)(" " + channel + " " + username + " " + host + " " + server + " " + nick + " " + flags + " :" + hopcount + " " + realname)		// 352
-#define RPL_ENDOFWHO(mask)(" " + mask + " :End of WHO list")																																							// 315
+#define RPL_ENDOFWHO(mask)(" " + mask + " :End of /WHO list")																																							// 315
 #define RPL_WHOISREGNICK(nick)(" " + nick + " :has identified for this nick")																																			// 307
-#define RPL_WHOISUSER(nick, username, host, realname)(" " + nick + " " + username + " " + host + " * :" + realname)																										// 311
+#define RPL_WHOISUSER(nick, username, host, realname)(" " + nick + " " + username + " " + host + " * " + realname)																										// 311
 #define RPL_WHOISSERVER(nick, server, server_info)(" " + nick + " " + server + " :" + server_info)																														// 312
 #define RPL_WHOISOPERATOR(nick)(" " + nick + " :is an IRC operator")																																					// 313
 #define RPL_WHOWASUSER(nick, username, host, realname)(" " + nick + " " + username + " " + host + " * :" + realname)																									// 314
