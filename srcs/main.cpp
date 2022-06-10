@@ -280,14 +280,14 @@ int main(int ac, char **av)
 					addr_in = (struct sockaddr_in *)&addr;
 					s = inet_ntoa(addr_in->sin_addr);
 std::cout << "hostname is: " << s << "|" << std::endl;
-					server.set_hostname(s);
+					server.get_clients()[server.get_clients().size() - 1].set_hostname(s);
 
-std::cout << std::boolalpha 
-<< " register: " << server.get_clients()[server.get_clients().size() - 1].get_registered() << std::endl
-<< " hasnick: " << server.get_clients()[server.get_clients().size() - 1].get_hasnick() << std::endl
-<< " serv using pw: " << server.get_using_password() << std::endl
-<< " client gave pw: " << server.get_clients()[server.get_clients().size() - 1].get_authentified() << std::endl
-<< std::endl;
+// std::cout << std::boolalpha 
+// << " register: " << server.get_clients()[server.get_clients().size() - 1].get_registered() << std::endl
+// << " hasnick: " << server.get_clients()[server.get_clients().size() - 1].get_hasnick() << std::endl
+// << " serv using pw: " << server.get_using_password() << std::endl
+// << " client gave pw: " << server.get_clients()[server.get_clients().size() - 1].get_authentified() << std::endl
+// << std::endl;
 				}
 			}
 			else // client fd
