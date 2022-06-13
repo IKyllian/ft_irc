@@ -25,6 +25,26 @@
 //#define HOSTNAME		"kikaro.42.fr"
 
 
+void debug_print_client(Client &client)
+{
+	std::cout << std::boolalpha
+	<< "nickname " << client.get_nickname() 
+	// << " username " << client.get_username()
+	// << " realname " << client.get_realname()
+	// << " hostname " << client.get_hostname()
+	// << " usermodes " << client.get_user_modes()
+	<< " fd " << client.get_fd()
+	// << " logged " << client.get_logged()
+	// << " registered " << client.get_registered()
+	// << " auth " << client.get_authentified()
+	// << " has nick " << client.get_hasnick()
+	// << " away " << client.get_away()
+	<< " quitting " << client.get_quitting()
+	// << " away msg " << client.get_away_msg()
+	// << " buffer " << client.get_buffer()
+	<< std::endl;
+}
+
 int handle_incoming_message(Server& server, int fd)
 {
 	int				ret;
@@ -38,24 +58,10 @@ int handle_incoming_message(Server& server, int fd)
 		if (fd == server.get_clients()[i].get_fd())
 			break;
 	}
-
-
 	if (i == server.get_clients().size())
 	{
 		std::cerr << "### Something went very wrong, client not in list ###" << std::endl;
 	}
-
-// 	if (i == server.get_clients().size())
-// 	{
-// 		std::cout << "Client " << fd << " is new, adding to client list" << std::endl;
-// 		server.get_clients().push_back(Client(fd));
-
-// struct sockaddr_in *addr_in = (struct sockaddr_in *)res;
-// 		char *s = inet_ntoa(addr_in->sin_addr);
-// 		char *s = inet_ntoa(server.get_fds()[i + 1].);
-// printf("IP address: %s\n", s);
-// 	}
-
 
 	do
 	{
@@ -74,20 +80,7 @@ int handle_incoming_message(Server& server, int fd)
 	}
 	
 	message = server.get_clients()[i].extract_command(pos);
-
-	// for (unsigned long k = 0; k < message.length(); k++)
-	// {
-	// 	std::cout << "i: " << k << " message[k]: " << message[k] << " (int): " << (int) message[k] << std::endl;
-	// }
-	std::cout << "command:" << std::endl
-			<< message << std::endl;
-	std::cout << "--------------" << std::endl;
-
-	//AJOUTER CALL POUR LE PARSING
-    std::string tmp = message;
-	message += "\n";
 	do_parsing(server, server.get_clients()[i], message);
-	// do_parsing(server, server.get_clients()[i], message);
 	return ret;
 }
 
@@ -205,7 +198,6 @@ int main(int ac, char **av)
 
 	Server			server;
 	bool			running = true;
-	//bool			removeFD = false;
 	int				ret;
 	struct pollfd	fd;
 	unsigned long	i, j;
@@ -237,17 +229,13 @@ int main(int ac, char **av)
 
 			if(server.get_fds()[i].revents != POLLIN)
 			{
-				// Error! revents = 17
-				// connection severed
-				std::cerr << "Error! revents = " << server.get_fds()[i].revents << std::endl;
-
+				std::cerr << "Connection severed fd: " << server.get_fds()[i].revents << std::endl;
 				if (i == 0)
 				{
 					running = false;
 					break;
 				}
-				//removeFD = true;
-				server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
+				server.get_client_by_fd(server.get_fds()[i].fd)->set_quitting(true);
 				break;
 			}
 
@@ -261,69 +249,46 @@ int main(int ac, char **av)
 					char *s;
 
 					memset(&fd, 0 , sizeof(fd));
-//remplacer le check errno par un try/catch ?
 					fd.fd = accept(server.get_server_fd(), &addr, &socklen);
 					if (fd.fd < 0)
-					{
-						if (errno != EWOULDBLOCK)
-						{
-							perror("  accept() failed");
-							running = false;
-						}
 						break;
-					}
 					std::cout << "New incomig connection: " << fd.fd << std::endl;
 					fd.events = POLLIN;
-					//send(fd.fd, ":127.0.0.1 001 kzennoun :Welcome to the Internet Relay Network nick!user@host\r\n", 79, 0);
 					server.get_fds().push_back(fd);
 					server.get_clients().push_back(Client(fd.fd));
 					addr_in = (struct sockaddr_in *)&addr;
 					s = inet_ntoa(addr_in->sin_addr);
-std::cout << "hostname is: " << s << "|" << std::endl;
 					server.get_clients()[server.get_clients().size() - 1].set_hostname(s);
-
-// std::cout << std::boolalpha 
-// << " register: " << server.get_clients()[server.get_clients().size() - 1].get_registered() << std::endl
-// << " hasnick: " << server.get_clients()[server.get_clients().size() - 1].get_hasnick() << std::endl
-// << " serv using pw: " << server.get_using_password() << std::endl
-// << " client gave pw: " << server.get_clients()[server.get_clients().size() - 1].get_authentified() << std::endl
-// << std::endl;
 				}
 			}
 			else // client fd
 			{
 				std::cout << "Descriptor " << server.get_fds()[i].fd << " is readable" << std::endl;
 				while (true)
-				{		
+				{	
 					ret = handle_incoming_message(server, server.get_fds()[i].fd);
 					if (ret <= 0)
 					{
-						//EWOULDBLOCK 35
-						if (errno == EWOULDBLOCK)
+						if (ret == -1)
 							break;
-						//removeFD = true;
-						server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
+						server.get_client_by_fd(server.get_fds()[i].fd)->set_quitting(true);
 						break;
 					}
 				} //end while reading incoming message		
 			}
 		} // end checking all fds in pollfd vector
-
-
 			for (j = 0; j < server.get_clients().size(); j++)
 			{
-				if (server.get_clients()[j].get_fd() == -1)
+				if (server.get_clients()[j].get_quitting())
 				{
 					std::cout << "Removing Client: " << server.get_clients()[j].get_nickname() << std::endl;
 					server.get_clients().erase(server.get_clients().begin() + j);
-					//TODO faire des trucs ? (enlever le user des channels ?)
+//TODO faire des trucs ? (enlever le user des channels ?)
 					std::cout << "Closing fd " << server.get_fds()[j + 1].fd << std::endl;
 					close(server.get_fds()[j + 1].fd);
 					server.get_fds().erase(server.get_fds().begin() + j + 1);
-
 				}
 			}
-	
 	} // end main loop
 	std::cout << "Closing all remaining fd" << std::endl;
 	for (i = 0; i < server.get_fds().size(); i++)

@@ -28,6 +28,7 @@ class Client {
 		bool		get_authentified() const;
 		bool		get_hasnick() const;
 		bool 		get_away() const;
+		bool		get_quitting() const;
 		std::string get_away_msg() const;
 		std::string	get_buffer() const;
 		std::vector<Channel*>	&get_channel();
@@ -43,6 +44,7 @@ class Client {
 		void set_authentified(bool val);
 		void set_hasnick(bool val);
 		void set_away(bool val);
+		void set_quitting(bool val);
 		void set_away_msg(std::string msg);
 		void append_buffer(char* buffer);
 
@@ -61,6 +63,7 @@ class Client {
 		bool		_authentified; //PASSWORD is set
 		bool		_hasnick; //NICK is set
 		bool 		_away;
+		bool		_quitting;
 		std::string	_away_msg;
 		std::string	_buffer;
 };

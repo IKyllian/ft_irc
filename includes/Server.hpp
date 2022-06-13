@@ -79,7 +79,7 @@ class Server {
 		
 		
 		std::string print_numerics(int num, Client &sender, Client &receiver, Channel *channel = NULL, Message *message = NULL);
-
+		std::string build_response(int num, Client &sender, Client &receiver, Channel *channel = NULL, Message *message = NULL);
 
 		void command_NICK(Client &client, Message &message);
 		void command_USER(Client &client, Message &message);
