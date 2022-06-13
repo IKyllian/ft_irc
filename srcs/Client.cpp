@@ -2,7 +2,21 @@
 
 Client::Client() : _realname (""), _logged(false), _away(false) {}
 Client::Client(std::string nickname) : _nickname(nickname), _logged(false), _away(false) {};
-Client::Client(const Client &client) : _nickname(client._nickname), _username(client._username), _user_modes(client._user_modes), _fd(client._fd), _logged(client._logged), _away(client._away), _buffer(client._buffer) {}
+Client::Client(const Client &client) : 
+	_nickname(client._nickname),
+	_username(client._username),
+	_realname(client._realname),
+	_hostname(client._hostname),
+	_user_modes(client._user_modes),
+	_fd(client._fd),
+	_logged(client._logged),
+	_registered(client._registered), 
+	_authentified(client._authentified), 
+	_hasnick(client._hasnick), 
+	_away(client._away),
+	_quitting(client._quitting),
+	_away_msg(client._away_msg),
+	_buffer(client._buffer) {}
 // Client::Client(const Client *client) {
 // 	*this = client;
 // }
@@ -19,6 +33,7 @@ Client::Client(int &fd) :
 	_authentified(false), 
 	_hasnick(false), 
 	_away(false), 
+	_quitting(false),
 	_away_msg(""), 
 	_buffer("")  {}
 	
@@ -44,6 +59,7 @@ bool					Client::get_registered() const { return (_registered); }
 bool					Client::get_authentified() const { return (_authentified); }
 bool					Client::get_hasnick() const { return (_hasnick); }
 bool					Client::get_away() const { return (_away); }
+bool					Client::get_quitting() const { return (_quitting); }
 std::string 			Client::get_away_msg() const { return (_away_msg); }
 std::string				Client::get_buffer() const { return (_buffer); }
 std::vector<Channel*>	&Client::get_channel() { return (_channel); };
@@ -122,6 +138,10 @@ void Client::set_hasnick(bool val) {
 
 void Client::set_away(bool val){
 	_away = val;
+}
+
+void Client::set_quitting(bool val) {
+	_quitting = val;
 }
 
 void Client::set_away_msg(std::string msg)

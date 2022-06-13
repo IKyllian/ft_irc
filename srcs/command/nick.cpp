@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 13:25:54 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/10 16:26:52 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/13 15:01:59 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,12 @@ void Server::command_NICK(Client &client, Message &message) {
 		client.set_nickname(new_nick);
 
 		//check if NICK + USER + PASSWORD valid
-std::cout << std::boolalpha << std::endl
-<< " register: " << client.get_registered() << std::endl
-<< " serv using pw: " << get_using_password() << std::endl
-<< " client gave pw: " << client.get_authentified() << std::endl
-<< " if result: " << (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
-<< std::endl;
+// std::cout << std::boolalpha << std::endl
+// << " register: " << client.get_registered() << std::endl
+// << " serv using pw: " << get_using_password() << std::endl
+// << " client gave pw: " << client.get_authentified() << std::endl
+// << " if result: " << (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
+// << std::endl;
 		if (client.get_registered() && ( !get_using_password() ||  client.get_authentified() ))
 		{
 			//RPL WELCOME ?

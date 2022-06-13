@@ -25,6 +25,26 @@
 //#define HOSTNAME		"kikaro.42.fr"
 
 
+void debug_print_client(Client &client)
+{
+	std::cout << std::boolalpha
+	<< "nickname " << client.get_nickname() 
+	// << " username " << client.get_username()
+	// << " realname " << client.get_realname()
+	// << " hostname " << client.get_hostname()
+	// << " usermodes " << client.get_user_modes()
+	<< " fd " << client.get_fd()
+	// << " logged " << client.get_logged()
+	// << " registered " << client.get_registered()
+	// << " auth " << client.get_authentified()
+	// << " has nick " << client.get_hasnick()
+	// << " away " << client.get_away()
+	<< " quitting " << client.get_quitting()
+	// << " away msg " << client.get_away_msg()
+	// << " buffer " << client.get_buffer()
+	<< std::endl;
+}
+
 int handle_incoming_message(Server& server, int fd)
 {
 	int				ret;
@@ -247,7 +267,7 @@ int main(int ac, char **av)
 					break;
 				}
 				//removeFD = true;
-				server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
+				server.get_client_by_fd(server.get_fds()[i].fd)->set_quitting(true);
 				break;
 			}
 
@@ -263,13 +283,18 @@ int main(int ac, char **av)
 					memset(&fd, 0 , sizeof(fd));
 //remplacer le check errno par un try/catch ?
 					fd.fd = accept(server.get_server_fd(), &addr, &socklen);
+//std::cout << "fd.fd: " << fd.fd << std::endl;
 					if (fd.fd < 0)
 					{
-						if (errno != EWOULDBLOCK)
-						{
-							perror("  accept() failed");
-							running = false;
-						}
+
+						// if (fd.fd == -1)
+						// {
+						// }
+						// if (errno != EWOULDBLOCK)
+						// {
+						// 	perror("  accept() failed");
+						// 	running = false;
+						// }
 						break;
 					}
 					std::cout << "New incomig connection: " << fd.fd << std::endl;
@@ -277,11 +302,12 @@ int main(int ac, char **av)
 					//send(fd.fd, ":127.0.0.1 001 kzennoun :Welcome to the Internet Relay Network nick!user@host\r\n", 79, 0);
 					server.get_fds().push_back(fd);
 					server.get_clients().push_back(Client(fd.fd));
+debug_print_client(server.get_clients()[server.get_clients().size() - 1]); 
 					addr_in = (struct sockaddr_in *)&addr;
 					s = inet_ntoa(addr_in->sin_addr);
-std::cout << "hostname is: " << s << "|" << std::endl;
+//std::cout << "hostname is: " << s << "|" << std::endl;
 					server.get_clients()[server.get_clients().size() - 1].set_hostname(s);
-
+std::cout << "hostname in class: " << server.get_clients()[server.get_clients().size() - 1].get_hostname() << "|" << std::endl;
 // std::cout << std::boolalpha 
 // << " register: " << server.get_clients()[server.get_clients().size() - 1].get_registered() << std::endl
 // << " hasnick: " << server.get_clients()[server.get_clients().size() - 1].get_hasnick() << std::endl
@@ -294,36 +320,41 @@ std::cout << "hostname is: " << s << "|" << std::endl;
 			{
 				std::cout << "Descriptor " << server.get_fds()[i].fd << " is readable" << std::endl;
 				while (true)
-				{		
+				{	
+std::cout << " start handle incoming message" << std::endl;	
 					ret = handle_incoming_message(server, server.get_fds()[i].fd);
 					if (ret <= 0)
 					{
+std::cout << "L306 ret: " << ret << std::endl;
 						//EWOULDBLOCK 35
-						if (errno == EWOULDBLOCK)
+						if (ret == -1)
 							break;
+						// if (errno == EWOULDBLOCK)
+						// 	break;
 						//removeFD = true;
-						server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
+						//server.get_client_by_fd(server.get_fds()[i].fd)->set_fd(-1);
+						server.get_client_by_fd(server.get_fds()[i].fd)->set_quitting(true);
 						break;
 					}
 				} //end while reading incoming message		
 			}
 		} // end checking all fds in pollfd vector
-
-
 			for (j = 0; j < server.get_clients().size(); j++)
 			{
-				if (server.get_clients()[j].get_fd() == -1)
+				if (server.get_clients()[j].get_quitting())
 				{
 					std::cout << "Removing Client: " << server.get_clients()[j].get_nickname() << std::endl;
+//debug_print_client(server.get_clients()[j]);
 					server.get_clients().erase(server.get_clients().begin() + j);
 					//TODO faire des trucs ? (enlever le user des channels ?)
 					std::cout << "Closing fd " << server.get_fds()[j + 1].fd << std::endl;
 					close(server.get_fds()[j + 1].fd);
 					server.get_fds().erase(server.get_fds().begin() + j + 1);
-
 				}
 			}
-	
+std::cout << "nb clients: " << server.get_clients().size() << std::endl;
+std::cout << "nb pollfd: " << server.get_fds().size() << std::endl;
+
 	} // end main loop
 	std::cout << "Closing all remaining fd" << std::endl;
 	for (i = 0; i < server.get_fds().size(); i++)
