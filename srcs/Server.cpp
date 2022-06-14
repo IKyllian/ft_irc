@@ -245,8 +245,10 @@ bool send_message(Client &target, std::string message)
 	{
 		buffer[i] = message[i];
 	}
-	buffer[i] = '\0';
-	len = i;
+	buffer[i] = '\r';
+	buffer[i + 1] = '\n';
+	buffer[i + 2] = '\0';
+	len = i + 2;
 	
 	std::cout << "sending: " << std::endl;
 	std::cout << buffer << std::endl;

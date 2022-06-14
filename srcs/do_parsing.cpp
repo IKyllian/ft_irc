@@ -9,7 +9,7 @@ static void do_command(Server &server, Client &sender, Message &msg)
 std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() << std::endl;
 	if (msg.get_command() == "CAP")
 	{
-		//  do_CAP();
+
 	}
 	else if (msg.get_command() == "AUTHENTICATE")
 	{
