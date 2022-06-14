@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: rozhou <rozhou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 13:25:54 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/13 16:37:01 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/14 10:52:21 by rozhou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void Server::command_NICK(Client &client, Message &message) {
 		answer += client.get_fullidentity();
 		answer += " ";
 		answer += print_numerics(431, client, client);
+		answer += "\r\n";
 		send_message(client, answer);
 		return;
 	}
@@ -41,6 +42,7 @@ void Server::command_NICK(Client &client, Message &message) {
 		answer += client.get_fullidentity();
 		answer += " ";		
 		answer += print_numerics(433, client, client);
+		answer += "\r\n";
 		send_message(client, answer);
 	}
 	else if (!_nick_isvalid(new_nick))
@@ -49,6 +51,7 @@ void Server::command_NICK(Client &client, Message &message) {
 		answer += client.get_fullidentity();
 		answer += " ";
 		answer += print_numerics(432, client, client);
+		answer += "\r\n";
 		send_message(client, answer);
 	}
 	else if (client.get_user_modes().find('r') != std::string::npos)
@@ -57,6 +60,7 @@ void Server::command_NICK(Client &client, Message &message) {
 		answer += client.get_fullidentity();
 		answer += " ";
 		answer += print_numerics(484, client, client);
+		answer += "\r\n";
 		send_message(client, answer);
 	}
 	else 
@@ -70,6 +74,7 @@ void Server::command_NICK(Client &client, Message &message) {
 			// answer += " ";
 			// answer += print_numerics(001, client, client);
 			answer = build_response(001, client, client);
+			answer += "\r\n";
 			send_message(client, answer);
 		}
 	}

@@ -51,7 +51,6 @@ std::string Server::get_invisible_user() const { return (_invisible_user); }
 
 std::vector<Client>	&Server::get_clients() { return (_clients); }
 std::vector<Channel> &Server::get_channels() { return (_channels); }
-std::vector<Command> &Server::get_commands() { return (_commands); }
 std::vector<struct pollfd> &Server::get_fds() { return (_fds); };
 std::string Server::get_password() const { return (_password); }
 bool Server::get_using_password() const { return (_using_password); }
@@ -246,8 +245,10 @@ bool send_message(Client &target, std::string message)
 	{
 		buffer[i] = message[i];
 	}
-	buffer[i] = '\0';
-	len = i;
+	buffer[i] = '\r';
+	buffer[i + 1] = '\n';
+	buffer[i + 2] = '\0';
+	len = i + 2;
 	
 	std::cout << "sending: " << std::endl;
 	std::cout << buffer << std::endl;

@@ -103,13 +103,13 @@ void	Server::command_WHO(Client &sender, Message &msg)
 				}
 				if (same_channel == false)
 				{
-					send_message(sender, print_numerics(352, _clients[i], sender, NULL, &msg) + "\n");
+					send_message(sender, print_numerics(352, _clients[i], sender, NULL, &msg));
 					send_user = true;
 				}
 			}
 		}
 		if (send_user == true)
-			send_message(sender, print_numerics(315, sender, sender, NULL, &msg) + "\n");
+			send_message(sender, print_numerics(315, sender, sender, NULL, &msg));
 	}
 	else
 	{
@@ -127,13 +127,13 @@ void	Server::command_WHO(Client &sender, Message &msg)
 					{
 						if ((*it).first->get_user_modes().find("o"))
 						{
-							send_message(sender, print_numerics(352, *(it->first), sender, &get_channels()[i], &msg) + "\n");
+							send_message(sender, print_numerics(352, *(it->first), sender, &get_channels()[i], &msg));
 							send_user = true;
 						}
 					}
 					else
 					{
-						send_message(sender, print_numerics(352, *(it->first), sender, &get_channels()[i], &msg) + "\n");
+						send_message(sender, print_numerics(352, *(it->first), sender, &get_channels()[i], &msg));
 						send_user = true;	
 					}
 				}
@@ -143,7 +143,7 @@ void	Server::command_WHO(Client &sender, Message &msg)
 		if (channel_found == true)
 		{
 			if (send_user == true)
-				send_message(sender, print_numerics(315, sender, sender, NULL, &msg) + "\n");
+				send_message(sender, print_numerics(315, sender, sender, NULL, &msg));
 			return ;
 		}
 		std::cout << "no Channel found" << std::endl;
@@ -154,12 +154,12 @@ void	Server::command_WHO(Client &sender, Message &msg)
 				//  Potentiellement d'autres truc (users' host, server, realname and nickname)
 				if (check_wildcards(this->_clients[i], msg))               //Check possible wildcards
 				{
-					send_message(sender, print_numerics(352, this->_clients[i], sender, NULL, &msg) + "\n");
+					send_message(sender, print_numerics(352, this->_clients[i], sender, NULL, &msg));
 					send_user = true;
 				}
 			}
 		}
 		if (send_user == true)
-			send_message(sender, print_numerics(315, sender, sender, NULL, &msg) + "\n");
+			send_message(sender, print_numerics(315, sender, sender, NULL, &msg));
 	}
 }

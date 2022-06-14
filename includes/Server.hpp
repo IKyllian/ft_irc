@@ -47,7 +47,6 @@ class Server {
 		std::vector<Client>::iterator get_client_by_fd(int search);
 		std::vector<Channel> &get_channels();
 		std::vector<Channel>::iterator get_channel(std::string to_search);
-		std::vector<Command> &get_commands();
 		std::vector<struct pollfd> &get_fds();
 		std::string get_password() const;
 		bool get_using_password() const;
@@ -113,7 +112,6 @@ class Server {
 		void command_MODE_USER(Client *sender, Message &message);
 
 		void command_AWAY(Client &client, Message &message);
-		void command_HELP(Client &sender, Message &msg);
 		void command_PRIVMSG(Client &sender, Message &msg);
 		void command_WHO(Client &client, Message &message);
 		void command_WHOIS(Client &client, Message &message);
@@ -140,7 +138,6 @@ class Server {
 
 		std::vector<Client>			_clients;
 		std::vector<Channel>		_channels;
-		std::vector<Command>		_commands;
 		std::vector<struct pollfd>	_fds;
 		std::string					_password;
 		bool						_using_password;
