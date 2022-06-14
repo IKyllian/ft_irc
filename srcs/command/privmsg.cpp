@@ -13,10 +13,10 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg)
 
     switch (msg.get_nb_parameter()) {
         case 0:
-            send_message(sender, ft_print_numerics(411) + "\n");
+            send_message(sender, ft_print_numerics(411));
             break;
         case 1:
-            send_message(sender, ft_print_numerics(412) + "\n");
+            send_message(sender, ft_print_numerics(412));
             break;
         default:
             targets = parse_comma(msg.get_tab_parameter()[0]);
