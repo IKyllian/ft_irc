@@ -52,7 +52,7 @@ std::string                 ft_print_numerics(/*User &user, Server &server, Chan
 Message                     *ft_create_message(std::string str);
 std::vector<std::string>    ft_split_message(std::string str);
 void                        do_parsing(Server &server, Client& expediteur, std::string message);
-std::string build_command_message(std::string sender, std::string receiver, std::string target, std::string command, std::string message = std::string(), int is_chan = 1);
+std::string build_command_message(std::string sender, std::string receiver, std::string target, std::string command, std::string message = std::string());
 
 
 //bool send_message(Server &server, Client &receiver, std::string message, int msgnum);

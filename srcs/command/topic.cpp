@@ -39,6 +39,8 @@ void Server::command_TOPIC(Client *client, Message &message) {
 		send_message(*client, ft_print_numerics(461));
 		return ;
 	}
+	if (message.get_tab_parameter()[0].size() > 0 && message.get_tab_parameter()[0][0] != '#' && message.get_tab_parameter()[0][0] != '&')
+			return ;
 	channel_it = get_channel(message.get_tab_parameter()[0]);	
 	if (channel_it == _channels.end()) {
 		send_message(*client, ft_print_numerics(403));

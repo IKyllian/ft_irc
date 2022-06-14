@@ -5,6 +5,11 @@
 #include "../includes/Message.hpp"
 #include "../includes/Channel.hpp"
 
+std::string Server::build_response(int num, Client &sender, Client &receiver, Channel *channel, Message *message)
+{
+	return ":" + sender.get_fullidentity() + " " + print_numerics(num, sender, receiver, channel, message);
+}
+
 std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message)
 {
 	(void) nb_message;
@@ -79,7 +84,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string username = sender.get_username();;
 	std::string user_account = sender.get_username();
 
-	std::string client_name = ":" + sender.get_nickname() + "@" + sender.get_username() + "!" + "127.0.0.1" + " " + str_num + " " + sender.get_nickname();
+	std::string client_name = sender.get_nickname();
 	/*if (message)
 	{
 		client_name += message->get_command() + " ";
@@ -103,6 +108,8 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string nb_user = std::to_string(get_clients().size());
 	std::string nb_clients = std::to_string(get_clients().size());
 	std::string local_user = std::to_string(get_clients().size());
+
+	std::string full_identity = sender.get_fullidentity();
 
 
 	//              MESSAGE VAR              //
@@ -170,7 +177,9 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	switch (num)
 	{
 	case 1:
-		return (client_name + RPL_WELCOME(network_name, user_nick));
+		return (client_name + RPL_WELCOME(network_name, full_identity));
+		// "Welcome to the Internet Relay Network
+        //        <nick>!<user>@<host>"
 		
 	case 2:
 		return (client_name + RPL_YOURHOST(network_name, user_nick));

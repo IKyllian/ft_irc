@@ -31,6 +31,8 @@ void Server::command_NAMES(Message &message) {
 	} else {
 		channels_string = parse_comma(message.get_tab_parameter()[0]);
 		for (size_t i = 0; i < channels_string.size(); i++) {
+			if (channels_string[i].size() > 0 && channels_string[i][0] != '#' && channels_string[i][0] != '&')
+				continue ;
 			channel_it = get_channel(channels_string[i]);
 			if (channel_it == _channels.end())
 				continue ;

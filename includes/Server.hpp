@@ -44,6 +44,7 @@ class Server {
 
 		std::vector<Client>	&get_clients();
 		std::vector<Client>::iterator get_client(std::string to_search);
+		std::vector<Client>::iterator get_client_by_fd(int search);
 		std::vector<Channel> &get_channels();
 		std::vector<Channel>::iterator get_channel(std::string to_search);
 		std::vector<struct pollfd> &get_fds();
@@ -77,7 +78,7 @@ class Server {
 		
 		
 		std::string print_numerics(int num, Client &sender, Client &receiver, Channel *channel = NULL, Message *message = NULL);
-
+		std::string build_response(int num, Client &sender, Client &receiver, Channel *channel = NULL, Message *message = NULL);
 
 		void command_NICK(Client &client, Message &message);
 		void command_USER(Client &client, Message &message);
