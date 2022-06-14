@@ -95,8 +95,8 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
 							send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
-						else
-							send_message(*client, _server->print_numerics(331, *client, *client, this, &message));
+						// else
+						// 	send_message(*client, _server->print_numerics(331, *client, *client, this, &message));
 						for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
 							send_message(*client, _server->print_numerics(353, *client, *client, this, &message));
 						send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
@@ -111,8 +111,8 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
 							send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
-						else
-							send_message(*client, _server->print_numerics(331, *client, *client, this, &message));
+						// else
+						// 	send_message(*client, _server->print_numerics(331, *client, *client, this, &message));
 						for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
 							send_message(*client, _server->print_numerics(353, *client, *client, this, &message));
 						send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
