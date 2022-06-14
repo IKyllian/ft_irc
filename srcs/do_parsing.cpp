@@ -61,11 +61,11 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "NAMES")
 	{
-		//  do_NAMES();
+		server.command_NAMES(msg);
 	}
 	else if (msg.get_command() == "LIST")
 	{
-		//  do_LIST();
+		server.command_LIST(msg);
 	}
 	else if (msg.get_command() == "INVITE")
 	{
@@ -174,7 +174,7 @@ void do_parsing(Server &server, Client &sender, std::string message)
 	std::vector<Message*> msg;
 	std::vector<std::string> msg_list;
 	(void) sender;
-//std::cout << "###inside do_parsing" << std::endl;
+std::cout << "###inside do_parsing " << message << std::endl;
 	msg_list = ft_split_message(message);
 	for (size_t i = 0; i < msg_list.size(); i++)
 	{

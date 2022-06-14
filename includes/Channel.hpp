@@ -42,7 +42,7 @@ class Channel {
 		void set_channel_modes(std::vector<std::string> parameters);
 		void set_mode(char mode, std::string parameter = std::string());
 		void set_user_mode(char mode, std::string parameter);
-		void add_invite(Client *client);
+		int add_invite(Client *client);
 		void set_password(std::string password = std::string());
 		void set_topic(std::string new_topic = std::string());
 		void set_user_limit(int limit);

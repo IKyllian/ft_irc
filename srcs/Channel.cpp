@@ -94,13 +94,15 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
+							// send_message(_server->build_response(332, *client, *client, this, &message));
 							send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
-						// else
-						// 	send_message(*client, _server->print_numerics(331, *client, *client, this, &message));
 						for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
+							// send_message(_server->build_response(353, *client, *client, this, &message));
 							send_message(*client, _server->print_numerics(353, *client, *client, this, &message));
+						// send_message(_server->build_response(366, *client, *client, this, &message));
 						send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
 					} else
+						// send_message(_server->build_response(473, *client, *client, this, &message));
 						send_message(*client, _server->print_numerics(473, *client, *client, this, &message));
 				} else {
 					if (_users.size() == 0)
@@ -108,18 +110,15 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 					else
 						_users.insert(std::pair<Client*, std::string>(client, ""));
 
-						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
-						if (topic.size() > 0)
-							send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
-						// else
-						// 	send_message(*client, _server->print_numerics(331, *client, *client, this, &message));
-						for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
-							send_message(*client, _server->print_numerics(353, *client, *client, this, &message));
-						send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
-					// Check si il faut envoyer RPL_NOTOPIC si pas de Topic dans le channel (Dans la doc de Join c'est marqué non mais dans Topic c'est marqué oui)
-					// else
-					// 	send_message(*client, ft_print_numerics(331)); // send RPL_NOTOPIC to inform the client that the channel does not have topic
-				// Then send a list of users currently joined to the channel
+					send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
+					if (topic.size() > 0)
+						// send_message(_server->build_response(332, *client, *client, this, &message));
+						send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
+					for (std::map<Client*, std::string>::iterator user_it = get_users().begin(); user_it != get_users().end(); user_it++)
+						// send_message(_server->build_response(353, *client, *client, this, &message));
+						send_message(*client, _server->print_numerics(353, *client, *client, this, &message));
+					// send_message(_server->build_response(366, *client, *client, this, &message));
+					send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
 				}
 			} else
 				send_message(*client, ft_print_numerics(474));
@@ -319,19 +318,19 @@ void Channel::unset_user_mode(char mode, std::string parameter) {
 	}
 }
 
-void Channel::add_invite(Client *client) {
+int Channel::add_invite(Client *client) {
 	std::vector<Client*>::iterator it = search_user_invite(client);
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
 	std::map<Client*, std::string>::iterator it3;
 	if (it2 == _users_ban.end()) {
 		if (_users.find(client) != _users.end()) {
-			send_message(*client, ft_print_numerics(443));
-			return ;
+			return (443); 
+			// send_message(*client, ft_print_numerics(443));
 		}
 		if (it == _invite_list.end())
 			_invite_list.push_back(client);
 	}
-	// RPL_INVITING (341)
+	return (0);
 }
 
 int Channel::remove_user(Client *client, std::vector<Channel> *channels) {
