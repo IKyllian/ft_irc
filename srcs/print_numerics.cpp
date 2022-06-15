@@ -64,7 +64,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 // + TODO channel
 	std::string user_flags = "H*";                       //H for present, G for gone, OPTIONAL * for server operator, member prefix, usermode
 	std::string user_fingerprint = "fingerprint"; //wtf is this shit ?
-	std::string hopcount = "5";                                 //nb of intermediate server 
+	std::string hopcount = "0";                                 //nb of intermediate server 
 	std::string sec_away = "353";                        // seconds since last active
 	std::string sign_on = "666";                         // unix timestamp, when joined the network
 	std::string privilege = "Oper priv";
