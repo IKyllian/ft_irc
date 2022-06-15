@@ -17,6 +17,34 @@ std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Me
 	return "fonction juste pour que ca compile en attendant d'avoir tout modif";
 }
 
+std::string build_message2(int num, Client &sender, std::string target, Channel *channel) {
+	std::string str;
+	std::string symbol;
+
+	if (num == 401)
+		return ":" + sender.get_fullidentity() + " " + target + " :No such nick/channel";
+	else if (num == 403)
+		return ":" + sender.get_fullidentity() + " " + target + " :No such channel";
+	else {
+		for (std::map<Client*, std::string>::iterator it = channel->get_users().begin(); it != channel->get_users().end(); it++) {
+			if ((*it).second.size() > 0) {
+				// str += "[";
+				str += (*it).second;
+				// str += "]";
+			}
+			str += (*it).first->get_nickname();
+			str += " ";
+		}
+		if ((*channel).get_channel_modes().find("s") != std::string::npos)
+			symbol = "@";
+		else if ((*channel).get_channel_modes().find("p") != std::string::npos)
+			symbol = "*";
+		else
+			symbol = "=";
+		return ":" + sender.get_fullidentity() + " " + symbol + " " + channel->get_name() + " :" + str;
+	}
+}
+
 
 std::string Server::print_numerics(int num, Client &sender, Client &receiver, Channel *channel, Message *message)
 {
