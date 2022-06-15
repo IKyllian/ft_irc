@@ -12,7 +12,7 @@ std::string Server::build_response(int num, Client &sender, Client &receiver, Ch
 
 std::string Server::build_response(Client &sender, std::string str)
 {
-	return ":" + sender.get_fullidentity() + " " + str + "\r\n";
+	return ":" + sender.get_fullidentity() + " " + str;
 }
 
 std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message)
