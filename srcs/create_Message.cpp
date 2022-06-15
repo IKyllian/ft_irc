@@ -118,12 +118,12 @@ std::string build_command_message(std::string sender, std::string receiver, std:
     }
 	answer += target;
     if (command == "PRIVMSG") {
+        answer += " ";
         for (size_t i = 1; i < message.size(); i++) {
             answer += message[i];
             if (i + 1 < message.size())
                 answer += " ";
         }
     }
-
     return answer;
 }

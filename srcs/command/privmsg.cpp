@@ -68,8 +68,8 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server)
                                 send_message(sender, server.print_numerics(404, sender, *client_it, &(*channel_it), &msg));
                                 continue ;
                             } else {
-                                // std::cout << "TEST10" << std::endl;
-                                send_message(sender, build_command_message(sender.get_nickname(), "", (*channel_it).get_name(), "PRIVMSG", msg.get_tab_parameter()));
+                                if (sender.get_nickname() != (*it).first->get_nickname())
+                                    send_message(*(it->first), build_command_message(sender.get_nickname(), "", (*channel_it).get_name(), "PRIVMSG", msg.get_tab_parameter()));
                             }
                                 // std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*it).first->get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
                             // send message
