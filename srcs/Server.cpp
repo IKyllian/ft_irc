@@ -184,6 +184,8 @@ bool Server::_nick_isvalid(std::string nick) const {
 	std::string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`|^_-{}[]\\";
 	size_t ret;
 
+	if (nick.size() < 3 || nick.size() > 10)
+		return false;
 
 // std::cout << "@@@@inside _nick_isvalid " << std::endl;
 // for (unsigned long i = 0; i < nick.length(); i++)
