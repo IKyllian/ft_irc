@@ -6,7 +6,7 @@
 /*   By: rozhou <rozhou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 13:25:54 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/14 10:52:21 by rozhou           ###   ########.fr       */
+/*   Updated: 2022/06/14 13:16:01 by rozhou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void Server::command_NICK(Client &client, Message &message) {
 			// answer += " ";
 			// answer += print_numerics(001, client, client);
 			answer = build_response(001, client, client);
-			answer += "\r\n";
 			send_message(client, answer);
 		}
 	}
