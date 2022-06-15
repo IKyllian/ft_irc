@@ -171,7 +171,12 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		channel_TimeSetTopic = "5623";
 		mask_InviteExeptionList = "Blablabla";
 		mask_ExeptionList = "Blobloblo";
-		symbol = "=";
+		if ((*channel).get_channel_modes().find("s") != std::string::npos)
+			symbol = "@";
+		else if ((*channel).get_channel_modes().find("p") != std::string::npos)
+			symbol = "*";
+		else
+			symbol = "=";
 	}
 
 	switch (num)
