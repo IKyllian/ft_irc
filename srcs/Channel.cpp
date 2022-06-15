@@ -93,10 +93,9 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						_invite_list.erase(user_invite_it);
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
-							// send_message(_server->build_response(332, *client, *client, this, &message));
 							send_message(*client, _server->build_response(332, *client, *client, this, &message));
-							for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++)
-								send_message(*(it2->first), build_message2(353, message.get_sender(), "", this));
+						for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++)
+							send_message(*(it2->first), build_message2(353, message.get_sender(), "", this));
 							// send_message(message.get_sender(), build_message2(353, message.get_sender(), "", this));
 						// send_message(_server->build_response(366, *client, *client, this, &message));
 						send_message(*client, _server->build_response(366, *client, *client, this, &message));
@@ -104,19 +103,26 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						// send_message(_server->build_response(473, *client, *client, this, &message));
 						send_message(*client, _server->build_response(473, *client, *client, this, &message));
 				} else {
+					// std::cout << "Before : " << get_users().size() << std::endl;
+					// if (_users.size() > 0) {
+					// 	for (std::map<Client*, std::string>::iterator tmp = get_users().begin(); tmp != get_users().end(); tmp++)
+					// 		std::cout << "User Nickname = " << (*tmp).first->get_nickname() << std::endl;
+					// }
 					if (_users.size() == 0)
 						_users.insert(std::pair<Client*, std::string>(client, "o"));
 					else
 						_users.insert(std::pair<Client*, std::string>(client, ""));
+					// std::cout << "After : " << get_users().size() << std::endl;
+					// if (_users.size() > 0) {
+					// 	for (std::map<Client*, std::string>::iterator tmp = get_users().begin(); tmp != get_users().end(); tmp++)
+					// 		std::cout << "User Nickname = " << (*tmp).first->get_nickname() << std::endl;
+					// }
 					send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 					if (topic.size() > 0)
-						// send_message(_server->build_response(332, *client, *client, this, &message));
 						send_message(*client, _server->build_response(332, *client, *client, this, &message));
-
-						for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++) {
-							// std::cout << "Client = " << (*it2).first->get_nickname() << std::endl;
-							send_message(*(it2->first), build_message2(353, message.get_sender(), "", this));
-						}
+					for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++) {
+						send_message(*(it2->first), build_message2(353, message.get_sender(), "", this));
+					}
 					// send_message(_server->build_response(366, *client, *client, this, &message));
 					send_message(*client, _server->build_response(366, *client, *client, this, &message));
 				}
