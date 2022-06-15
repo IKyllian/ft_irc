@@ -10,6 +10,11 @@ std::string Server::build_response(int num, Client &sender, Client &receiver, Ch
 	return ":" + sender.get_fullidentity() + " " + print_numerics(num, sender, receiver, channel, message);
 }
 
+std::string Server::build_response(Client &sender, std::string str)
+{
+	return ":" + sender.get_fullidentity() + " " + str + "\r\n";
+}
+
 std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message)
 {
 	(void) nb_message;

@@ -5,7 +5,6 @@ void Server::command_NAMES(Message &message) {
 	std::vector<Channel>::iterator	channel_it;
 
 
-	std::cout << "TEST0 " << message.get_tab_parameter()[0] << std::endl;
 	if (message.get_tab_parameter().size() < 1) {
 		std::cout << "TEST" << std::endl;
 		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++) {
