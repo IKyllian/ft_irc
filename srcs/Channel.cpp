@@ -114,7 +114,7 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						send_message(*client, _server->build_response(332, *client, *client, this, &message));
 
 						for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++) {
-							std::cout << "Client = " << (*it2).first->get_nickname() << std::endl;
+							// std::cout << "Client = " << (*it2).first->get_nickname() << std::endl;
 							send_message(*(it2->first), build_message2(353, message.get_sender(), "", this));
 						}
 					// send_message(_server->build_response(366, *client, *client, this, &message));
