@@ -91,7 +91,6 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 					if (user_invite_it != _invite_list.end()) { // Check si le user a recu une invitation
 						_users.insert(std::pair<Client*, std::string>(client, ""));
 						_invite_list.erase(user_invite_it);
-
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
 							// send_message(_server->build_response(332, *client, *client, this, &message));
@@ -107,7 +106,6 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						_users.insert(std::pair<Client*, std::string>(client, "o"));
 					else
 						_users.insert(std::pair<Client*, std::string>(client, ""));
-
 					send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 					if (topic.size() > 0)
 						// send_message(_server->build_response(332, *client, *client, this, &message));

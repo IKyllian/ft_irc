@@ -28,9 +28,10 @@ std::string build_message2(int num, Client &sender, std::string target, Channel 
 	else {
 		for (std::map<Client*, std::string>::iterator it = channel->get_users().begin(); it != channel->get_users().end(); it++) {
 			if ((*it).second.size() > 0) {
-				// str += "[";
-				str += (*it).second;
-				// str += "]";
+				if ((*it).second.find("o") != std::string::npos)
+					str += "@";
+				else if ((*it).second.find("v") != std::string::npos)
+					str += "+";
 			}
 			str += (*it).first->get_nickname();
 			str += " ";

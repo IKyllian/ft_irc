@@ -104,7 +104,7 @@ Message *ft_create_message(std::string str)
     return (msg);
 }
 
-std::string build_command_message(std::string sender, std::string receiver, std::string target, std::string command, std::string message) {
+std::string build_command_message(std::string sender, std::string receiver, std::string target, std::string command, std::vector<std::string> *message) {
     std::string answer;
 
 	answer += ":";
@@ -117,10 +117,8 @@ std::string build_command_message(std::string sender, std::string receiver, std:
         answer += " ";
     }
 	answer += target;
-    if (command == "PRIVMSG") {
-        answer += " :";
+    if (command == "PRIVMSG")
         answer += message;
-    }
 
     return answer;
 }

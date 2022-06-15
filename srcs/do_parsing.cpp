@@ -49,15 +49,15 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "JOIN")
 	{
-		server.command_JOIN(&(msg.get_sender()), msg, server);
+		server.command_JOIN(&sender, msg, server);
 	}
 	else if (msg.get_command() == "PART")
 	{
-		server.command_PART(&(msg.get_sender()), msg);
+		server.command_PART(&sender, msg);
 	}
 	else if (msg.get_command() == "TOPIC")
 	{
-		server.command_TOPIC(&(msg.get_sender()), msg);
+		server.command_TOPIC(&sender, msg);
 	}
 	else if (msg.get_command() == "NAMES")
 	{
@@ -69,11 +69,11 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "INVITE")
 	{
-		server.command_INVITE(&(msg.get_sender()), msg);
+		server.command_INVITE(&sender, msg);
 	}
 	else if (msg.get_command() == "KICK")
 	{
-		server.command_KICK(&(msg.get_sender()), msg);
+		server.command_KICK(&sender, msg);
 	}
 	else if (msg.get_command() == "MOTD")
 	{
@@ -117,7 +117,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "PRIVMSG")
 	{
-		server.command_PRIVMSG(sender, msg);
+		server.command_PRIVMSG(sender, msg, server);
 	}
 	else if (msg.get_command() == "NOTICE")
 	{

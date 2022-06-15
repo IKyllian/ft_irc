@@ -103,7 +103,7 @@ class Server {
 		void command_MODE_USER(Client *sender, Message &message);
 
 		void command_AWAY(Client &client, Message &message);
-		void command_PRIVMSG(Client &sender, Message &msg);
+		void command_PRIVMSG(Client &sender, Message &msg, Server &server);
 		void command_WHO(Client &client, Message &message);
 		void command_WHOIS(Client &client, Message &message);
 
