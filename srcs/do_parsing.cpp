@@ -29,7 +29,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "PING")
 	{
-		//  do_PING();
+		send_message(sender,  server.build_response(sender, "PONG " + sender.get_hostname() + " :" + msg.get_parameter()));
 	}
 	else if (msg.get_command() == "PONG")
 	{
