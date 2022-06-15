@@ -95,7 +95,9 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						if (topic.size() > 0)
 							// send_message(_server->build_response(332, *client, *client, this, &message));
 							send_message(*client, _server->build_response(332, *client, *client, this, &message));
-							send_message(message.get_sender(), build_message2(353, message.get_sender(), "", this));
+							for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++)
+								send_message(*(it2->first), build_message2(353, message.get_sender(), "", this));
+							// send_message(message.get_sender(), build_message2(353, message.get_sender(), "", this));
 						// send_message(_server->build_response(366, *client, *client, this, &message));
 						send_message(*client, _server->build_response(366, *client, *client, this, &message));
 					} else
@@ -111,7 +113,10 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						// send_message(_server->build_response(332, *client, *client, this, &message));
 						send_message(*client, _server->build_response(332, *client, *client, this, &message));
 
-						send_message(message.get_sender(), build_message2(353, message.get_sender(), "", this));
+						for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++) {
+							// std::cout << "Client = " << (*it2).first->get_nickname() << std::endl;
+							send_message(*(it2->first), build_message2(353, message.get_sender(), "", this));
+						}
 					// send_message(_server->build_response(366, *client, *client, this, &message));
 					send_message(*client, _server->build_response(366, *client, *client, this, &message));
 				}
