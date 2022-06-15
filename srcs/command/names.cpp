@@ -20,8 +20,8 @@ void Server::command_NAMES(Message &message) {
 			if (channel_it == _channels.end())
 				continue ;
 			send_message(message.get_sender(), build_message2(353, message.get_sender(), "", &(*channel_it))); //RPL_NAMREPLY (353) 
-			send_message(message.get_sender(), print_numerics(366, message.get_sender(), message.get_receiver(), &(*channel_it), &message));
+			send_message(message.get_sender(), build_response(366, message.get_sender(), message.get_receiver(), &(*channel_it), &message));
 		}
 	}
-	// send_message(message.get_sender(), print_numerics(366, message.get_sender(), message.get_receiver(), NULL, &message)); // RPL_ENDOFNAMES (366) 
+	// send_message(message.get_sender(), build_response(366, message.get_sender(), message.get_receiver(), NULL, &message)); // RPL_ENDOFNAMES (366) 
 }
