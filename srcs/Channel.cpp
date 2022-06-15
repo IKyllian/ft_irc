@@ -94,13 +94,13 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
 							// send_message(_server->build_response(332, *client, *client, this, &message));
-							send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
+							send_message(*client, _server->build_response(332, *client, *client, this, &message));
 							send_message(message.get_sender(), build_message2(353, message.get_sender(), "", this));
 						// send_message(_server->build_response(366, *client, *client, this, &message));
-						send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
+						send_message(*client, _server->build_response(366, *client, *client, this, &message));
 					} else
 						// send_message(_server->build_response(473, *client, *client, this, &message));
-						send_message(*client, _server->print_numerics(473, *client, *client, this, &message));
+						send_message(*client, _server->build_response(473, *client, *client, this, &message));
 				} else {
 					if (_users.size() == 0)
 						_users.insert(std::pair<Client*, std::string>(client, "o"));
@@ -109,11 +109,11 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 					send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 					if (topic.size() > 0)
 						// send_message(_server->build_response(332, *client, *client, this, &message));
-						send_message(*client, _server->print_numerics(332, *client, *client, this, &message));
+						send_message(*client, _server->build_response(332, *client, *client, this, &message));
 
 						send_message(message.get_sender(), build_message2(353, message.get_sender(), "", this));
 					// send_message(_server->build_response(366, *client, *client, this, &message));
-					send_message(*client, _server->print_numerics(366, *client, *client, this, &message));
+					send_message(*client, _server->build_response(366, *client, *client, this, &message));
 				}
 			} else
 				send_message(*client, ft_print_numerics(474));
