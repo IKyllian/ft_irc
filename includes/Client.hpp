@@ -32,6 +32,7 @@ class Client {
 		std::string get_away_msg() const;
 		std::string	get_buffer() const;
 		std::vector<Channel*>	&get_channel();
+		std::vector<Channel*>::iterator	get_channel_by_name(std::string name);
 
 		void set_nickname(std::string val);
 		void set_username(std::string val);

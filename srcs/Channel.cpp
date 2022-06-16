@@ -61,13 +61,7 @@ void Channel::set_user_limit(int limit) {
 }
 
 void Channel::set_topic(std::string new_topic) {
-	// if (topic.size() == 1)
-	// 	topic = "";
-	// else
 		topic = new_topic;
-	//Manque les erreurs
-	// std::cout << "TOPIC " << topic << std::endl;
-	// Send to the client the new topic
 }
 
 void Channel::set_user(Client* client, Message &message, std::string key) { // Fonction qui sert a add un user au channel
@@ -103,23 +97,11 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						// send_message(_server->build_response(473, *client, *client, this, &message));
 						send_message(*client, _server->build_response(473, *client, *client, this, &message));
 				} else {
-					// std::cout << "Before : " << get_users().size() << std::endl;
-					// if (_users.size() > 0) {
-					// 	for (std::map<Client*, std::string>::iterator tmp = get_users().begin(); tmp != get_users().end(); tmp++)
-					// 		std::cout << "User Nickname = " << (*tmp).first->get_nickname() << std::endl;
-					// }
 					if (_users.size() == 0)
 						_users.insert(std::pair<Client*, std::string>(client, "o"));
 					else
 						_users.insert(std::pair<Client*, std::string>(client, ""));
-					std::cout << "this name = " << this->get_name() << std::endl;
 					client->get_channel().push_back(this);
-					std::cout << "Name after pushback = " << client->get_channel().back()->get_name() << std::endl;
-					// std::cout << "After : " << get_users().size() << std::endl;
-					// if (_users.size() > 0) {
-					// 	for (std::map<Client*, std::string>::iterator tmp = get_users().begin(); tmp != get_users().end(); tmp++)
-					// 		std::cout << "User Nickname = " << (*tmp).first->get_nickname() << std::endl;
-					// }
 					send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 					if (topic.size() > 0)
 						send_message(*client, _server->build_response(332, *client, *client, this, &message));
@@ -317,24 +299,6 @@ void Channel::set_channel_modes(Client *sender, std::vector<std::string> paramet
 				}
 			}
 		}
-		// } else if (mode[0] == '-') {
-		// 	for (size_t i = 1; i < mode.size(); i++) {
-		// 		if (modes.find(mode[i]) != std::string::npos) {
-		// 			if (_channel_modes.find(mode[i]) == std::string::npos) {
-		// 				send_message(*client, print_numerics(501, *sender, *sender, NULL, NULL));
-		// 				// send_message(*sender, build_message2(501, "", "", this));
-		// 				continue;
-		// 			} else {
-		// 				if (params.size() > 0 && i - 1 < params.size())
-		// 					unset_mode(mode[i], params[i - 1]);
-		// 				else
-		// 					unset_mode(mode[i]);
-		// 				send_message(*sender, build_message2(472, *sender, mode[i], this)); // RPL_CHANNELMODEIS
-		// 			}
-		// 		}
-		// 	}
-		// } else
-		// 	std::cout << "Mode : error syntax" << std::endl;
 	} else
 		send_message(*sender, _server->print_numerics(324, *sender, *sender, this, NULL));
 		// ft_print_numerics(324); // RPL_CHANNELMODEIS (Si aucun mode n'est donné, renvoie juste les modes actuels) ==> check aussi RPL_CREATIONTIME(329)
@@ -371,10 +335,8 @@ int Channel::add_invite(Client *client) {
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
 	std::map<Client*, std::string>::iterator it3;
 	if (it2 == _users_ban.end()) {
-		if (_users.find(client) != _users.end()) {
+		if (_users.find(client) != _users.end())
 			return (443); 
-			// send_message(*client, ft_print_numerics(443));
-		}
 		if (it == _invite_list.end())
 			_invite_list.push_back(client);
 	}
@@ -384,11 +346,14 @@ int Channel::add_invite(Client *client) {
 int Channel::remove_user(Client *client, std::vector<Channel> *channels) {
 	std::map<Client*, std::string>::iterator it;
 	std::vector<Channel>::iterator it2;
+	std::vector<Channel*>::iterator channel_it;
 
 	for (it = _users.begin(); it != _users.end(); it++)
 		if ((*it).first->get_nickname() == client->get_nickname())
 			break ;
 	_users.erase(it);
+	channel_it = client->get_channel_by_name(this->get_name());
+	client->get_channel().erase(channel_it);
 	remove_invite(client);
 	if (_users.size() == 0) {
 		for (it2 = channels->begin(); it2 != channels->end(); it2++)
@@ -408,14 +373,17 @@ void Channel::remove_invite(Client *client) {
 
 void Channel::ban_user(Client *client) {
 	std::map<Client*, std::string>::iterator it = _users.find(client);
+	std::vector<Channel*>::iterator channel_it;
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
+	
 	if (_users.end() != it) {
 		_users.erase(it);
+		channel_it = client->get_channel_by_name(this->get_name());
+		client->get_channel().erase(channel_it);
 	}
 	if (_users_ban.end() == it2)
 		_users_ban.push_back(client);
 	remove_invite(client);
-	std::cout << "KICK " << client->get_nickname() << " " << get_name() << std::endl;
 }
 
 

@@ -65,6 +65,15 @@ std::string				Client::get_buffer() const { return (_buffer); }
 std::vector<Channel*>	&Client::get_channel() { return (_channel); };
 
 
+std::vector<Channel*>::iterator	Client::get_channel_by_name(std::string name) {
+	std::vector<Channel*>::iterator	channel_it;
+
+	for (channel_it = _channel.begin(); channel_it != _channel.end(); channel_it++)
+		if ((*channel_it)->get_name() == name)
+			break;
+	return (channel_it);
+}
+
 void Client::set_nickname(std::string val) {
 	_nickname = val;
 	set_hasnick(true);
