@@ -243,8 +243,6 @@ int main(int ac, char **av)
 			{
 				while (true)
 				{
-
-					unsigned int myPort;
 					struct sockaddr_in my_addr;
 					socklen_t len;
 					char* userIP;
