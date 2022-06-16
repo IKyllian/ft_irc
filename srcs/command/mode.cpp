@@ -23,7 +23,7 @@ void Server::command_MODE_CHAN(Client *sender, Message &message) {
 			send_message(*sender, build_response(482, *sender, *sender, &(*channel_it), &message));
 			return ;
 		}
-		(*channel_it).set_channel_modes(message.get_tab_parameter());
+		(*channel_it).set_channel_modes(sender, message.get_tab_parameter());
 	} else 
 		send_message(*sender, build_response(461, *sender, *sender, &(*channel_it), &message));
 }
