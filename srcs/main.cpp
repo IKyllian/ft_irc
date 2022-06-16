@@ -21,7 +21,7 @@
 #include <map>
 #include <cstdio>
 
-#define TIMEOUT			180000 // 180000 = 3 minutes
+#define TIMEOUT			1800000 // 180000 = 3 minutes
 //#define HOSTNAME		"kikaro.42.fr"
 
 

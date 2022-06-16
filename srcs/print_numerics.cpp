@@ -159,7 +159,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	{
 		command = "ERROR message not set";
 
-		std::cerr << "ERROR message not set when calling print numerics" << std::endl;
+	//	std::cerr << "ERROR message not set when calling print numerics" << std::endl;
 	}
 	else
 	{
@@ -195,7 +195,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		mask_ExeptionList = "ERROR channel not set";
 		symbol = "ERROR channel not set";
 
-		std::cerr << "ERROR channel not set when calling print numerics" << std::endl;
+	//	std::cerr << "ERROR channel not set when calling print numerics" << std::endl;
 	}
 	else
 	{

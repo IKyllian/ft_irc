@@ -180,7 +180,7 @@ std::cout << "###inside do_parsing " << message << std::endl;
 	{
 		msg.push_back(ft_create_message(msg_list[i]));
 	}
-	std::cout << "msg size = " << msg.size() << std::endl;
+//	std::cout << "msg size = " << msg.size() << std::endl;
 	for (size_t i = 0; i < msg.size(); i++)
 	{
 		msg[i]->set_sender(&sender);
