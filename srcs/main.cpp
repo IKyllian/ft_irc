@@ -21,7 +21,7 @@
 #include <map>
 #include <cstdio>
 
-#define TIMEOUT			180000 // 180000 = 3 minutes
+#define TIMEOUT			1800000 // 180000 = 3 minutes
 //#define HOSTNAME		"kikaro.42.fr"
 
 
@@ -243,22 +243,26 @@ int main(int ac, char **av)
 			{
 				while (true)
 				{
-					struct sockaddr	addr;
-					struct sockaddr_in *addr_in;
-					socklen_t socklen = 0;
-					char *s;
+					struct sockaddr_in my_addr;
+					socklen_t len;
+					char* userIP;
 
 					memset(&fd, 0 , sizeof(fd));
-					fd.fd = accept(server.get_server_fd(), &addr, &socklen);
+					fd.fd = accept(server.get_server_fd(), NULL, NULL);
+
+					bzero(&my_addr, sizeof(my_addr));
+					len = sizeof(my_addr);
+					getsockname(fd.fd, (struct sockaddr *) &my_addr, &len);
+					userIP = inet_ntoa(my_addr.sin_addr);
+
 					if (fd.fd < 0)
 						break;
-					std::cout << "New incomig connection: " << fd.fd << std::endl;
+
+					std::cout << "New incomig connection - fd:" << fd.fd << " IP: " << userIP << std::endl;
 					fd.events = POLLIN;
 					server.get_fds().push_back(fd);
 					server.get_clients().push_back(Client(fd.fd));
-					addr_in = (struct sockaddr_in *)&addr;
-					s = inet_ntoa(addr_in->sin_addr);
-					server.get_clients()[server.get_clients().size() - 1].set_hostname(s);
+					server.get_clients()[server.get_clients().size() - 1].set_hostname(userIP);
 				}
 			}
 			else // client fd
@@ -281,12 +285,22 @@ int main(int ac, char **av)
 			{
 				if (server.get_clients()[j].get_quitting())
 				{
+
+//TODO faire des trucs ? (enlever le user des channels ? PART ?)
+					
+					for (unsigned long k = 0; k < server.get_fds().size(); k++)
+					{
+						if (server.get_clients()[j].get_fd() == server.get_fds()[k].fd)
+						{
+							std::cout << "Closing fd " << server.get_fds()[k].fd << std::endl;
+							close(server.get_fds()[k].fd);
+							server.get_fds().erase(server.get_fds().begin() + k);
+
+						}
+
+					}
 					std::cout << "Removing Client: " << server.get_clients()[j].get_nickname() << std::endl;
 					server.get_clients().erase(server.get_clients().begin() + j);
-//TODO faire des trucs ? (enlever le user des channels ?)
-					std::cout << "Closing fd " << server.get_fds()[j + 1].fd << std::endl;
-					close(server.get_fds()[j + 1].fd);
-					server.get_fds().erase(server.get_fds().begin() + j + 1);
 				}
 			}
 	} // end main loop
