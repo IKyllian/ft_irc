@@ -39,9 +39,9 @@ class Channel {
 		
 		void set_name(std::string val);
 		void set_user(Client *client, Message &message, std::string key = std::string());
-		void set_channel_modes(std::vector<std::string> parameters);
-		void set_mode(char mode, std::string parameter = std::string());
-		void set_user_mode(char mode, std::string parameter);
+		void set_channel_modes(Client *sender, std::vector<std::string> parameters);
+		void set_mode(Client *sender, char mode, std::string parameter = std::string());
+		void set_user_mode(Client *sender, char mode, std::string parameter);
 		int add_invite(Client *client);
 		void set_password(std::string password = std::string());
 		void set_topic(std::string new_topic = std::string());
@@ -52,8 +52,8 @@ class Channel {
 		void remove_invite(Client *client);
 		void ban_user(Client *client);
 		void unban_user(Client *client);
-		void unset_mode(char mode, std::string parameter = std::string());
-		void unset_user_mode(char mode, std::string parameter);
+		void unset_mode(Client *sender, char mode, std::string parameter = std::string());
+		void unset_user_mode(Client *sender, char mode, std::string parameter);
 
 		void print_users();
 
