@@ -47,7 +47,7 @@
 #define RPL_CREATIONTIME(channel, creationtime)(" " + channel + " " + creationtime)																																		// 329
 #define RPL_WHOISACCOUNT(nick, account)(" " + nick + " " + account + " :is logged in as")																																// 330
 #define RPL_NOTOPIC(channel)(" " + channel + " :No topic is set")																																						// 331
-#define RPL_TOPIC(channel, topic)(" " + channel + " :" + topic)																																							// 332
+#define RPL_TOPIC(channel, topic)(" " + channel + " " + topic)																																							// 332
 #define RPL_TOPICWHOTIME(channel, nick, setat)(" " + channel + " " + nick + " " + setat)																																// 333
 #define RPL_INVITELIST(channel)(" " + channel)																																											// 336
 #define RPL_ENDOFINVITELIST(NULL)(NULL + " :End of /INVITE list")																																									// 337
