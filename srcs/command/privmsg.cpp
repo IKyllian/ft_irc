@@ -11,8 +11,6 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server)
     std::map<Client *, std::string>::iterator joined_chan_it;
     std::string chan = "";
 
-    // std::cout << "TEST1" << std::endl;
-
     switch (msg.get_nb_parameter()) {
         case 0:
             send_message(sender, ft_print_numerics(411));
@@ -43,12 +41,10 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server)
                     if ((*client_it).get_away())
                         send_message(sender, server.print_numerics(301, sender, *client_it, NULL, &msg));
                         // send_message(sender, ft_print_numerics(301));
-                    send_message(sender, build_command_message(sender.get_nickname(), "", (*client_it).get_nickname(), "PRIVMSG", msg.get_tab_parameter()));
+                    send_message(*client_it, build_command_message(sender.get_nickname(), "", (*client_it).get_nickname(), "PRIVMSG", msg.get_tab_parameter()));
                     // std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*client_it).get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
                     //send message
                 } else if (channel_it != _channels.end()) {
-                    
-                    // std::cout << "TEST3" << std::endl;
                     for (std::vector<Client*>::iterator ban_user_it = (*channel_it).get_users_ban().begin(); ban_user_it != (*channel_it).get_users_ban().end(); ban_user_it++)
                         if (sender.get_nickname() == (*ban_user_it)->get_nickname())
                             break ;
@@ -71,12 +67,8 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server)
                                 if (sender.get_nickname() != (*it).first->get_nickname())
                                     send_message(*(it->first), build_command_message(sender.get_nickname(), "", (*channel_it).get_name(), "PRIVMSG", msg.get_tab_parameter()));
                             }
-                                // std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*it).first->get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
-                            // send message
                         }
                     }
-                    // send_message(sender,  build_message(sender.get_nickname(), (*it).first->get_nickname(), msg.get_tab_parameter()[1], 1));
-                    //  std::cout << ":" << sender.get_nickname() << " PRIVMSG #" << (*channel_it).get_name() << " :" << msg.get_tab_parameter()[1] << std::endl;
                 }
                 chan = "";
             }
