@@ -346,14 +346,11 @@ int Channel::add_invite(Client *client) {
 int Channel::remove_user(Client *client, std::vector<Channel> *channels) {
 	std::map<Client*, std::string>::iterator it;
 	std::vector<Channel>::iterator it2;
-	std::vector<Channel*>::iterator channel_it;
-
 	for (it = _users.begin(); it != _users.end(); it++)
 		if ((*it).first->get_nickname() == client->get_nickname())
 			break ;
 	_users.erase(it);
-	channel_it = client->get_channel_by_name(this->get_name());
-	client->get_channel().erase(channel_it);
+	client->get_channel().erase(client->get_channel_by_name(this->get_name()));
 	remove_invite(client);
 	if (_users.size() == 0) {
 		for (it2 = channels->begin(); it2 != channels->end(); it2++)
@@ -373,13 +370,11 @@ void Channel::remove_invite(Client *client) {
 
 void Channel::ban_user(Client *client) {
 	std::map<Client*, std::string>::iterator it = _users.find(client);
-	std::vector<Channel*>::iterator channel_it;
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
 	
 	if (_users.end() != it) {
 		_users.erase(it);
-		channel_it = client->get_channel_by_name(this->get_name());
-		client->get_channel().erase(channel_it);
+		client->get_channel().erase(client->get_channel_by_name(this->get_name()));
 	}
 	if (_users_ban.end() == it2)
 		_users_ban.push_back(client);
