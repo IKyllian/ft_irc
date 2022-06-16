@@ -262,9 +262,7 @@ int main(int ac, char **av)
 					fd.events = POLLIN;
 					server.get_fds().push_back(fd);
 					server.get_clients().push_back(Client(fd.fd));
-
 					server.get_clients()[server.get_clients().size() - 1].set_hostname(userIP);
-//std::cout << "client IP: " << server.get_clients()[server.get_clients().size() - 1].get_hostname() << std::endl;
 				}
 			}
 			else // client fd
@@ -287,12 +285,22 @@ int main(int ac, char **av)
 			{
 				if (server.get_clients()[j].get_quitting())
 				{
+
+//TODO faire des trucs ? (enlever le user des channels ? PART ?)
+					
+					for (unsigned long k = 0; k < server.get_fds().size(); k++)
+					{
+						if (server.get_clients()[j].get_fd() == server.get_fds()[k].fd)
+						{
+							std::cout << "Closing fd " << server.get_fds()[k].fd << std::endl;
+							close(server.get_fds()[k].fd);
+							server.get_fds().erase(server.get_fds().begin() + k);
+
+						}
+
+					}
 					std::cout << "Removing Client: " << server.get_clients()[j].get_nickname() << std::endl;
 					server.get_clients().erase(server.get_clients().begin() + j);
-//TODO faire des trucs ? (enlever le user des channels ?)
-					std::cout << "Closing fd " << server.get_fds()[j + 1].fd << std::endl;
-					close(server.get_fds()[j + 1].fd);
-					server.get_fds().erase(server.get_fds().begin() + j + 1);
 				}
 			}
 	} // end main loop
