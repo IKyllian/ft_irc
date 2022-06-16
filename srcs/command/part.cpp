@@ -21,7 +21,10 @@ void Server::command_PART(Client *client, Message &message) {
 		ret = (*channel_it).remove_user(client, &_channels);
 		if (ret < 0)
 			send_message(*client, print_numerics(442, *client, *client, &(*channel_it), &message));
-		else
+		else {
+			for (std::map<Client*, std::string>::iterator it2 = (*channel_it).get_users().begin(); it2 != (*channel_it).get_users().end(); it2++)
+				send_message(*(it2->first), build_command_message(client->get_nickname(), "", (*channel_it).get_name(), "PART"));
 			send_message(*client, build_command_message(client->get_nickname(), "", (*channel_it).get_name(), "PART"));
+		}
 	}
 }
