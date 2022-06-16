@@ -133,12 +133,9 @@ void	Server::command_WHO(Client &sender, Message &msg)
 					}
 				}
 				channel_found = true;
+				send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(315, sender, sender, &get_channels()[i], &msg));
+				return ;
 			}
-		}
-		if (channel_found == true)
-		{
-			send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(315, sender, sender, NULL, &msg));
-			return ;
 		}
 		std::cout << "no Channel found" << std::endl;
 		for (size_t i = 0; i < this->_clients.size(); i++)

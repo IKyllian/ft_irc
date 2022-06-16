@@ -23,6 +23,7 @@ COMMAND		=	srcs/command/away.cpp \
 				srcs/command/mode.cpp \
 				srcs/command/user.cpp \
 				srcs/command/password.cpp \
+				srcs/command/quit.cpp \
 
 OBJS			= $(SRCS:.cpp=.o) $(COMMAND:.cpp=.o)
 

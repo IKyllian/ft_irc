@@ -112,7 +112,6 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string datetime = "20/05/2022";
 	std::string actual_time = "22";             //Le temps actuel (Potentiellement a faire en dehors de la classe server)
 //FIN TODO
-	std::string no_channel = "*";
 
 
 	//              user VAR               //
@@ -183,7 +182,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	if (!channel)
 	{
 		channel_modes = "ERROR channel not set";
-		channel_name = "ERROR channel not set";
+		channel_name = "*";
 		client_count = "ERROR channel not set";
 		channel_topic = "ERROR channel not set";
 		mode_string = "ERROR channel not set";
@@ -298,15 +297,11 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		return (str_num + " " + client_name + RPL_NOWAWAY(null));
 		
 	case 352:
-	{
-		if (!channel)
-			return (str_num + " " + client_name + RPL_WHOREPLY(no_channel, username, hostname, servername, user_nick, user_flags, hopcount, realname));
-		else
-			return (str_num + " " + client_name + RPL_WHOREPLY(channel_name, username, hostname, servername, user_nick, user_flags, hopcount, realname));
-	}
+		return (str_num + " " + client_name + RPL_WHOREPLY(channel_name, username, hostname, servername, user_nick, user_flags, hopcount, realname));
+
 		
 	case 315:
-		return (str_num + " " + client_name + RPL_ENDOFWHO(mask));
+		return (str_num + " " + client_name + RPL_ENDOFWHO(channel_name));
 		
 	case 307:
 		return (str_num + " " + client_name + RPL_WHOISREGNICK(user_nick));
@@ -475,7 +470,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		return (str_num + " " + client_name + ERR_NOSUCHSERVER(servername));
 		
 	case 403:
-		return (str_num + " " + client_name + ERR_NOSUCHCHANNEL(channel_name));
+		return (str_num + " " + client_name + ERR_NOSUCHCHANNEL(message->get_tab_parameter()[0]));
 		
 	case 404:
 		return (str_num + " " + client_name + ERR_CANNOTSENDTOCHAN(channel_name));

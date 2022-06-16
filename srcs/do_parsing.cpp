@@ -41,7 +41,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "QUIT")
 	{
-		//  do_QUIT();
+		server.command_QUIT(msg.get_sender(), msg);
 	}
 	else if (msg.get_command() == "ERROR")
 	{

@@ -43,7 +43,7 @@ std::vector<std::string> ft_split_message(std::string str)
     return (msg_list);
 }
 
-static void ft_split_parameter(Message &msg)
+void ft_split_parameter(Message &msg)
 {
     size_t position = 0;
     size_t startpoint = 0;

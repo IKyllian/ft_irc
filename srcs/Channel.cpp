@@ -90,6 +90,7 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 					user_invite_it = search_user_invite(client);
 					if (user_invite_it != _invite_list.end()) { // Check si le user a recu une invitation
 						_users.insert(std::pair<Client*, std::string>(client, ""));
+						client->get_channel().push_back(this);
 						_invite_list.erase(user_invite_it);
 						send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 						if (topic.size() > 0)
@@ -112,6 +113,9 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 						_users.insert(std::pair<Client*, std::string>(client, "o"));
 					else
 						_users.insert(std::pair<Client*, std::string>(client, ""));
+					std::cout << "this name = " << this->get_name() << std::endl;
+					client->get_channel().push_back(this);
+					std::cout << "Name after pushback = " << client->get_channel().back()->get_name() << std::endl;
 					// std::cout << "After : " << get_users().size() << std::endl;
 					// if (_users.size() > 0) {
 					// 	for (std::map<Client*, std::string>::iterator tmp = get_users().begin(); tmp != get_users().end(); tmp++)
@@ -373,8 +377,9 @@ void Channel::remove_invite(Client *client) {
 void Channel::ban_user(Client *client) {
 	std::map<Client*, std::string>::iterator it = _users.find(client);
 	std::vector<Client*>::iterator it2 = search_user_ban(client);
-	if (_users.end() != it)
+	if (_users.end() != it) {
 		_users.erase(it);
+	}
 	if (_users_ban.end() == it2)
 		_users_ban.push_back(client);
 	remove_invite(client);
