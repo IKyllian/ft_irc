@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/14 15:19:22 by kzennoun          #+#    #+#             */
+/*   Updated: 2022/06/17 16:46:00 by kzennoun         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Bot.hpp"
 
 #include <iostream>
@@ -38,71 +50,6 @@ void display_cpp_ver()
     else if (__cplusplus == 199711L) std::cout << "C++98\n";
     else std::cout << "pre-standard C++\n";
 }
-
-int handle_incoming_message(Bot &bot, int fd)
-{
-	int				ret;
-	size_t			pos;
-
-	char			buffer[65535];
-	std::string		message;
-
-
-	do
-	{
-		memset(&buffer, 0, sizeof(buffer));
-		ret = recv(fd, buffer, sizeof(buffer), 0);
-		bot.append_buffer(buffer);
-	}while(ret > 0);
-
-	pos = bot.get_buffer().rfind("\r\n");
-	if (pos == std::string::npos || pos >= bot.get_buffer().length())
-	{
-		std::cout << " command incomplete, storing: " << std::endl 
-				<< bot.get_buffer() << std::endl
-				<< "--------------" << std::endl;
-		return ret;
-	}
-	
-	message = bot.extract_command(pos);
-	
-	std::cout << "received: " << message << std::endl;
-
-	//do_parsing(server, bot, message);
-	return ret;
-}
-
-
-bool send_message(int target, std::string message)
-{
-	int					ret;
-	unsigned long 		i;
-	char				buffer[65535];
-	size_t				len;
-
-	memset(&buffer, 0, sizeof(buffer));
-	for (i = 0; i < message.length(); i++)
-	{
-		buffer[i] = message[i];
-	}
-	buffer[i] = '\r';
-	buffer[i + 1] = '\n';
-	buffer[i + 2] = '\0';
-	len = i + 2;
-
-	std::cout << "sending: ";
-	std::cout << buffer << std::endl;
-
-	ret = send(target, buffer, len, 0);
-	if (ret < 0)
-	{
-		perror("  send() failed");
-		return false;
-	}
-
-	return true;
-}
-
 
 // args
 // av[1] username
@@ -153,7 +100,7 @@ int main(int ac, char **av)
 		perror("socket() failed");
 		return (-1);
 	}
-
+	bot.set_serverFD(serverFD);
 
 
 	// //Bind the socket  
@@ -187,23 +134,23 @@ int main(int ac, char **av)
 		message = "";
 		message += "PASSWORD ";
 		message += av[4];
-		send_message(serverFD, message);
+		bot.send_message(message);
 	}
 
 	message = "";
 	message += "NICK ";
-	message += av[1]; 
-	send_message(serverFD, message);
+	message += av[1];
+	bot.send_message(message);
 	message = "";
 	message += "USER ";
 	message += av[1];
 	message += " * * :";
 	message += av[1];
-	send_message(serverFD, message);
-
+	bot.send_message(message);
+//ajouter un check sur le welcome 
 	while (true)
 	{
-		ret = handle_incoming_message(bot, serverFD);
+		ret = bot.handle_incoming_message();
 		if (ret < 0)
 			break;
 	}
