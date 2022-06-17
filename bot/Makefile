@@ -1,5 +1,5 @@
 SRCS		= 	main.cpp \
-				bot.cpp
+				Bot.cpp
 
 OBJS			= $(SRCS:.cpp=.o)
 
