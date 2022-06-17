@@ -343,9 +343,9 @@ int Channel::add_invite(Client *client) {
 	return (0);
 }
 
-int Channel::remove_user(Client *client, std::vector<Channel> *channels) {
+int Channel::remove_user(Client *client, std::vector<Channel*> *channels) {
 	std::map<Client*, std::string>::iterator it;
-	std::vector<Channel>::iterator it2;
+	std::vector<Channel*>::iterator it2;
 	for (it = _users.begin(); it != _users.end(); it++)
 		if ((*it).first->get_nickname() == client->get_nickname())
 			break ;
@@ -354,7 +354,7 @@ int Channel::remove_user(Client *client, std::vector<Channel> *channels) {
 	remove_invite(client);
 	if (_users.size() == 0) {
 		for (it2 = channels->begin(); it2 != channels->end(); it2++)
-			if (it2->get_name() == get_name())
+			if ((*it2)->get_name() == get_name())
 				break ;			
 		if (it2 != channels->end())
 			channels->erase(it2);

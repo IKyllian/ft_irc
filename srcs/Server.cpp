@@ -50,7 +50,7 @@ std::string Server::get_invisible_user() const { return (_invisible_user); }
 // std::string Server::get_datetime() const { return (_datetime); }
 
 std::vector<Client*>	&Server::get_clients() { return (_clients); }
-std::vector<Channel> &Server::get_channels() { return (_channels); }
+std::vector<Channel*> &Server::get_channels() { return (_channels); }
 std::vector<struct pollfd> &Server::get_fds() { return (_fds); };
 std::string Server::get_password() const { return (_password); }
 bool Server::get_using_password() const { return (_using_password); }
@@ -74,11 +74,11 @@ std::vector<Client*>::iterator Server::get_client_by_fd(int search) {
 	return (client_it);
 }
 
-std::vector<Channel>::iterator Server::get_channel(std::string to_search) {
-	std::vector<Channel>::iterator	channel_it;
+std::vector<Channel*>::iterator Server::get_channel(std::string to_search) {
+	std::vector<Channel*>::iterator	channel_it;
 
 	for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++)
-			if ((*channel_it).get_name() == to_search)
+			if ((*channel_it)->get_name() == to_search)
 				break;
 	return (channel_it);
 }

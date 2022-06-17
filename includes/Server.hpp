@@ -45,8 +45,8 @@ class Server {
 		std::vector<Client*>	&get_clients();
 		std::vector<Client*>::iterator get_client(std::string to_search);
 		std::vector<Client*>::iterator get_client_by_fd(int search);
-		std::vector<Channel> &get_channels();
-		std::vector<Channel>::iterator get_channel(std::string to_search);
+		std::vector<Channel*> &get_channels();
+		std::vector<Channel*>::iterator get_channel(std::string to_search);
 		std::vector<struct pollfd> &get_fds();
 		std::string get_password() const;
 		bool get_using_password() const;
@@ -130,7 +130,7 @@ class Server {
 		std::string _datetime;
 
 		std::vector<Client*>		_clients;
-		std::vector<Channel>		_channels;
+		std::vector<Channel*>		_channels;
 		std::vector<struct pollfd>	_fds;
 		std::string					_password;
 		bool						_using_password;

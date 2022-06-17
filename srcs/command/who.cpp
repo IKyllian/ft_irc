@@ -115,26 +115,26 @@ void	Server::command_WHO(Client &sender, Message &msg)
 		std::cout << "nb channels = " << this->get_channels().size() << std::endl;
 		for (size_t i = 0; i < this->get_channels().size(); i++)
 		{
-			if (check_wildcards(this->get_channels()[i], msg)) //Check possible wildcards
+			if (check_wildcards(*this->get_channels()[i], msg)) //Check possible wildcards
 			{
 				std::cout << "found channel" << std::endl;
-				std::map<Client*, std::string>::iterator it = this->get_channels()[i].get_users().begin();
-				for(; it != this->get_channels()[i].get_users().end(); it++)
+				std::map<Client*, std::string>::iterator it = this->get_channels()[i]->get_users().begin();
+				for(; it != this->get_channels()[i]->get_users().end(); it++)
 				{
 					if (msg.get_nb_parameter() > 1 && msg.get_tab_parameter()[1] == "o")
 					{
 						if ((*it).first->get_user_modes().find("o"))
 						{
-							send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, *(it->first), sender, &get_channels()[i], &msg));
+							send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, *(it->first), sender, get_channels()[i], &msg));
 						}
 					}
 					else
 					{
-						send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, *(it->first), sender, &get_channels()[i], &msg));
+						send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, *(it->first), sender, get_channels()[i], &msg));
 					}
 				}
 				channel_found = true;
-				send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(315, sender, sender, &get_channels()[i], &msg));
+				send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(315, sender, sender, get_channels()[i], &msg));
 				return ;
 			}
 		}
