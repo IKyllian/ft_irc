@@ -19,7 +19,7 @@ void Server::command_WHOIS(Client &sender, Message &msg)
                 for (size_t j = 0; j < _clients[i]->get_channel().size(); j++)
                 {
                     if (_clients[i]->get_channel()[j]->get_channel_modes().find("s") == std::string::npos && _clients[i]->get_user_modes().find("i") == std::string::npos)
-                        send_message(sender, build_response(301, *_clients[i], sender, _clients[i]->get_channel()[j], &msg));
+                        send_message(sender, build_response(319, *_clients[i], sender, _clients[i]->get_channel()[j], &msg));
                 }
                 if (_clients[i]->get_user_modes().find("o") != std::string::npos)
                     send_message(sender, build_response(313, *_clients[i], sender, NULL, &msg));
