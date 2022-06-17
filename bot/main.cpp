@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 15:19:22 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/17 16:46:00 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/17 18:16:33 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int main(int ac, char **av)
 		return (-1);
 	}
 	bot.set_serverFD(serverFD);
+	bot.set_running(true);
 
 
 	// //Bind the socket  
@@ -132,7 +133,7 @@ int main(int ac, char **av)
 	if (password)
 	{
 		message = "";
-		message += "PASSWORD ";
+		message += "PASS ";
 		message += av[4];
 		bot.send_message(message);
 	}
@@ -148,11 +149,14 @@ int main(int ac, char **av)
 	message += av[1];
 	bot.send_message(message);
 //ajouter un check sur le welcome 
-	while (true)
+	while (bot.get_running())
 	{
 		ret = bot.handle_incoming_message();
+//changer la condition de break pour eviter une boucle infinie si le serveur ferme
+std::cout << "mainloop ret: " << ret << std::endl;
 		if (ret < 0)
 			break;
 	}
+	std::cout << "Quitting." << std::endl;
 	close(serverFD);
 }

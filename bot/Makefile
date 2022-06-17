@@ -1,5 +1,6 @@
 SRCS		= 	main.cpp \
-				Bot.cpp
+				Bot.cpp \
+				Message.cpp
 
 OBJS			= $(SRCS:.cpp=.o)
 
