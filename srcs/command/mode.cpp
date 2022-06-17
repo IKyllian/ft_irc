@@ -29,7 +29,7 @@ void Server::command_MODE_CHAN(Client *sender, Message &message) {
 }
 
 void Server::command_MODE_USER(Client *sender, Message &message) {
-	std::vector<Client>::iterator	client_it;
+	std::vector<Client*>::iterator	client_it;
 
 	if (message.get_tab_parameter().size() == 1) {
 		send_message(*sender, build_response(221, *sender, *sender, NULL, &message)); // Send current mode of the target user
@@ -38,11 +38,11 @@ void Server::command_MODE_USER(Client *sender, Message &message) {
 		if (client_it == _clients.end()) {
 			send_message(*sender, build_response(401, *sender, *sender, NULL, &message));
 			return ;
-		} else if (sender->get_nickname() != (*client_it).get_nickname()) {
+		} else if (sender->get_nickname() != (*client_it)->get_nickname()) {
 			send_message(*sender, build_response(502, *sender, *sender, NULL, &message));
 			return ;
 		} else {
-			(*client_it).set_user_modes(message.get_tab_parameter()[1]);
+			(*client_it)->set_user_modes(message.get_tab_parameter()[1]);
 		}
 	}
 }

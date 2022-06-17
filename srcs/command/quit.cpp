@@ -12,7 +12,7 @@ void Server::command_QUIT(Client &sender, Message &msg)
     else
         quit_msg = msg.get_parameter();
     for (size_t i = 0; i < get_clients().size(); i++)
-        send_message(get_clients()[i], ":" + sender.get_fullidentity() + " QUIT: " + quit_msg);
+        send_message(*get_clients()[i], ":" + sender.get_fullidentity() + " QUIT: " + quit_msg);
     std::cout << "channel size = " << sender.get_channel().size() << std::endl;
     for (size_t i = 0; i < sender.get_channel().size(); i++)
     {

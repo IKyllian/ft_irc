@@ -133,6 +133,9 @@ std::string build_command_message(std::string sender, std::string receiver, std:
             if (i + 1 < message.size())
                 answer += " ";
         }
+    } else if (command == "KICK") {
+        answer += " ";
+        answer += receiver;
     }
     return answer;
 }

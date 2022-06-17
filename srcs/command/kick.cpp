@@ -3,7 +3,7 @@
 void Server::command_KICK(Client *sender, Message &message) {
 	std::vector<Channel>::iterator	channel_it;
 	std::vector<std::string>		clients_string;
-	std::vector<Client>::iterator	client_it;
+	std::vector<Client*>::iterator	client_it;
 
 	if (message.get_tab_parameter().size() < 2) {
 		send_message(*sender, print_numerics(461, message.get_sender(), message.get_receiver(), NULL, &message));
@@ -26,8 +26,8 @@ void Server::command_KICK(Client *sender, Message &message) {
 					continue; 
 				}
 				for (std::map<Client*, std::string>::iterator it2 = (*channel_it).get_users().begin(); it2 != (*channel_it).get_users().end(); it2++)
-					send_message(*(it2->first), build_command_message(sender->get_nickname(), (*client_it).get_nickname(), (*channel_it).get_name(), "KICK"));
-				(*channel_it).remove_user(&(*client_it), &_channels);
+					send_message(*(it2->first), build_command_message(sender->get_nickname(), (*client_it)->get_nickname(), (*channel_it).get_name(), "KICK"));
+				(*channel_it).remove_user((*client_it), &_channels);
 			}
 		}
 	}

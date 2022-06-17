@@ -2,7 +2,7 @@
 
 void Server::command_INVITE(Client *sender, Message &message) {
 	std::vector<Channel>::iterator	channel_it;
-	std::vector<Client>::iterator	client_it;
+	std::vector<Client*>::iterator	client_it;
 	int ret;
 
 	if (message.get_tab_parameter().size() < 2 || message.get_tab_parameter().size() > 2) {
@@ -23,7 +23,7 @@ void Server::command_INVITE(Client *sender, Message &message) {
 		if ((*channel_it).get_users().find(sender)->second.find("o") == std::string::npos) {
 			send_message(*sender, print_numerics(482, message.get_sender(), message.get_receiver(), NULL, &message));  // ERR_CHANOPRIVSNEEDED (482)
 		} else {
-			ret = (*channel_it).add_invite(&(*client_it));
+			ret = (*channel_it).add_invite((*client_it));
 			if (ret == 443)
 				send_message(*sender, print_numerics(443, message.get_sender(), message.get_receiver(), &(*channel_it), &message)); //ERR_USERONCHANNEL (443) 
 			else {
@@ -32,7 +32,7 @@ void Server::command_INVITE(Client *sender, Message &message) {
 					send_message(*(it2->first), print_numerics(336, message.get_sender(), message.get_receiver(), &(*channel_it), &message));
 				send_message(*sender, print_numerics(337, message.get_sender(), message.get_receiver(), &(*channel_it), &message));
 			} 
-			send_message(*sender, build_command_message(sender->get_nickname(), (*client_it).get_nickname(), (*channel_it).get_name(), "INVITE"));
+			send_message(*sender, build_command_message(sender->get_nickname(), (*client_it)->get_nickname(), (*channel_it).get_name(), "INVITE"));
 		}
 	}
 }

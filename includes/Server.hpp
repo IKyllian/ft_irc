@@ -42,9 +42,9 @@ class Server {
 		// std::string get_nb_channel() const;
 		// std::string get_datetime() const;
 
-		std::vector<Client>	&get_clients();
-		std::vector<Client>::iterator get_client(std::string to_search);
-		std::vector<Client>::iterator get_client_by_fd(int search);
+		std::vector<Client*>	&get_clients();
+		std::vector<Client*>::iterator get_client(std::string to_search);
+		std::vector<Client*>::iterator get_client_by_fd(int search);
 		std::vector<Channel> &get_channels();
 		std::vector<Channel>::iterator get_channel(std::string to_search);
 		std::vector<struct pollfd> &get_fds();
@@ -73,7 +73,7 @@ class Server {
 
 		void set_password(std::string val);
 		void set_using_password(bool val);
-		void set_user(Client client);
+		void set_user(Client *client);
 
 		
 		
@@ -129,7 +129,7 @@ class Server {
 		std::string _nb_channel;
 		std::string _datetime;
 
-		std::vector<Client>			_clients;
+		std::vector<Client*>		_clients;
 		std::vector<Channel>		_channels;
 		std::vector<struct pollfd>	_fds;
 		std::string					_password;

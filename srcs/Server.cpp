@@ -49,27 +49,27 @@ std::string Server::get_invisible_user() const { return (_invisible_user); }
 // std::string Server::get_nb_channel() const { return (_nb_channel); }
 // std::string Server::get_datetime() const { return (_datetime); }
 
-std::vector<Client>	&Server::get_clients() { return (_clients); }
+std::vector<Client*>	&Server::get_clients() { return (_clients); }
 std::vector<Channel> &Server::get_channels() { return (_channels); }
 std::vector<struct pollfd> &Server::get_fds() { return (_fds); };
 std::string Server::get_password() const { return (_password); }
 bool Server::get_using_password() const { return (_using_password); }
 int Server::get_server_fd() const { return (_fds[0].fd); }
 
-std::vector<Client>::iterator Server::get_client(std::string to_search) {
-	std::vector<Client>::iterator	client_it;
+std::vector<Client*>::iterator Server::get_client(std::string to_search) {
+	std::vector<Client*>::iterator	client_it;
 
 	for (client_it = _clients.begin(); client_it != _clients.end(); client_it++)
-		if ((*client_it).get_nickname() == to_search)
+		if ((*client_it)->get_nickname() == to_search)
 			break;
 	return (client_it);
 }
 
-std::vector<Client>::iterator Server::get_client_by_fd(int search) {
-	std::vector<Client>::iterator	client_it;
+std::vector<Client*>::iterator Server::get_client_by_fd(int search) {
+	std::vector<Client*>::iterator	client_it;
 
 	for (client_it = _clients.begin(); client_it != _clients.end(); client_it++)
-		if ((*client_it).get_fd() == search)
+		if ((*client_it)->get_fd() == search)
 			break;
 	return (client_it);
 }
@@ -164,8 +164,8 @@ void Server::set_using_password(bool val) {
 }
 
 
-void Server::set_user(Client client) {
-	std::vector<Client>::iterator it = get_client(client.get_nickname());
+void Server::set_user(Client *client) {
+	std::vector<Client*>::iterator it = get_client(client->get_nickname());
 	if (it == _clients.end()) {
 		_clients.push_back(client);
 	}
@@ -174,7 +174,7 @@ void Server::set_user(Client client) {
 bool Server::_nick_available(std::string nick) const {
 	for (unsigned long i = 0; i < _clients.size(); i++)
 	{
-		if (_clients[i].get_nickname() == nick)
+		if (_clients[i]->get_nickname() == nick)
 			return false;
 	}
 	return true;

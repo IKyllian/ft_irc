@@ -85,13 +85,13 @@ void	Server::command_WHO(Client &sender, Message &msg)
 	{
 		for (size_t i = 0; i < this->_clients.size(); i++)
 		{
-			if (this->_clients[i].get_user_modes().find("i") == std::string::npos)
+			if (this->_clients[i]->get_user_modes().find("i") == std::string::npos)
 			{
 				for (size_t j = 0; j < sender.get_channel().size(); j++)
 				{
-					for (size_t k = 0; k < this->_clients[i].get_channel().size(); k++)
+					for (size_t k = 0; k < this->_clients[i]->get_channel().size(); k++)
 					{
-						if (sender.get_channel()[j] == this->_clients[i].get_channel()[k])
+						if (sender.get_channel()[j] == this->_clients[i]->get_channel()[k])
 						{
 							same_channel = true;
 							break;
@@ -102,7 +102,7 @@ void	Server::command_WHO(Client &sender, Message &msg)
 				}
 				if (same_channel == false)
 				{
-					send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, _clients[i], sender, NULL, &msg));
+					send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, *_clients[i], sender, NULL, &msg));
 				}
 			}
 		}
@@ -140,12 +140,12 @@ void	Server::command_WHO(Client &sender, Message &msg)
 		std::cout << "no Channel found" << std::endl;
 		for (size_t i = 0; i < this->_clients.size(); i++)
 		{
-			if (this->_clients[i].get_user_modes().find("i") == std::string::npos)
+			if (this->_clients[i]->get_user_modes().find("i") == std::string::npos)
 			{
 				//  Potentiellement d'autres truc (users' host, server, realname and nickname)
-				if (check_wildcards(this->_clients[i], msg))               //Check possible wildcards
+				if (check_wildcards(*this->_clients[i], msg))               //Check possible wildcards
 				{
-					send_message(sender,build_response(352, this->_clients[i], sender, NULL, &msg));
+					send_message(sender,build_response(352, *this->_clients[i], sender, NULL, &msg));
 				}
 			}
 		}
