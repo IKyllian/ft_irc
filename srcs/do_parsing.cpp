@@ -122,11 +122,11 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "PRIVMSG")
 	{
-		server.command_PRIVMSG(*sender, msg, server);
+		server.command_PRIVMSG(*sender, msg, server, 0);
 	}
 	else if (msg.get_command() == "NOTICE")
 	{
-		//  do_NOTICE();
+		server.command_PRIVMSG(*sender, msg, server, 1);
 	}
 	else if (msg.get_command() == "WHO")
 	{

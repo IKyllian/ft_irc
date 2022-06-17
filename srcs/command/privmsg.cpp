@@ -2,7 +2,7 @@
 #include "../../includes/Channel.hpp"
 #include "../../includes/ft_irc.hpp"
 
-void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server)
+void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, int is_notice)
 {
     std::vector<std::string> targets;
     std::vector<Channel*>::iterator channel_it;
@@ -25,25 +25,28 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server)
                     chan = targets[i];
                     targets[i] = chan.substr(chan.find("#"));
                 }
-                client_it = get_client(targets[i]);
-                if (client_it == _clients.end())
+               if (targets[i].size() > 0 && (targets[i][0] == '#' || targets[i][0] == '&')) {
                     channel_it = get_channel(targets[i]);
+                    client_it = _clients.end();
+                } else {
+                    channel_it = _channels.end();
+                    client_it = get_client(targets[i]);
+                }
                 if (client_it == _clients.end() && channel_it == _channels.end()) {
-                    // std::cout << "TEST2" << std::endl;
-                    send_message(msg.get_sender(), build_message2(401, msg.get_sender(), targets[i]));
-                    // send_message(msg.get_sender(), build_message2(402, msg.get_sender(), targets[i]));
-                    // send_message(sender, ft_print_numerics(401)); // ERR_NOSUCHNICK (401) 
-                    // send_message(sender, ft_print_numerics(402)); // ERR_NOSUCHSERVER (402)
-                    // Si target n'est ni un user ni un channel, quelle erreur envoyé ? les deux ou une autre erreurs que celles-ci ?
+                    std::cout << "TEST" << std::endl;
+                    if (targets[i].size() > 0 && (targets[i][0] == '#' || targets[i][0] == '&'))
+                        send_message(msg.get_sender(), build_message2(402, msg.get_sender(), targets[i]));
+                    else
+                        send_message(msg.get_sender(), build_message2(401, msg.get_sender(), targets[i]));
                     continue ;
                 }
                 if (client_it != _clients.end()) {
                     if ((*client_it)->get_away())
                         send_message(sender, server.print_numerics(301, sender, *(*client_it), NULL, &msg));
-                        // send_message(sender, ft_print_numerics(301));
-                    send_message(*(*client_it), build_command_message(sender.get_nickname(), "", (*client_it)->get_nickname(), "PRIVMSG", msg.get_tab_parameter()));
-                    // std::cout << ":" << sender.get_nickname() << " PRIVMSG " << (*client_it).get_nickname() << " :" << msg.get_tab_parameter()[1] << std::endl;
-                    //send message
+                    if (is_notice)
+                       send_message(*(*client_it), build_command_message(sender.get_nickname(), "", (*client_it)->get_nickname(), "NOTICE", msg.get_tab_parameter()));
+                    else
+                        send_message(*(*client_it), build_command_message(sender.get_nickname(), "", (*client_it)->get_nickname(), "PRIVMSG", msg.get_tab_parameter()));
                 } else if (channel_it != _channels.end()) {
                     for (std::vector<Client*>::iterator ban_user_it = (*channel_it)->get_users_ban().begin(); ban_user_it != (*channel_it)->get_users_ban().end(); ban_user_it++)
                         if (sender.get_nickname() == (*ban_user_it)->get_nickname())
@@ -64,17 +67,18 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server)
                                 send_message(sender, server.print_numerics(404, sender, *(*client_it), (*channel_it), &msg));
                                 continue ;
                             } else {
-                                if (sender.get_nickname() != (*it).first->get_nickname())
-                                    send_message(*(it->first), build_command_message(sender.get_nickname(), "", (*channel_it)->get_name(), "PRIVMSG", msg.get_tab_parameter()));
+                                if (sender.get_nickname() != (*it).first->get_nickname()) {
+                                    if (is_notice)
+                                        send_message(*(it->first), build_command_message(sender.get_nickname(), "", (*channel_it)->get_name(), "NOTICE", msg.get_tab_parameter()));
+                                    else
+                                        send_message(*(it->first), build_command_message(sender.get_nickname(), "", (*channel_it)->get_name(), "PRIVMSG", msg.get_tab_parameter()));
+                                }
                             }
                         }
                     }
                 }
                 chan = "";
             }
-            // Check potentiel préfix dans les strings et agir en conséquence
-            // Si le string ne trouve pas un channel ou nickname, envoyer numeric 401 ou 402 (Comment differencier un channel name d'un nickname ???)
-            // Si le sender n'a pas rejoint le Channel ou que le channel a le mode +m et que le sender n'a pas le channel privilège, envoyer numeric 404
             break;
     }
 }

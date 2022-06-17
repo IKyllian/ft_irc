@@ -117,7 +117,7 @@ std::string build_command_message(std::string sender, std::string receiver, std:
         answer += " ";
     }
 	answer += target;
-    if (command == "PRIVMSG") {
+    if (command == "PRIVMSG" || command == "NOTICE") {
         answer += " ";
         for (size_t i = 1; i < message.size(); i++) {
             answer += message[i];
