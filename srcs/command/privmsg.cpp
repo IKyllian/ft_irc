@@ -31,7 +31,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server)
                 if (client_it == _clients.end() && channel_it == _channels.end()) {
                     // std::cout << "TEST2" << std::endl;
                     send_message(msg.get_sender(), build_message2(401, msg.get_sender(), targets[i]));
-                    send_message(msg.get_sender(), build_message2(402, msg.get_sender(), targets[i]));
+                    // send_message(msg.get_sender(), build_message2(402, msg.get_sender(), targets[i]));
                     // send_message(sender, ft_print_numerics(401)); // ERR_NOSUCHNICK (401) 
                     // send_message(sender, ft_print_numerics(402)); // ERR_NOSUCHSERVER (402)
                     // Si target n'est ni un user ni un channel, quelle erreur envoyé ? les deux ou une autre erreurs que celles-ci ?
