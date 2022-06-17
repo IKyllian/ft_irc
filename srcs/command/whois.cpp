@@ -10,6 +10,7 @@ void Server::command_WHOIS(Client &sender, Message &msg)
     }
     else
     {
+        std::cout << "_clients.size() = " << _clients.size() << std::endl; 
         for (size_t i = 0; i < _clients.size(); i++)
         {
             if (_clients[i]->get_nickname() == msg.get_tab_parameter()[0])

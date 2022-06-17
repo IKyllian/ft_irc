@@ -76,7 +76,7 @@ bool	check_wildcards(Channel &channel, Message &msg)
 
 void	Server::command_WHO(Client &sender, Message &msg)
 {
-	bool same_channel = false;
+	//bool same_channel = false;
 	bool channel_found = false;
 
 	std::cout << "nb parameter = " << msg.get_nb_parameter() << std::endl;
@@ -85,26 +85,27 @@ void	Server::command_WHO(Client &sender, Message &msg)
 	{
 		for (size_t i = 0; i < this->_clients.size(); i++)
 		{
-			if (this->_clients[i]->get_user_modes().find("i") == std::string::npos)
-			{
-				for (size_t j = 0; j < sender.get_channel().size(); j++)
-				{
-					for (size_t k = 0; k < this->_clients[i]->get_channel().size(); k++)
-					{
-						if (sender.get_channel()[j] == this->_clients[i]->get_channel()[k])
-						{
-							same_channel = true;
-							break;
-						}
-					}
-					if (same_channel == true)
-						break;
-				}
-				if (same_channel == false)
-				{
-					send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, *_clients[i], sender, NULL, &msg));
-				}
-			}
+			// if (this->_clients[i]->get_user_modes().find("i") == std::string::npos)
+			// {
+			// 	for (size_t j = 0; j < sender.get_channel().size(); j++)
+			// 	{
+			// 		for (size_t k = 0; k < this->_clients[i]->get_channel().size(); k++)
+			// 		{
+			// 			if (sender.get_channel()[j] == this->_clients[i]->get_channel()[k])
+			// 			{
+			// 				same_channel = true;
+			// 				break;
+			// 			}
+			// 		}
+			// 		if (same_channel == true)
+			// 			break;
+			// 	}
+			// 	std::cout << "same channel = " << same_channel << std::endl;
+			// 	if (same_channel == false)
+			// 	{
+			send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, *_clients[i], sender, NULL, &msg));
+			//	}
+			//}
 		}
 		send_message(sender,build_response(315, sender, sender, NULL, &msg));
 	}
@@ -145,7 +146,10 @@ void	Server::command_WHO(Client &sender, Message &msg)
 				//  Potentiellement d'autres truc (users' host, server, realname and nickname)
 				if (check_wildcards(*this->_clients[i], msg))               //Check possible wildcards
 				{
-					send_message(sender,build_response(352, *this->_clients[i], sender, NULL, &msg));
+					if (sender.get_channel().size() > 0)
+						send_message(sender,build_response(352, *this->_clients[i], sender, sender.get_channel()[0], &msg));
+					else
+						send_message(sender,build_response(352, *this->_clients[i], sender, NULL, &msg));
 				}
 			}
 		}
