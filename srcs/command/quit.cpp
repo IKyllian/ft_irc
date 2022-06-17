@@ -6,6 +6,7 @@ void Server::command_QUIT(Client &sender, Message &msg)
     std::string quit_msg;
     std::string quit_channel;
     Message tmp = msg;
+    tmp.get_tab_parameter().clear();
 
     if (msg.get_nb_parameter() < 1)
         quit_msg = "";
@@ -24,7 +25,6 @@ void Server::command_QUIT(Client &sender, Message &msg)
     }
     std::cout << "quit_channel = " << quit_channel << std::endl;
     tmp.set_parameter(quit_channel);
-    tmp.get_tab_parameter().clear();
     ft_split_parameter(tmp);
     std::cout << "tmp = " << tmp.get_tab_parameter()[0] << std::endl;
     command_PART(&sender, tmp);

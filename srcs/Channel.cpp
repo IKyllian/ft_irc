@@ -117,7 +117,7 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 			send_message(*client, _server->print_numerics(471, *client, *client, NULL, &message));
 			// send_message(*client, ft_print_numerics(471));
 	} else
-		std::cout << "User already joined this channel" << std::endl; // Check ce qu'il faut renvoyer si le user a deja join le channel
+		send_message(*client, _server->print_numerics(443, *client, *client, this, &message));
 }
 
 void Channel::set_mode(Client *sender, char mode, std::string parameter) {
