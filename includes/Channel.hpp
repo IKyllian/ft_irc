@@ -37,25 +37,25 @@ class Channel {
 		int get_user_limit() const;
 		Server& get_server() const;
 		
-		void set_name(std::string val);
-		void set_user(Client *client, Message &message, std::string key = std::string());
-		void set_channel_modes(Client *sender, std::vector<std::string> parameters);
-		void set_mode(Client *sender, char mode, std::string parameter = std::string());
-		void set_user_mode(Client *sender, char mode, std::string parameter);
-		int add_invite(Client *client);
-		void set_password(std::string password = std::string());
-		void set_topic(std::string new_topic = std::string());
-		void set_user_limit(int limit);
-		void set_server(Server *server);
+		void 	set_name(std::string val);
+		void 	set_user(Client *client, Message &message, std::string key = std::string());
+		void 	set_channel_modes(Client *sender, std::vector<std::string> parameters);
+		void 	set_mode(Client *sender, char mode, std::string parameter = std::string());
+		void 	set_user_mode(Client *sender, char mode, std::string parameter);
+		int		add_invite(Client *client);
+		void 	set_password(std::string password = std::string());
+		void 	set_topic(std::string new_topic = std::string());
+		void 	set_user_limit(int limit);
+		void 	set_server(Server *server);
 		
-		int remove_user(Client *client, std::vector<Channel> *channels);
-		void remove_invite(Client *client);
-		void ban_user(Client *client);
-		void unban_user(Client *client);
-		void unset_mode(Client *sender, char mode, std::string parameter = std::string());
-		void unset_user_mode(Client *sender, char mode, std::string parameter);
-
-		void print_users();
+		int 	remove_user(Client *client, std::vector<Channel> *channels);
+		void 	remove_invite(Client *client);
+		void 	ban_user(Client *client);
+		void 	unban_user(Client *client);
+		void 	unset_mode(Client *sender, char mode, std::string parameter = std::string());
+		void 	unset_user_mode(Client *sender, char mode, std::string parameter);
+	
+		void 	print_users();
 
 	private :
 		std::string _name;
