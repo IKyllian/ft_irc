@@ -2,7 +2,7 @@
 
 void Server::command_PART(Client *client, Message &message) {
 	std::vector<std::string>		channels_string;
-	std::vector<Channel>::iterator	channel_it;
+	std::vector<Channel*>::iterator	channel_it;
 	std::map<Client*, std::string>::iterator it;
 	int ret;
 
@@ -19,16 +19,16 @@ void Server::command_PART(Client *client, Message &message) {
 			send_message(*client, print_numerics(403, *client, *client, NULL, &message)); // Probleme avec channel sur print numerics
 			continue ;
 		}
-		for (it = (*channel_it).get_users().begin(); it != (*channel_it).get_users().end(); it++) {
+		for (it = (*channel_it)->get_users().begin(); it != (*channel_it)->get_users().end(); it++) {
 			if ((*it).first->get_nickname() == client->get_nickname())
 			break ;
 		}
-		if ((*channel_it).get_users().end() == it)
-			send_message(*client, print_numerics(442, *client, *client, &(*channel_it), &message));
+		if ((*channel_it)->get_users().end() == it)
+			send_message(*client, print_numerics(442, *client, *client, (*channel_it), &message));
 		else {
-			for (std::map<Client*, std::string>::iterator it2 = (*channel_it).get_users().begin(); it2 != (*channel_it).get_users().end(); it2++)
-				send_message(*(it2->first), build_command_message(client->get_nickname(), "", (*channel_it).get_name(), "PART"));
-			ret = (*channel_it).remove_user(client, &_channels);
+			for (std::map<Client*, std::string>::iterator it2 = (*channel_it)->get_users().begin(); it2 != (*channel_it)->get_users().end(); it2++)
+				send_message(*(it2->first), build_command_message(client->get_nickname(), "", (*channel_it)->get_name(), "PART"));
+			ret = (*channel_it)->remove_user(client, &_channels);
 		}
 	}
 }
