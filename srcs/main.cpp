@@ -55,7 +55,7 @@ int handle_incoming_message(Server& server, int fd)
 
 	for (i = 0; i < server.get_clients().size(); i++)
 	{
-		if (fd == server.get_clients()[i].get_fd())
+		if (fd == server.get_clients()[i]->get_fd())
 			break;
 	}
 	if (i == server.get_clients().size())
@@ -67,19 +67,19 @@ int handle_incoming_message(Server& server, int fd)
 	{
 		memset(&buffer, 0, sizeof(buffer));
 		ret = recv(fd, buffer, sizeof(buffer), 0);
-		server.get_clients()[i].append_buffer(buffer);
+		server.get_clients()[i]->append_buffer(buffer);
 	}while(ret > 0);
 
-	pos = server.get_clients()[i].get_buffer().rfind("\r\n");
-	if (pos == std::string::npos || pos >= server.get_clients()[i].get_buffer().length())
+	pos = server.get_clients()[i]->get_buffer().rfind("\r\n");
+	if (pos == std::string::npos || pos >= server.get_clients()[i]->get_buffer().length())
 	{
 		std::cout << "from fd: "<< fd << " command incomplete, storing: " << std::endl 
-				<< server.get_clients()[i].get_buffer() << std::endl
+				<< server.get_clients()[i]->get_buffer() << std::endl
 				<< "--------------" << std::endl;
 		return ret;
 	}
 	
-	message = server.get_clients()[i].extract_command(pos);
+	message = server.get_clients()[i]->extract_command(pos);
 	do_parsing(server, server.get_clients()[i], message);
 	return ret;
 }
@@ -235,7 +235,7 @@ int main(int ac, char **av)
 					running = false;
 					break;
 				}
-				server.get_client_by_fd(server.get_fds()[i].fd)->set_quitting(true);
+				(*server.get_client_by_fd(server.get_fds()[i].fd))->set_quitting(true);
 				break;
 			}
 
@@ -261,8 +261,8 @@ int main(int ac, char **av)
 					std::cout << "New incomig connection - fd:" << fd.fd << " IP: " << userIP << std::endl;
 					fd.events = POLLIN;
 					server.get_fds().push_back(fd);
-					server.get_clients().push_back(Client(fd.fd));
-					server.get_clients()[server.get_clients().size() - 1].set_hostname(userIP);
+					server.get_clients().push_back(new Client(fd.fd));
+					server.get_clients()[server.get_clients().size() - 1]->set_hostname(userIP);
 				}
 			}
 			else // client fd
@@ -275,7 +275,7 @@ int main(int ac, char **av)
 					{
 						if (ret == -1)
 							break;
-						server.get_client_by_fd(server.get_fds()[i].fd)->set_quitting(true);
+						(*server.get_client_by_fd(server.get_fds()[i].fd))->set_quitting(true);
 						break;
 					}
 				} //end while reading incoming message		
@@ -283,14 +283,14 @@ int main(int ac, char **av)
 		} // end checking all fds in pollfd vector
 			for (j = 0; j < server.get_clients().size(); j++)
 			{
-				if (server.get_clients()[j].get_quitting())
+				if (server.get_clients()[j]->get_quitting())
 				{
 
 //TODO faire des trucs ? (enlever le user des channels ? PART ?)
 					
 					for (unsigned long k = 0; k < server.get_fds().size(); k++)
 					{
-						if (server.get_clients()[j].get_fd() == server.get_fds()[k].fd)
+						if (server.get_clients()[j]->get_fd() == server.get_fds()[k].fd)
 						{
 							std::cout << "Closing fd " << server.get_fds()[k].fd << std::endl;
 							close(server.get_fds()[k].fd);
@@ -299,8 +299,8 @@ int main(int ac, char **av)
 						}
 
 					}
-					std::cout << "Removing Client: " << server.get_clients()[j].get_nickname() << std::endl;
-					server.get_clients().erase(server.get_clients().begin() + j);
+					std::cout << "Removing Client: " << server.get_clients()[j]->get_nickname() << std::endl;
+					server.get_clients().erase(server.get_clients().begin() + j); // !!!! Check pour delete !!!!!
 				}
 			}
 	} // end main loop

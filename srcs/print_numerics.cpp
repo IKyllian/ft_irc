@@ -33,8 +33,8 @@ std::string build_message2(int num, Client &sender, std::string target, Channel 
 
 	if (num == 401)
 		return ":" + sender.get_fullidentity() + " 401 " + target + " :No such nick/channel";
-	else if (num == 403)
-		return ":" + sender.get_fullidentity() + " 403 " + target + " :No such channel";
+	else if (num == 402)
+		return ":" + sender.get_fullidentity() + " 402 " + target + " :No such channel";
 	else if (num == 472)
 		return ":" + sender.get_fullidentity() + " 472 " + target + " :is unknown mode char to me";
 	else if (num == 461)
@@ -305,8 +305,10 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 
 		
 	case 315:
-		return (str_num + " " + client_name + RPL_ENDOFWHO(channel_name));
-		
+		if (message->get_tab_parameter().size() > 0)
+			return (str_num + " " + client_name + RPL_ENDOFWHO(message->get_tab_parameter()[0]));
+		else
+			return (str_num + " " + client_name + RPL_ENDOFWHO(channel_name));
 	case 307:
 		return (str_num + " " + client_name + RPL_WHOISREGNICK(user_nick));
 		

@@ -2,7 +2,7 @@
 #include "../includes/Server.hpp"
 
 
-static void do_command(Server &server, Client &sender, Message &msg)
+static void do_command(Server &server, Client *sender, Message &msg)
 {
 	/*(void)server;
 	(void)receiver;*/
@@ -29,7 +29,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "PING")
 	{
-		send_message(sender,  server.build_response(sender, "PONG " + sender.get_hostname() + " :" + msg.get_parameter()));
+		send_message(*sender,  server.build_response(*sender, "PONG " + sender->get_hostname() + " :" + msg.get_parameter()));
 	}
 	else if (msg.get_command() == "PONG")
 	{
@@ -49,17 +49,17 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "JOIN")
 	{
-		server.command_JOIN(&sender, msg, server);
-		for (size_t i = 0; i < sender.get_channel().size(); i++)
-        	std::cout << "channel names = " << sender.get_channel()[i]->get_name() << std::endl;
+		server.command_JOIN(sender, msg, server);
+		for (size_t i = 0; i < sender->get_channel().size(); i++)
+        	std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
 	}
 	else if (msg.get_command() == "PART")
 	{
-		server.command_PART(&sender, msg);
+		server.command_PART(sender, msg);
 	}
 	else if (msg.get_command() == "TOPIC")
 	{
-		server.command_TOPIC(&sender, msg);
+		server.command_TOPIC(sender, msg);
 	}
 	else if (msg.get_command() == "NAMES")
 	{
@@ -71,11 +71,11 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "INVITE")
 	{
-		server.command_INVITE(&sender, msg);
+		server.command_INVITE(sender, msg);
 	}
 	else if (msg.get_command() == "KICK")
 	{
-		server.command_KICK(&sender, msg);
+		server.command_KICK(sender, msg);
 	}
 	else if (msg.get_command() == "MOTD")
 	{
@@ -116,25 +116,25 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	else if (msg.get_command() == "MODE")
 	{
 		if (msg.get_tab_parameter()[0].size() > 0 && (msg.get_tab_parameter()[0][0] == '#' || msg.get_tab_parameter()[0][0] == '@'))
-			server.command_MODE_CHAN(&sender, msg);
+			server.command_MODE_CHAN(sender, msg);
 		else
-			server.command_MODE_USER(&sender, msg);
+			server.command_MODE_USER(sender, msg);
 	}
 	else if (msg.get_command() == "PRIVMSG")
 	{
-		server.command_PRIVMSG(sender, msg, server);
+		server.command_PRIVMSG(*sender, msg, server, 0);
 	}
 	else if (msg.get_command() == "NOTICE")
 	{
-		//  do_NOTICE();
+		server.command_PRIVMSG(*sender, msg, server, 1);
 	}
 	else if (msg.get_command() == "WHO")
 	{
-		server.command_WHO(sender, msg);
+		server.command_WHO(*sender, msg);
 	}
 	else if (msg.get_command() == "WHOIS")
 	{
-		server.command_WHOIS(sender, msg);
+		server.command_WHOIS(*sender, msg);
 	}
 	else if (msg.get_command() == "WHOWAS")
 	{
@@ -154,7 +154,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 	else if (msg.get_command() == "AWAY")
 	{
-		server.command_AWAY(sender, msg);
+		server.command_AWAY(*sender, msg);
 	}
 	else if (msg.get_command() == "LINKS")
 	{
@@ -174,14 +174,14 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 	}
 }
 
-void do_parsing(Server &server, Client &sender, std::string message)
+void do_parsing(Server &server, Client *sender, std::string message)
 {
 	std::vector<Message*> msg;
 	std::vector<std::string> msg_list;
 
 	std::cout << "###inside do_parsing " << message << std::endl;
-	for (size_t i = 0; i < sender.get_channel().size(); i++)
-        std::cout << "channel names = " << sender.get_channel()[i]->get_name() << std::endl;
+	for (size_t i = 0; i < sender->get_channel().size(); i++)
+        std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
 	msg_list = ft_split_message(message);
 	for (size_t i = 0; i < msg_list.size(); i++)
 	{
@@ -190,8 +190,8 @@ void do_parsing(Server &server, Client &sender, std::string message)
 //	std::cout << "msg size = " << msg.size() << std::endl;
 	for (size_t i = 0; i < msg.size(); i++)
 	{
-		msg[i]->set_sender(&sender);
-		msg[i]->set_receiver(&sender);
+		msg[i]->set_sender(sender);
+		msg[i]->set_receiver(sender);
 		do_command(server, sender, *msg[i]);
 		// std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
 		// std::cout << "command = " << msg[i]->get_command() << std::endl;

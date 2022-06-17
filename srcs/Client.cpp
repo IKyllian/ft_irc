@@ -51,7 +51,7 @@ std::string 			Client::get_nickname() const { return (_nickname); }
 std::string 			Client::get_username() const { return (_username); }
 std::string 			Client::get_realname() const { return (_realname); }
 std::string 			Client::get_hostname() const { return (_hostname); }
-std::string				Client::get_fullidentity() const { return  (get_nickname() + "@" + get_username() + "!" + get_hostname()); }
+std::string				Client::get_fullidentity() const { return  (get_nickname() + "!" + get_username() + "@" + get_hostname()); }
 std::string 			Client::get_user_modes() const { return (_user_modes); }
 int						Client::get_fd() const { return (_fd); }
 bool					Client::get_logged() const { return (_logged); }
