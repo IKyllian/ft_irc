@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 15:19:22 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/17 18:16:33 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/18 14:57:28 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <strings.h>
-
-
+#include <unistd.h>
 //temp
 #include <sys/socket.h>	
 #include <netdb.h>
@@ -40,6 +39,13 @@
 #include <map>
 #include <cstdio>
 //temp end
+
+// enum test
+// {
+// 	  SOCK_NONBLOCK = 04000                /* Atomically mark descriptor(s) as
+//                                    non-blocking.  */
+// #define SOCK_NONBLOCK SOCK_NONBLOCK
+// };
 
 void display_cpp_ver()
 {
@@ -64,7 +70,7 @@ int main(int ac, char **av)
 	if (ac < 4 || ac > 5)
 	{
 		std::cout << "Wrong number of Arguments" << std::endl;
-        std::cout << "Usage: ./" << av[0]
+        std::cout << "Usage: " << av[0]
 		<< " <username> <server IP> <server port> <server password(optional)>"
 		<< std::endl;
 		return (0);
@@ -72,10 +78,14 @@ int main(int ac, char **av)
 
 	Bot bot;
 	int serverFD, ret;
+	int on = 1;
 	struct sockaddr_in	addr;
 	std::string message;
 	struct hostent *server;
 	bool password = false;
+	struct pollfd	fd;
+
+	memset(&fd, 0, sizeof(fd));
 	
 	if (ac == 5)
 		password = true;
@@ -95,6 +105,10 @@ int main(int ac, char **av)
     }
 
 	serverFD = socket(AF_INET, SOCK_STREAM, 0);
+
+	fd.fd = serverFD;
+	
+	//serverFD = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0 );
 	if (serverFD < 0)
 	{
 		perror("socket() failed");
@@ -104,14 +118,37 @@ int main(int ac, char **av)
 	bot.set_running(true);
 
 
-	// //Bind the socket  
+
+
+	// Allow socket descriptor to be reuseable  
+	ret = setsockopt(serverFD, SOL_SOCKET,  SO_REUSEADDR,
+	(char *)&on, sizeof(on));
+	if (ret < 0)
+	{
+		perror("setsockopt() failed");
+		close(serverFD);
+		return (-1);
+	}
+
+
+	ret = fcntl(serverFD, F_SETFL, O_NONBLOCK);
+std::cout << "fcntl ret: " << ret << std::endl;
+	if (ret == -1)
+	{
+		perror("fcntl() failed");
+		close(serverFD);
+		return (-1);
+	}
+
+	//Bind the socket  
 	// ret = bind(serverFD, (struct sockaddr *)&addr, sizeof(addr));
 	// if (ret < 0)
 	// {
 	// 	perror("bind() failed");
 	// 	close(serverFD);
-	// 	return false;
+	// 	return (-1);
 	// }
+
 
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
@@ -123,13 +160,25 @@ int main(int ac, char **av)
 	// addr.sin_addr.s_addr = ;
 //int connect(int sockfd, const struct sockaddr *serv_addr, socklen_t addrlen);
 	ret = connect (serverFD, (struct sockaddr *) &addr, sizeof(addr));
-	if (ret < 0)
+std::cout << "connect ret: " << ret << std::endl;
+if (errno != EINPROGRESS)
+{
+
+	std::cout << "errno != EINPROGRESS" << std::endl;
+}
+
+if (errno == EINPROGRESS)
+{
+	std::cout << "errno == EINPROGRESS" << std::endl;
+}
+
+	if (ret < 0 && errno != EINPROGRESS)
 	{
         perror("connect() failed");
 		close(serverFD);
 		return (-1);
 	}
-
+	usleep(500000);
 	if (password)
 	{
 		message = "";
@@ -149,12 +198,28 @@ int main(int ac, char **av)
 	message += av[1];
 	bot.send_message(message);
 //ajouter un check sur le welcome 
+
 	while (bot.get_running())
 	{
+std::cout << "step 0" << std::endl;
+// 		ret = poll( &fd, 1, 3600000);
+// std::cout << "poll ret: " << ret << std::endl;
+// 		if (ret < 0)
+// 		{
+// 			perror("  poll() failed");
+// 			break;
+// 		}
+// 		if (ret == 0)
+// 		{
+// 			std::cerr << "poll() timed out.  End program." << std::endl;
+// 			break;
+// 		}
+// 		if (fd.revents == 0)
+// 			continue;
 		ret = bot.handle_incoming_message();
 //changer la condition de break pour eviter une boucle infinie si le serveur ferme
 std::cout << "mainloop ret: " << ret << std::endl;
-		if (ret < 0)
+		if (ret == 0)
 			break;
 	}
 	std::cout << "Quitting." << std::endl;

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 12:04:18 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/17 18:14:12 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/18 14:50:57 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@
 #include <iostream>
 #include <sys/socket.h>
 #include <vector>
+#include <unistd.h>
 
 class Bot
 {
 	public:
+
+	Bot();
 
 	void set_serverFD(int serverFD);
 	void set_running(bool running);
@@ -36,15 +39,15 @@ class Bot
 	bool send_message(std::string message);
 	int handle_incoming_message();
 	Message *ft_create_message(std::string str) const;
-	void Bot::do_command(Message &msg) const;
+	void do_command(Message &msg) const;
 
 	protected:
 
 	private:
 
-	std::string	_buffer;
-	int			_serverFD;
 	bool		_running;
+	int			_serverFD;
+	std::string	_buffer;
 
 	
 

@@ -13,6 +13,8 @@
 
 #include "Bot.hpp"
 
+Bot::Bot(): _running(true), _serverFD(-1), _buffer("") {}
+
 int Bot::get_serverFD() const{ return (_serverFD); }
 std::string	Bot::get_buffer() const { return (_buffer); }
 bool Bot::get_running() const { return (_running); } 
@@ -59,7 +61,7 @@ bool Bot::send_message(std::string message)
 	len = i + 2;
 
 	std::cout << "sending: ";
-	std::cout << buffer << std::endl;
+	std::cout << buffer;
 
 	ret = send(_serverFD, buffer, len, 0);
 	if (ret < 0)
@@ -79,14 +81,18 @@ int Bot::handle_incoming_message()
 	char			buffer[65535];
 	std::string		message;
 
-
+usleep(500000);
 	do
 	{
+std::cout << "step 1" << std::endl;
 		memset(&buffer, 0, sizeof(buffer));
 		ret = recv(_serverFD, buffer, sizeof(buffer), 0);
 		append_buffer(buffer);
+// std::cout << "step 1.5: ret = " << ret << " bot.buffer: " << get_buffer() << std::endl;
+// std::cout << "char buff: " << buffer << std::endl;
+std::cout << "recv ret = " << ret << std::endl;
 	}while(ret > 0);
-
+std::cout << "step 2" << std::endl;
 	pos = get_buffer().rfind("\r\n");
 	if (pos == std::string::npos || pos >= get_buffer().length())
 	{
@@ -95,12 +101,12 @@ int Bot::handle_incoming_message()
 				<< "--------------" << std::endl;
 		return ret;
 	}
-	
+std::cout << "step 3" << std::endl;
 	message = extract_command(pos);
 	
 	std::cout << "received: " << message;
 	
-	do_parsing(message);
+//	do_parsing(message);
 	return ret;
 }
 
@@ -135,7 +141,7 @@ Message *Bot::ft_create_message(std::string str) const
         msg->set_parameter(str_to_pass);
         position++;
         startpoint = position;
-        ft_split_parameter(*msg);
+     //   ft_split_parameter(*msg);
     }
     return (msg);
 }
@@ -330,8 +336,8 @@ bool Bot::do_parsing(std::string message) const
 {
 	std::vector<Message*> msg;
 	std::vector<std::string> msg_list;
-
-	msg_list = ft_split_message(message);
+	(void) message;
+	//msg_list = ft_split_message(message);
 	for (size_t i = 0; i < msg_list.size(); i++)
 	{
 		msg.push_back(ft_create_message(msg_list[i]));
@@ -343,5 +349,5 @@ bool Bot::do_parsing(std::string message) const
 	}
 	for (size_t i = 0; i < msg.size(); i++)
 		delete msg[i];
-	return;
+	return true;
 }
