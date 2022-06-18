@@ -182,14 +182,14 @@ void Bot::do_command(Message &msg)
 {
 	std::string answer;
 
-	std::cout << "msg.get_command(): " << msg.get_command() << std::endl;
-	// std::cout << "size " << msg.get_tab_parameter().size() << std::endl;
-	for (unsigned long i = 0; i < msg.get_tab_parameter().size(); i++)
-	{
-		std::cout << "msg tab[" << i << "]: " << msg.get_tab_parameter()[i] << std::endl;
-	}
-	std::cout << "msg.get_prefix(): " << msg.get_prefix() << std::endl;
-	std::cout << "msg.get_target_nickname(): " << msg.get_target_nickname() << std::endl;
+	// std::cout << "msg.get_command(): " << msg.get_command() << std::endl;
+	// // std::cout << "size " << msg.get_tab_parameter().size() << std::endl;
+	// for (unsigned long i = 0; i < msg.get_tab_parameter().size(); i++)
+	// {
+	// 	std::cout << "msg tab[" << i << "]: " << msg.get_tab_parameter()[i] << std::endl;
+	// }
+	// std::cout << "msg.get_prefix(): " << msg.get_prefix() << std::endl;
+	// std::cout << "msg.get_target_nickname(): " << msg.get_target_nickname() << std::endl;
 	//msg tab[1] -> 
 
 	if (msg.get_command() == "433" || msg.get_command() == "431"
