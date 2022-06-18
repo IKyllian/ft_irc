@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 15:19:22 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/18 14:57:28 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/18 15:14:38 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,6 @@
 #include <cstdio>
 //temp end
 
-// enum test
-// {
-// 	  SOCK_NONBLOCK = 04000                /* Atomically mark descriptor(s) as
-//                                    non-blocking.  */
-// #define SOCK_NONBLOCK SOCK_NONBLOCK
-// };
-
 void display_cpp_ver()
 {
 	std::cout << "Check CPP Version: ";
@@ -78,26 +71,14 @@ int main(int ac, char **av)
 
 	Bot bot;
 	int serverFD, ret;
-	int on = 1;
 	struct sockaddr_in	addr;
 	std::string message;
 	struct hostent *server;
 	bool password = false;
-	struct pollfd	fd;
-
-	memset(&fd, 0, sizeof(fd));
 	
 	if (ac == 5)
 		password = true;
 
-/*
-    create a socket.
-    bind* - this is probably be unnecessary because you're the client, not the server.
-    connect to a server.
-    send/recv - repeat until we have or receive data
-    shutdown to end read/write.
-    close to releases data.
-*/
 	server = gethostbyname(av[2]);
     if (server == NULL) {
         perror("ERROR, no such host\n");
@@ -105,10 +86,6 @@ int main(int ac, char **av)
     }
 
 	serverFD = socket(AF_INET, SOCK_STREAM, 0);
-
-	fd.fd = serverFD;
-	
-	//serverFD = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0 );
 	if (serverFD < 0)
 	{
 		perror("socket() failed");
@@ -117,22 +94,8 @@ int main(int ac, char **av)
 	bot.set_serverFD(serverFD);
 	bot.set_running(true);
 
-
-
-
-	// Allow socket descriptor to be reuseable  
-	ret = setsockopt(serverFD, SOL_SOCKET,  SO_REUSEADDR,
-	(char *)&on, sizeof(on));
-	if (ret < 0)
-	{
-		perror("setsockopt() failed");
-		close(serverFD);
-		return (-1);
-	}
-
-
 	ret = fcntl(serverFD, F_SETFL, O_NONBLOCK);
-std::cout << "fcntl ret: " << ret << std::endl;
+//std::cout << "fcntl ret: " << ret << std::endl;
 	if (ret == -1)
 	{
 		perror("fcntl() failed");
@@ -140,14 +103,6 @@ std::cout << "fcntl ret: " << ret << std::endl;
 		return (-1);
 	}
 
-	//Bind the socket  
-	// ret = bind(serverFD, (struct sockaddr *)&addr, sizeof(addr));
-	// if (ret < 0)
-	// {
-	// 	perror("bind() failed");
-	// 	close(serverFD);
-	// 	return (-1);
-	// }
 
 
 	memset(&addr, 0, sizeof(addr));
@@ -155,23 +110,8 @@ std::cout << "fcntl ret: " << ret << std::endl;
     bcopy((char *)server->h_addr, (char *)&addr.sin_addr.s_addr, server->h_length);
 	addr.sin_port = htons(atoi(av[3]));
 
-
-
-	// addr.sin_addr.s_addr = ;
-//int connect(int sockfd, const struct sockaddr *serv_addr, socklen_t addrlen);
 	ret = connect (serverFD, (struct sockaddr *) &addr, sizeof(addr));
-std::cout << "connect ret: " << ret << std::endl;
-if (errno != EINPROGRESS)
-{
-
-	std::cout << "errno != EINPROGRESS" << std::endl;
-}
-
-if (errno == EINPROGRESS)
-{
-	std::cout << "errno == EINPROGRESS" << std::endl;
-}
-
+//std::cout << "connect ret: " << ret << std::endl;
 	if (ret < 0 && errno != EINPROGRESS)
 	{
         perror("connect() failed");
@@ -197,28 +137,11 @@ if (errno == EINPROGRESS)
 	message += " * * :";
 	message += av[1];
 	bot.send_message(message);
-//ajouter un check sur le welcome 
+	usleep(500000);
 
 	while (bot.get_running())
 	{
-std::cout << "step 0" << std::endl;
-// 		ret = poll( &fd, 1, 3600000);
-// std::cout << "poll ret: " << ret << std::endl;
-// 		if (ret < 0)
-// 		{
-// 			perror("  poll() failed");
-// 			break;
-// 		}
-// 		if (ret == 0)
-// 		{
-// 			std::cerr << "poll() timed out.  End program." << std::endl;
-// 			break;
-// 		}
-// 		if (fd.revents == 0)
-// 			continue;
 		ret = bot.handle_incoming_message();
-//changer la condition de break pour eviter une boucle infinie si le serveur ferme
-std::cout << "mainloop ret: " << ret << std::endl;
 		if (ret == 0)
 			break;
 	}

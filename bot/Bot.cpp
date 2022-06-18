@@ -60,7 +60,8 @@ bool Bot::send_message(std::string message)
 	buffer[i + 2] = '\0';
 	len = i + 2;
 
-	std::cout << "sending: ";
+	std::cout << "\033[1;31msend: \033[0m";
+	//std::cout << "sending: ";
 	std::cout << buffer;
 
 	ret = send(_serverFD, buffer, len, 0);
@@ -81,30 +82,25 @@ int Bot::handle_incoming_message()
 	char			buffer[65535];
 	std::string		message;
 
-usleep(500000);
+ usleep(500000);
 	do
 	{
-std::cout << "step 1" << std::endl;
+//std::cout << "step 1" << std::endl;
 		memset(&buffer, 0, sizeof(buffer));
 		ret = recv(_serverFD, buffer, sizeof(buffer), 0);
 		append_buffer(buffer);
-// std::cout << "step 1.5: ret = " << ret << " bot.buffer: " << get_buffer() << std::endl;
-// std::cout << "char buff: " << buffer << std::endl;
-std::cout << "recv ret = " << ret << std::endl;
 	}while(ret > 0);
-std::cout << "step 2" << std::endl;
 	pos = get_buffer().rfind("\r\n");
 	if (pos == std::string::npos || pos >= get_buffer().length())
 	{
-		std::cout << " command incomplete, storing: " << std::endl 
-				<< get_buffer() << std::endl
-				<< "--------------" << std::endl;
+		// std::cout << " command incomplete, storing: " << std::endl 
+		// 		<< get_buffer() << std::endl;
 		return ret;
 	}
-std::cout << "step 3" << std::endl;
+//std::cout << "step 3" << std::endl;
 	message = extract_command(pos);
 	
-	std::cout << "received: " << message;
+	std::cout << "\033[1;32mrecv: \033[0m" << message;
 	
 //	do_parsing(message);
 	return ret;
