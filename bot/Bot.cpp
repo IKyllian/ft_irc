@@ -238,6 +238,15 @@ void Bot::do_command(Message &msg)
 		answer += msg.get_target_nickname();
 		send_message(answer);
 	}
+	else if (msg.get_command() == "KICK")
+	{
+		answer = "";
+		answer += "PRIVMSG ";
+		answer += msg.get_tab_parameter()[0];
+		answer += " CHEH ";	
+		answer += msg.get_tab_parameter()[1];
+		send_message(answer);
+	}
 }
 
 std::vector<std::string> Bot::ft_split_message(std::string str)
