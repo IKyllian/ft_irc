@@ -16,6 +16,7 @@ class Message {
 		std::string 				get_parameter() const;
 		int							get_nb_parameter() const;
 		std::vector<std::string>	&get_tab_parameter();
+		std::string 				get_target_nickname() const;
 		//std::string 				get_payload() const;
 		//std::string 				get_command_info() const;
 		//std::string 				get_mask() const;

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 15:19:22 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/18 15:14:38 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/18 15:58:44 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int main(int ac, char **av)
 	
 	if (ac == 5)
 		password = true;
+
+	bot.set_nickname(av[1]);
 
 	server = gethostbyname(av[2]);
     if (server == NULL) {

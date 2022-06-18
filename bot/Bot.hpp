@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 12:04:18 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/18 14:50:57 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/18 15:57:14 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,24 @@ class Bot
 
 	void set_serverFD(int serverFD);
 	void set_running(bool running);
+	void set_logged(bool logged);
+	void set_nickname(std::string nick);
 
 	bool get_running() const;
 	int get_serverFD() const;
 	std::string	get_buffer() const;
+	bool get_logged() const;
+	std::string get_nickname() const;
 
 	void append_buffer(char* buffer);
 	std::string extract_command(size_t pos);
-	bool do_parsing(std::string message) const;
+	bool do_parsing(std::string message);
 	bool send_message(std::string message);
 	int handle_incoming_message();
-	Message *ft_create_message(std::string str) const;
-	void do_command(Message &msg) const;
-
+	Message *ft_create_message(std::string str);
+	void do_command(Message &msg);
+	std::vector<std::string> ft_split_message(std::string str);
+	void ft_split_parameter(Message &msg);
 	protected:
 
 	private:
@@ -48,6 +53,8 @@ class Bot
 	bool		_running;
 	int			_serverFD;
 	std::string	_buffer;
+	bool		_logged;
+	std::string _nickname;
 
 	
 

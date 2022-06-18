@@ -13,11 +13,13 @@
 
 #include "Bot.hpp"
 
-Bot::Bot(): _running(true), _serverFD(-1), _buffer("") {}
+Bot::Bot(): _running(true), _serverFD(-1), _buffer(""), _logged(false), _nickname("") {}
 
 int Bot::get_serverFD() const{ return (_serverFD); }
 std::string	Bot::get_buffer() const { return (_buffer); }
 bool Bot::get_running() const { return (_running); } 
+bool Bot::get_logged() const { return (_logged); }
+std::string Bot::get_nickname() const { return (_nickname); }
 
 void Bot::set_serverFD(int serverFD)
 {
@@ -29,6 +31,15 @@ void Bot::set_running(bool running)
 	_running = running;
 }
 
+void Bot::set_logged(bool logged)
+{
+	_logged = logged;
+}
+
+void Bot::set_nickname(std::string nick)
+{
+	_nickname = nick;
+}
 
 void Bot::append_buffer(char* buffer) {
 	_buffer += buffer;
@@ -82,10 +93,9 @@ int Bot::handle_incoming_message()
 	char			buffer[65535];
 	std::string		message;
 
- usleep(500000);
+ 	usleep(500000);
 	do
 	{
-//std::cout << "step 1" << std::endl;
 		memset(&buffer, 0, sizeof(buffer));
 		ret = recv(_serverFD, buffer, sizeof(buffer), 0);
 		append_buffer(buffer);
@@ -97,17 +107,42 @@ int Bot::handle_incoming_message()
 		// 		<< get_buffer() << std::endl;
 		return ret;
 	}
-//std::cout << "step 3" << std::endl;
-	message = extract_command(pos);
-	
+	message = extract_command(pos);	
 	std::cout << "\033[1;32mrecv: \033[0m" << message;
 	
-//	do_parsing(message);
+	do_parsing(message);
 	return ret;
 }
 
 
-Message *Bot::ft_create_message(std::string str) const
+
+void Bot::ft_split_parameter(Message &msg)
+{
+    size_t position = 0;
+    size_t startpoint = 0;
+    int nb = 0;
+
+    while (position != std::string::npos)
+    {
+        position = msg.get_parameter().find(" ", position);
+        if (position - startpoint > 0)
+        {
+            msg.get_tab_parameter().push_back(msg.get_parameter().substr(startpoint, position - startpoint));
+            nb++;
+        }
+        if (position != std::string::npos)
+        {
+            position++;
+            startpoint = position;
+        }
+    }
+    msg.set_nb_parameter(nb);
+    // std::cout << "Split function " << msg.get_nb_parameter() << std::endl;
+
+    return ;
+}
+
+Message *Bot::ft_create_message(std::string str)
 {
     Message *msg = new Message;
     std::string delimiter = " ";
@@ -137,203 +172,122 @@ Message *Bot::ft_create_message(std::string str) const
         msg->set_parameter(str_to_pass);
         position++;
         startpoint = position;
-     //   ft_split_parameter(*msg);
+        ft_split_parameter(*msg);
     }
     return (msg);
 }
 
 
-void Bot::do_command(Message &msg) const
+void Bot::do_command(Message &msg)
 {
+	std::string answer;
 
 	std::cout << "msg.get_command(): " << msg.get_command() << std::endl;
+	// std::cout << "size " << msg.get_tab_parameter().size() << std::endl;
 	for (unsigned long i = 0; i < msg.get_tab_parameter().size(); i++)
 	{
 		std::cout << "msg tab[" << i << "]: " << msg.get_tab_parameter()[i] << std::endl;
 	}
+	std::cout << "msg.get_prefix(): " << msg.get_prefix() << std::endl;
+	std::cout << "msg.get_target_nickname(): " << msg.get_target_nickname() << std::endl;
+	//msg tab[1] -> 
 
-
-	//if ERR NICK/USER/PASS ?
-	//if 001 ?
-
-
-
-// std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() << std::endl;
-// 	if (msg.get_command() == "CAP")
-// 	{
-
-// 	}
-// 	else if (msg.get_command() == "AUTHENTICATE")
-// 	{
-// 		//  do_AUTHENTICATE();
-// 	}
-// 	else if (msg.get_command() == "PASS")
-// 	{
-// 		server.command_PASSWORD(msg.get_sender(), msg);
-// 	}
-// 	else if (msg.get_command() == "NICK")
-// 	{
-// 		server.command_NICK(msg.get_sender(), msg);
-// 	}
-// 	else if (msg.get_command() == "USER")
-// 	{
-// 		server.command_USER(msg.get_sender(), msg);
-// 	}
-// 	else if (msg.get_command() == "PING")
-// 	{
-// 		send_message(*sender,  server.build_response(*sender, "PONG " + sender->get_hostname() + " :" + msg.get_parameter()));
-// 	}
-// 	else if (msg.get_command() == "PONG")
-// 	{
-// 		//  do_PONG();
-// 	}
-// 	else if (msg.get_command() == "OPER")
-// 	{
-// 		//  do_OPER();
-// 	}
-// 	else if (msg.get_command() == "QUIT")
-// 	{
-// 		server.command_QUIT(msg.get_sender(), msg);
-// 	}
-// 	else if (msg.get_command() == "ERROR")
-// 	{
-// 		//  do_ERROR();
-// 	}
-// 	else if (msg.get_command() == "JOIN")
-// 	{
-// 		server.command_JOIN(sender, msg, server);
-// 		for (size_t i = 0; i < sender->get_channel().size(); i++)
-//         	std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
-// 	}
-// 	else if (msg.get_command() == "PART")
-// 	{
-// 		server.command_PART(sender, msg);
-// 	}
-// 	else if (msg.get_command() == "TOPIC")
-// 	{
-// 		server.command_TOPIC(sender, msg);
-// 	}
-// 	else if (msg.get_command() == "NAMES")
-// 	{
-// 		server.command_NAMES(msg);
-// 	}
-// 	else if (msg.get_command() == "LIST")
-// 	{
-// 		server.command_LIST(msg);
-// 	}
-// 	else if (msg.get_command() == "INVITE")
-// 	{
-// 		server.command_INVITE(sender, msg);
-// 	}
-// 	else if (msg.get_command() == "KICK")
-// 	{
-// 		server.command_KICK(sender, msg);
-// 	}
-// 	else if (msg.get_command() == "MOTD")
-// 	{
-// 		//  do_MOTD();
-// 	}
-// 	else if (msg.get_command() == "VERSION")
-// 	{
-// 		//  do_VERSION();
-// 	}
-// 	else if (msg.get_command() == "ADMIN")
-// 	{
-// 		//  do_ADMIN();
-// 	}
-// 	else if (msg.get_command() == "CONNECT")
-// 	{
-// 		//  do_CONNECT();
-// 	}
-// 	else if (msg.get_command() == "LUSERS")
-// 	{
-// 		//  do_LUSERS();
-// 	}
-// 	else if (msg.get_command() == "TIME")
-// 	{
-// 		//  do_TIME();
-// 	}
-// 	else if (msg.get_command() == "STATS")
-// 	{
-// 		//  do_STATS();
-// 	}
-// 	else if (msg.get_command() == "HELP")
-// 	{
-// 		// PAS FAIT
-// 	}
-// 	else if (msg.get_command() == "INFO")
-// 	{
-// 		//  do_INFO();
-// 	}
-// 	else if (msg.get_command() == "MODE")
-// 	{
-// 		if (msg.get_tab_parameter()[0].size() > 0 && (msg.get_tab_parameter()[0][0] == '#' || msg.get_tab_parameter()[0][0] == '@'))
-// 			server.command_MODE_CHAN(sender, msg);
-// 		else
-// 			server.command_MODE_USER(sender, msg);
-// 	}
-// 	else if (msg.get_command() == "PRIVMSG")
-// 	{
-// 		server.command_PRIVMSG(*sender, msg, server, 0);
-// 	}
-// 	else if (msg.get_command() == "NOTICE")
-// 	{
-// 		server.command_PRIVMSG(*sender, msg, server, 1);
-// 	}
-// 	else if (msg.get_command() == "WHO")
-// 	{
-// 		server.command_WHO(*sender, msg);
-// 	}
-// 	else if (msg.get_command() == "WHOIS")
-// 	{
-// 		server.command_WHOIS(*sender, msg);
-// 	}
-// 	else if (msg.get_command() == "WHOWAS")
-// 	{
-// 		//  do_WHOWAS();
-// 	}
-// 	else if (msg.get_command() == "KILL")
-// 	{
-// 		//  do_KILL();
-// 	}
-// 	else if (msg.get_command() == "RESTART")
-// 	{
-// 		//  do_RESTART();
-// 	}
-// 	else if (msg.get_command() == "SQUIT")
-// 	{
-// 		//  do_SQUIT();
-// 	}
-// 	else if (msg.get_command() == "AWAY")
-// 	{
-// 		server.command_AWAY(*sender, msg);
-// 	}
-// 	else if (msg.get_command() == "LINKS")
-// 	{
-// 		//  do_LINKS();
-// 	}
-// 	else if (msg.get_command() == "USERHOST")
-// 	{
-// 		//  do_USERHOST();
-// 	}
-// 	else if (msg.get_command() == "WALLOPS")
-// 	{
-// 		//  do_WALLOPS();
-// 	}
-// 	else
-// 	{
-// 		std::cout << "Command not found" << std::endl;
-// 	}
+	if (msg.get_command() == "433" || msg.get_command() == "431"
+	|| msg.get_command() == "432" || msg.get_command() == "484")
+	{
+		std::cout << "Unable to set nickname, aborting" << std::endl;
+		set_running(false);
+		return;
+	}
+	else if (msg.get_command() == "001")
+	{
+		std::cout << "Received RPL Welcome" << std::endl;
+		set_logged(true);
+	}
+	else if (msg.get_command() == "353")
+	{
+		answer = "";
+		answer += "PRIVMSG ";
+		answer += msg.get_tab_parameter()[1];
+		answer += " Welcome ";
+		answer += msg.get_target_nickname();
+		send_message(answer);
+	}
+	else if (msg.get_command() == "PRIVMSG")
+	{
+		if (msg.get_tab_parameter()[1] == ":!join")
+		{
+			//msg.get_tab_parameter()[2]
+			answer = "";
+			answer += "JOIN ";
+			answer += msg.get_tab_parameter()[2];
+			send_message(answer);
+		}
+		else if (msg.get_tab_parameter()[1] == ":!selfdestruct")
+		{
+			set_running(false);
+			return;
+		}
+	}
+	else if (msg.get_command() == "PART")
+	{
+		answer = "";
+		answer += "PRIVMSG ";
+		answer += msg.get_tab_parameter()[0];
+		answer += " Goodbye ";
+		answer += msg.get_target_nickname();
+		send_message(answer);
+	}
 }
 
+std::vector<std::string> Bot::ft_split_message(std::string str)
+{
+    std::vector<std::string> msg_list;
+    size_t old_position;
+    size_t position = 0;
+    size_t startpoint = 0;
+    std::string tmp;
 
+    while (position != std::string::npos)
+    {
+        old_position = position;
+        position = str.find("\r\n", position);
+        if (position - startpoint > 0)
+        {
+            tmp = str.substr(startpoint, position);
+            std::string tmp = str.substr(startpoint, position);
+            // for (unsigned long i = 0; i < tmp.length(); i++)
+            // {
+            // 	std::cout << "11111 i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
+            // }
+            if (position == std::string::npos)
+            {
+                if (str.substr(startpoint, position).size() <= 0)
+                    break;
+                // for (unsigned long i = 0; i < tmp.length(); i++)
+                // {
+                // 	std::cout << "22222i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
+                // }    
+                msg_list.push_back(str.substr(startpoint, position));
+                break;
+            }
+            msg_list.push_back(str.substr(startpoint, position - startpoint));
+        }
+        if (position != std::string::npos)
+        {
+            position += 2;
+            startpoint = position;
+        }
+    }
+    return (msg_list);
+}
 
-bool Bot::do_parsing(std::string message) const
+bool Bot::do_parsing(std::string message)
 {
 	std::vector<Message*> msg;
 	std::vector<std::string> msg_list;
 	(void) message;
-	//msg_list = ft_split_message(message);
+	msg_list = ft_split_message(message);
 	for (size_t i = 0; i < msg_list.size(); i++)
 	{
 		msg.push_back(ft_create_message(msg_list[i]));
