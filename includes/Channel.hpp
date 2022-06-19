@@ -25,13 +25,15 @@ class Channel {
 
 		std::vector<std::string>::iterator search_user_invite(std::string name);
 		std::vector<std::string>::iterator search_user_ban(std::string name);
+		std::vector<std::string>::iterator search_mode_argument(std::string arg);
 
 		std::string get_name() const;
-		std::map<Client*, std::string> &get_users() ;
+		std::map<Client*, std::string> &get_users();
 		std::vector<std::string> &get_users_ban();
 		std::vector<std::string> &get_invite_list();
 		std::map<Client*, std::string>::iterator get_user(Client* client);
 		std::string get_channel_modes() const;
+		std::string get__mode_arguments() const;
 		std::string get_password() const;
 		std::string get_topic() const;
 		int get_user_limit() const;
@@ -53,6 +55,7 @@ class Channel {
 		void 	unban_user(std::string name);
 		int 	unset_mode(Client *sender, char mode, std::string parameter = std::string());
 		void 	unset_user_mode(Client *sender, char mode, std::string parameter);
+		void 	erase_mode_arguments(std::string arg);
 	
 		void 	print_users();
 
@@ -61,8 +64,9 @@ class Channel {
 		std::string _password;
 		size_t _user_limit;
 		std::string topic;
-		std::map<Client*, std::string> _users; // Stock Client et les modes du user sur le channel
+		std::map<Client*, std::string> _users;
 		std::string _channel_modes;
+		std::string _mode_arguments;
 		std::vector<std::string> _users_ban;
 		std::vector<std::string> _invite_list;
 		Server *_server;

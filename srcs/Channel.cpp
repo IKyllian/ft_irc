@@ -32,12 +32,17 @@ std::vector<std::string>::iterator Channel::search_user_ban(std::string name) {
 	return (it);
 }
 
+void 	Channel::erase_mode_arguments(std::string arg) {
+	(void)arg;
+};
+
 std::string									Channel::get_name() const { return (_name); }
-std::map<Client*, std::string>				&Channel::get_users()  { return (_users); }
+std::map<Client*, std::string>				&Channel::get_users() { return (_users); }
 std::vector<std::string>					&Channel::get_users_ban() { return (_users_ban); };
 std::vector<std::string>					&Channel::get_invite_list() { return (_invite_list); };
 std::map<Client*, std::string>::iterator	Channel::get_user(Client* client) { return (_users.find(client)); }
 std::string									Channel::get_channel_modes() const { return (_channel_modes); }
+std::string 								Channel::get__mode_arguments() const { return (_mode_arguments); };
 std::string 								Channel::get_password() const { return (_password); }
 std::string 								Channel::get_topic() const { return (topic); };
 int 										Channel::get_user_limit() const { return (_user_limit); }
@@ -46,7 +51,6 @@ Server 										&Channel::get_server() const { return (*_server); }
 void Channel::set_name(std::string val) {
 	_name = val;
 }
-
 
 void Channel::set_server(Server *server) {
 	_server = server;
@@ -90,11 +94,8 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 							send_message(*client, _server->build_response(332, *client, *client, this, &message));
 						for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++)
 							send_message(*(it2->first), build_message2(353, message.get_sender(), "", this));
-							// send_message(message.get_sender(), build_message2(353, message.get_sender(), "", this));
-						// send_message(_server->build_response(366, *client, *client, this, &message));
 						send_message(*client, _server->build_response(366, *client, *client, this, &message));
 					} else
-						// send_message(_server->build_response(473, *client, *client, this, &message));
 						send_message(*client, _server->build_response(473, *client, *client, this, &message));
 				} else {
 					if (_users.size() == 0)
@@ -150,8 +151,10 @@ int Channel::set_mode(Client *sender, char mode, std::string parameter) {
 		std::istringstream(parameter) >> nb;
 		if (nb > SIZE_MAX)
 			send_message(*sender, build_message2(461, *sender, "MODE", this));
-		else 
+		else {
 			set_user_limit(nb);
+			_mode_arguments += parameter;
+		}
 	} else if (mode == 'b') {
 		if (parameter == "") {
 			send_message(*sender, build_message2(461, *sender, "MODE", this));
@@ -175,8 +178,10 @@ int Channel::set_mode(Client *sender, char mode, std::string parameter) {
 			send_message(*sender, build_message2(461, *sender, "MODE", this));
 			return (-1);
 		}
-		else
+		else {
 			set_password(parameter);
+			_mode_arguments += parameter;
+		}
 	}
 	if (_channel_modes.find(mode) == std::string::npos)
 		_channel_modes.push_back(mode);
@@ -248,7 +253,6 @@ void Channel::set_channel_modes(Client *sender, std::vector<std::string> paramet
 							ret = set_mode(sender, mode[i]);
 						if (ret > 0)
 							send_message(*sender, build_command_message(sender->get_nickname(), "", get_name(), "MODE", parameters, params));
-						// ft_print_numerics(324); // RPL_CHANNELMODEIS
 					} else {
 						string_mode += mode[i];
 						send_message(*sender, build_message2(472, *sender, string_mode, this));
@@ -273,7 +277,6 @@ void Channel::set_channel_modes(Client *sender, std::vector<std::string> paramet
 		}
 	} else
 		send_message(*sender, _server->print_numerics(324, *sender, *sender, this, NULL));
-		// ft_print_numerics(324); // RPL_CHANNELMODEIS (Si aucun mode n'est donné, renvoie juste les modes actuels) ==> check aussi RPL_CREATIONTIME(329)
 }
 
 void Channel::set_user_mode(Client *sender, char mode, std::string parameter) {
