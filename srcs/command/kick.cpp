@@ -28,6 +28,7 @@ void Server::command_KICK(Client *sender, Message &message) {
 				for (std::map<Client*, std::string>::iterator it2 = (*channel_it)->get_users().begin(); it2 != (*channel_it)->get_users().end(); it2++)
 					send_message(*(it2->first), build_command_message(sender->get_nickname(), (*client_it)->get_nickname(), (*channel_it)->get_name(), "KICK"));
 				(*channel_it)->remove_user((*client_it), &_channels);
+				std::cout << "TESTTTTT" << std::endl;
 			}
 		}
 	}

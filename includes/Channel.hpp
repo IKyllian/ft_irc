@@ -23,13 +23,13 @@ class Channel {
 
 		bool operator==(const Channel &channel);
 
-		std::vector<Client*>::iterator search_user_invite(Client *client);
-		std::vector<Client*>::iterator search_user_ban(Client *client);
+		std::vector<std::string>::iterator search_user_invite(std::string name);
+		std::vector<std::string>::iterator search_user_ban(std::string name);
 
 		std::string get_name() const;
 		std::map<Client*, std::string> &get_users() ;
-		std::vector<Client*> &get_users_ban();
-		std::vector<Client*> &get_invite_list();
+		std::vector<std::string> &get_users_ban();
+		std::vector<std::string> &get_invite_list();
 		std::map<Client*, std::string>::iterator get_user(Client* client);
 		std::string get_channel_modes() const;
 		std::string get_password() const;
@@ -40,19 +40,18 @@ class Channel {
 		void 	set_name(std::string val);
 		void 	set_user(Client *client, Message &message, std::string key = std::string());
 		void 	set_channel_modes(Client *sender, std::vector<std::string> parameters);
-		void 	set_mode(Client *sender, char mode, std::string parameter = std::string());
+		int 	set_mode(Client *sender, char mode, std::string parameter = std::string());
 		void 	set_user_mode(Client *sender, char mode, std::string parameter);
-		int		add_invite(Client *client);
+		void	add_invite(std::string name);
 		void 	set_password(std::string password = std::string());
 		void 	set_topic(std::string new_topic = std::string());
 		void 	set_user_limit(int limit);
 		void 	set_server(Server *server);
 		
 		int 	remove_user(Client *client, std::vector<Channel*> *channels);
-		void 	remove_invite(Client *client);
-		void 	ban_user(Client *client);
-		void 	unban_user(Client *client);
-		void 	unset_mode(Client *sender, char mode, std::string parameter = std::string());
+		void 	ban_user(std::string name);
+		void 	unban_user(std::string name);
+		int 	unset_mode(Client *sender, char mode, std::string parameter = std::string());
 		void 	unset_user_mode(Client *sender, char mode, std::string parameter);
 	
 		void 	print_users();
@@ -64,8 +63,8 @@ class Channel {
 		std::string topic;
 		std::map<Client*, std::string> _users; // Stock Client et les modes du user sur le channel
 		std::string _channel_modes;
-		std::vector<Client*> _users_ban;
-		std::vector<Client*> _invite_list;
+		std::vector<std::string> _users_ban;
+		std::vector<std::string> _invite_list;
 		Server *_server;
 };
 

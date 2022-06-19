@@ -7,7 +7,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, in
     std::vector<std::string> targets;
     std::vector<Channel*>::iterator channel_it;
     std::vector<Client*>::iterator client_it;
-    std::vector<Client*>::iterator ban_user_it;
+    std::vector<std::string>::iterator ban_user_it;
     std::map<Client *, std::string>::iterator joined_chan_it;
     std::string chan = "";
 
@@ -33,7 +33,6 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, in
                     client_it = get_client(targets[i]);
                 }
                 if (client_it == _clients.end() && channel_it == _channels.end()) {
-                    std::cout << "TEST" << std::endl;
                     if (targets[i].size() > 0 && (targets[i][0] == '#' || targets[i][0] == '&'))
                         send_message(msg.get_sender(), build_message2(402, msg.get_sender(), targets[i]));
                     else
@@ -48,8 +47,8 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, in
                     else
                         send_message(*(*client_it), build_command_message(sender.get_nickname(), "", (*client_it)->get_nickname(), "PRIVMSG", msg.get_tab_parameter()));
                 } else if (channel_it != _channels.end()) {
-                    for (std::vector<Client*>::iterator ban_user_it = (*channel_it)->get_users_ban().begin(); ban_user_it != (*channel_it)->get_users_ban().end(); ban_user_it++)
-                        if (sender.get_nickname() == (*ban_user_it)->get_nickname())
+                    for (ban_user_it = (*channel_it)->get_users_ban().begin(); ban_user_it != (*channel_it)->get_users_ban().end(); ban_user_it++)
+                        if (sender.get_nickname() == (*ban_user_it))
                             break ;
                     if ((*channel_it)->get_users_ban().size() > 0 && ban_user_it != (*channel_it)->get_users_ban().end())
                         continue ;
