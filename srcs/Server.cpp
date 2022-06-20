@@ -224,8 +224,9 @@ bool send_message(Server &server, Message &msg_data, std::string header, std::st
     len = str.length();
 	memset(&buffer, 0, sizeof(buffer));
 	strcpy(buffer, str.c_str());
-std::cout << "sending to " << msg_data.get_receiver().get_nickname() << " (fd:" << msg_data.get_receiver().get_fd() << "): " << std::endl;
-std::cout << buffer << std::endl;
+	std::cout <<  "\033[1;31m" << "send to " << msg_data.get_receiver().get_nickname() 
+	<< " (fd:" << msg_data.get_receiver().get_fd() << "): " << "\033[0m" << std::endl;
+	std::cout << buffer;
 	ret = send(msg_data.get_receiver().get_fd(), buffer, len, 0);
 	if (ret < 0)
 	{
@@ -252,8 +253,9 @@ bool send_message(Client &target, std::string message)
 	buffer[i + 2] = '\0';
 	len = i + 2;
 	
-std::cout << "sending to " << target.get_nickname() << " (fd:" << target.get_fd() << "): " << std::endl;
-	std::cout << buffer << std::endl;
+	std::cout << "\033[1;31m" << "send to " << target.get_nickname() 
+	<< " (fd:" << target.get_fd() << "): " <<  "\033[0m" << std::endl;
+	std::cout << buffer;
 
 	ret = send(target.get_fd(), buffer, len, 0);
 	if (ret < 0)

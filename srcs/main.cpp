@@ -73,13 +73,16 @@ int handle_incoming_message(Server& server, int fd)
 	pos = server.get_clients()[i]->get_buffer().rfind("\r\n");
 	if (pos == std::string::npos || pos >= server.get_clients()[i]->get_buffer().length())
 	{
-		std::cout << "from fd: "<< fd << " command incomplete, storing: " << std::endl 
-				<< server.get_clients()[i]->get_buffer() << std::endl
-				<< "--------------" << std::endl;
+		std::cout << "\033[1;33mrecv partial message from " << server.get_clients()[i]->get_nickname()
+		<< " (fd " << fd << "): \033[0m" << std::endl;
+		std::cout << server.get_clients()[i]->get_buffer() << std::endl;
 		return ret;
 	}
 	
 	message = server.get_clients()[i]->extract_command(pos);
+	std::cout << "\033[1;32mrecv from " << server.get_clients()[i]->get_nickname() 
+	<< " (fd " << fd << "): \033[0m" << std::endl;
+	std::cout << message;
 	do_parsing(server, server.get_clients()[i], message);
 	return ret;
 }
@@ -258,7 +261,8 @@ int main(int ac, char **av)
 					if (fd.fd < 0)
 						break;
 
-					std::cout << "New incomig connection - fd:" << fd.fd << " IP: " << userIP << std::endl;
+			//		std::cout << "New incomig connection - fd:" << fd.fd << " IP: " << userIP << std::endl;
+					std::cout << "\033[1;34m" << "New incomig connection - fd:" << fd.fd << " IP: " << userIP << "\033[0m" << std::endl;
 					fd.events = POLLIN;
 					server.get_fds().push_back(fd);
 					server.get_clients().push_back(new Client(fd.fd));
@@ -267,7 +271,7 @@ int main(int ac, char **av)
 			}
 			else // client fd
 			{
-				std::cout << "Descriptor " << server.get_fds()[i].fd << " is readable" << std::endl;
+//				std::cout << "Descriptor " << server.get_fds()[i].fd << " is readable" << std::endl;
 				while (true)
 				{	
 					ret = handle_incoming_message(server, server.get_fds()[i].fd);
@@ -284,22 +288,20 @@ int main(int ac, char **av)
 			for (j = 0; j < server.get_clients().size(); j++)
 			{
 				if (server.get_clients()[j]->get_quitting())
-				{
-
-//TODO faire des trucs ? (enlever le user des channels ? PART ?)
-					
+				{	
 					for (unsigned long k = 0; k < server.get_fds().size(); k++)
 					{
 						if (server.get_clients()[j]->get_fd() == server.get_fds()[k].fd)
 						{
-							std::cout << "Closing fd " << server.get_fds()[k].fd << std::endl;
+							std::cout << "\033[1;34m" << "Closing fd " << server.get_fds()[k].fd << "\033[0m" << std::endl;
+//ajouter ici QUIT
 							close(server.get_fds()[k].fd);
 							server.get_fds().erase(server.get_fds().begin() + k);
 
 						}
 
 					}
-					std::cout << "Removing Client: " << server.get_clients()[j]->get_nickname() << std::endl;
+					std::cout << "\033[1;34m" << "Removing Client: " << server.get_clients()[j]->get_nickname() <<  "\033[0m" << std::endl;
 					server.get_clients().erase(server.get_clients().begin() + j); // !!!! Check pour delete !!!!!
 				}
 			}
