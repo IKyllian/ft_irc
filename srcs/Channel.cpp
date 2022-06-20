@@ -14,6 +14,22 @@ Channel::~Channel() {
 	_users.clear();
 }
 
+Channel& Channel::operator=(const Channel& rhs)
+{
+	_name = rhs._name;
+	_password = rhs._password;
+	_user_limit = rhs._user_limit;
+	topic = rhs.topic;
+	_users = rhs._users;
+	_channel_modes = rhs._channel_modes;
+	_users_ban = rhs._users_ban;
+	_invite_list = rhs._invite_list;
+	_server = rhs._server;
+
+	return *this;
+}
+
+
 bool Channel::operator==(const Channel &channel) { return (get_name() == channel.get_name()); };
 
 std::vector<Client*>::iterator Channel::search_user_invite(Client *client) {

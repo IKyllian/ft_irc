@@ -21,6 +21,7 @@ class Channel {
 		Channel(const Channel &channel);
 		~Channel();
 
+		Channel& Channel::operator=(const Channel& rhs);
 		bool operator==(const Channel &channel);
 
 		std::vector<Client*>::iterator search_user_invite(Client *client);

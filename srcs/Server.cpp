@@ -24,11 +24,44 @@ Server::Server(const Server &server):
 	_invisible_user (server._invisible_user),
 	_server_connected(server._server_connected),
 	_nb_channel(server._nb_channel),
-	_datetime (server._datetime)
-{
-}
+	_datetime (server._datetime),
+	_clients(server._clients),
+	_channels(server._channels),
+	_fds(server._fds),
+	_password(server._password),
+	_using_password(server._using_password){}
 
 Server::~Server() {}
+
+
+Server& Server::operator=(const Server& rhs)
+{
+	_network_name = rhs._network_name;
+	_hostname = rhs._hostname;
+	_port = rhs._port;
+	_infoServer = rhs._infoServer;
+	_servername = rhs._servername;
+	_locationServer = rhs._locationServer; 
+	_hostInfo  = rhs._hostInfo;
+	_hostMail = rhs._hostMail;
+	_version  = rhs._version;
+	_token = rhs._token;
+	_connexion = rhs._connexion;
+	_nb_user  = rhs._nb_user;
+	_nb_clients  = rhs._nb_clients;
+	_nb_operator  = rhs._nb_operator;
+	_invisible_user  = rhs._invisible_user;
+	_server_connected = rhs._server_connected;
+	_nb_channel = rhs._nb_channel;
+	_datetime  = rhs._datetime;
+	_clients = rhs._clients;
+	_channels = rhs._channels;
+	_fds = rhs._fds;
+	_password = rhs._password;
+	_using_password = rhs._using_password;
+
+	return *this;
+}
 
 std::string Server::get_network_name() const { return (_network_name); }
 std::string Server::get_hostname() const { return (_hostname); }
@@ -39,16 +72,8 @@ std::string Server::get_locationServer() const { return (_locationServer); }
 std::string Server::get_hostInfo() const { return (_hostInfo); }
 std::string Server::get_hostMail() const { return (_hostMail); }
 std::string Server::get_version() const { return (_version); }
-// std::string Server::get_token() const { return (_token); }
-// std::string Server::get_connexion() const { return (_connexion); }
-// std::string Server::get_nb_user() const { return (_nb_user); }
-// std::string Server::get_nb_clients() const { return (_nb_clients); }
 std::string Server::get_nb_operator() const { return (_nb_operator); }
 std::string Server::get_invisible_user() const { return (_invisible_user); }
-// std::string Server::get_server_connected() const { return (_server_connected); }
-// std::string Server::get_nb_channel() const { return (_nb_channel); }
-// std::string Server::get_datetime() const { return (_datetime); }
-
 std::vector<Client*>	&Server::get_clients() { return (_clients); }
 std::vector<Channel*> &Server::get_channels() { return (_channels); }
 std::vector<struct pollfd> &Server::get_fds() { return (_fds); };
@@ -119,22 +144,6 @@ void Server::set_version(std::string val) {
 	_version = val;
 }
 
-// void Server::set_token(std::string &val) {
-// 	_token = val;
-// }
-
-// void Server::set_connexion(std::string &val) {
-// 	_connexion = val;
-// }
-
-// void Server::set_nb_user(std::string &val) {
-// 	_nb_user = val;
-// }
-
-// void Server::set_nb_clients(std::string &val) {
-// 	_nb_clients = val;
-// }
-
 void Server::set_nb_operator(std::string &val) {
 	_nb_operator = val;
 }
@@ -143,18 +152,6 @@ void Server::set_invisible_user(std::string &val) {
 	_invisible_user = val;
 }
 
-// void Server::set_server_connected(std::string &val) {
-// 	_server_connected = val;
-// }
-
-// void Server::set_nb_channel(std::string &val) {
-// 	_nb_channel = val;
-// }
-
-// void Server::set_datetime(std::string &val) {
-// 	_datetime = val;
-// }
-
 void Server::set_password(std::string val) {
 	_password = val;
 }
@@ -162,7 +159,6 @@ void Server::set_password(std::string val) {
 void Server::set_using_password(bool val) {
 	_using_password = val;
 }
-
 
 void Server::set_user(Client *client) {
 	std::vector<Client*>::iterator it = get_client(client->get_nickname());
@@ -186,16 +182,7 @@ bool Server::_nick_isvalid(std::string nick) const {
 
 	if (nick.size() < 3 || nick.size() > 10)
 		return false;
-
-// std::cout << "@@@@inside _nick_isvalid " << std::endl;
-// for (unsigned long i = 0; i < nick.length(); i++)
-// {
-// 	std::cout << "i: " << i << " nick[i]: " << nick[i] << " | (int): " << (int) nick[i] << std::endl;
-// }
-
-
 	ret = nick.find_first_not_of(valid);
-//std::cout << "ret: " << ret << " npos: " <<  std::string::npos << std::endl;
 	if (ret != std::string::npos || ret < nick.length())
 		return false;
 	return true;
@@ -208,10 +195,8 @@ bool send_message(Server &server, Message &msg_data, std::string header, std::st
 	int					ret, len;
 	char				buffer[65535];
 	std::string			str;
-	// std::stringstream	ss;
-// std::cout << "###inside send_message" << std::endl;
-	// ss << msgnum;
-(void) server;
+
+	(void) server;
 
 	str = ":";
 	str += header;

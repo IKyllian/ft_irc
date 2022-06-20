@@ -2,7 +2,8 @@
 
 Client::Client() : _realname (""), _logged(false), _away(false) {}
 Client::Client(std::string nickname) : _nickname(nickname), _logged(false), _away(false) {};
-Client::Client(const Client &client) : 
+Client::Client(const Client &client) :
+	_channel(client._channel),
 	_nickname(client._nickname),
 	_username(client._username),
 	_realname(client._realname),
@@ -17,6 +18,7 @@ Client::Client(const Client &client) :
 	_quitting(client._quitting),
 	_away_msg(client._away_msg),
 	_buffer(client._buffer) {}
+
 // Client::Client(const Client *client) {
 // 	*this = client;
 // }
@@ -38,6 +40,28 @@ Client::Client(int &fd) :
 	_buffer("")  {}
 	
 Client::~Client() {}
+
+
+Client& Client::operator=(const Client& rhs)
+{
+	_channel = rhs._channel;
+	_nickname = rhs._nickname;
+	_username = rhs._username;
+	_realname = rhs._realname;
+	_hostname = rhs._hostname;
+	_user_modes = rhs._user_modes;
+	_fd = rhs._fd;
+	_logged = rhs._logged;
+	_registered = rhs._registered; 
+	_authentified = rhs._authentified; 
+	_hasnick = rhs._hasnick; 
+	_away = rhs._away;
+	_quitting = rhs._quitting;
+	_away_msg = rhs._away_msg;
+	_buffer = rhs._buffer;
+
+	return *this;
+}
 
 bool Client::operator==(const Client& rhs) {
 	return (get_nickname() == rhs.get_nickname());

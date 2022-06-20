@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 12:04:18 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/18 15:57:14 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/20 15:03:42 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,40 +24,42 @@ class Bot
 {
 	public:
 
-	Bot();
+		Bot();
+		Bot(const Bot &src);
+		~Bot();
 
-	void set_serverFD(int serverFD);
-	void set_running(bool running);
-	void set_logged(bool logged);
-	void set_nickname(std::string nick);
+		bool get_running() const;
+		int get_serverFD() const;
+		std::string	get_buffer() const;
+		bool get_logged() const;
+		std::string get_nickname() const;
+		
+		void set_running(bool running);
+		void set_serverFD(int serverFD);
+		void set_logged(bool logged);
+		void set_nickname(std::string nick);
 
-	bool get_running() const;
-	int get_serverFD() const;
-	std::string	get_buffer() const;
-	bool get_logged() const;
-	std::string get_nickname() const;
+		Bot& Bot::operator=(const Bot& rhs);
 
-	void append_buffer(char* buffer);
-	std::string extract_command(size_t pos);
-	bool do_parsing(std::string message);
-	bool send_message(std::string message);
-	int handle_incoming_message();
-	Message *ft_create_message(std::string str);
-	void do_command(Message &msg);
-	std::vector<std::string> ft_split_message(std::string str);
-	void ft_split_parameter(Message &msg);
+		void append_buffer(char* buffer);
+		std::string extract_command(size_t pos);
+		bool send_message(std::string message);
+		int handle_incoming_message();
+		void ft_split_parameter(Message &msg);
+		Message *ft_create_message(std::string str);
+		void do_command(Message &msg);
+		std::vector<std::string> ft_split_message(std::string str);
+		bool do_parsing(std::string message);
+
 	protected:
 
 	private:
 
-	bool		_running;
-	int			_serverFD;
-	std::string	_buffer;
-	bool		_logged;
-	std::string _nickname;
-
-	
-
+		bool		_running;
+		int			_serverFD;
+		std::string	_buffer;
+		bool		_logged;
+		std::string _nickname;
 };
 
 #endif

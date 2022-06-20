@@ -21,7 +21,7 @@ class Server {
 		Server(const Server &server);
 		~Server();
 
-		
+		Server& Server::operator=(const Server& rhs);
 
 		std::string get_network_name() const;
 		std::string get_hostname() const;
@@ -32,16 +32,8 @@ class Server {
 		std::string get_hostInfo() const;
 		std::string get_hostMail() const;
 		std::string get_version() const;
-		// std::string get_token() const;
-		// std::string get_connexion() const;
-		// std::string get_nb_user() const;
-		// std::string get_nb_clients() const;
 		std::string get_nb_operator() const;
 		std::string get_invisible_user() const;
-		// std::string get_server_connected() const;
-		// std::string get_nb_channel() const;
-		// std::string get_datetime() const;
-
 		std::vector<Client*>	&get_clients();
 		std::vector<Client*>::iterator get_client(std::string to_search);
 		std::vector<Client*>::iterator get_client_by_fd(int search);
@@ -61,22 +53,12 @@ class Server {
 		void set_hostInfo(std::string val);
 		void set_hostMail(std::string val);
 		void set_version(std::string val);
-		//void set_token(std::string &val);
-		//void set_connexion(std::string &val);
-		//void set_nb_user(std::string &val);
-		//void set_nb_clients(std::string &val);
 		void set_nb_operator(std::string &val);
 		void set_invisible_user(std::string &val);
-		//void set_server_connected(std::string &val);
-		//void set_nb_channel(std::string &val);
-		//void set_datetime(std::string &val);
-
 		void set_password(std::string val);
 		void set_using_password(bool val);
 		void set_user(Client *client);
-
-		
-		
+	
 		std::string print_numerics(int num, Client &sender, Client &receiver, Channel *channel = NULL, Message *message = NULL);
 		std::string build_response(int num, Client &sender, Client &receiver, Channel *channel = NULL, Message *message = NULL);
 		std::string build_response(Client &sender, std::string str);
@@ -84,25 +66,15 @@ class Server {
 		void command_NICK(Client &client, Message &message);
 		void command_USER(Client &client, Message &message);
 		void command_PASSWORD(Client &client, Message &message);
-
 		void command_JOIN(Client *client, Message &message, Server &server);
-
 		void command_PART(Client *client, Message &message);
-
 		void command_TOPIC(Client *client, Message &message);
-
 		void command_NAMES(Message &message);
-
 		void command_LIST(Message &message);
-
 		void command_INVITE(Client *sender, Message &message);
-
 		void command_KICK(Client *sender, Message &message);
-
 		void command_MODE_CHAN(Client *sender, Message &message);
-
 		void command_MODE_USER(Client *sender, Message &message);
-
 		void command_AWAY(Client &client, Message &message);
 		void command_PRIVMSG(Client &sender, Message &msg, Server &server, int is_notice);
 		void command_WHO(Client &client, Message &message);

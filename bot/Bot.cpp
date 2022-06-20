@@ -13,22 +13,34 @@
 
 #include "Bot.hpp"
 
-Bot::Bot(): _running(true), _serverFD(-1), _buffer(""), _logged(false), _nickname("") {}
+Bot::Bot():
+	_running(true),
+	_serverFD(-1),
+	_buffer(""),
+	_logged(false),
+	_nickname("") {}
 
+Bot::Bot(const Bot &src):
+	_running(src._running),
+	_serverFD(src._serverFD),
+	_buffer(src._buffer),
+	_logged(src._logged),
+	_nickname(src._nickname) {}
+
+bool Bot::get_running() const { return (_running); } 
 int Bot::get_serverFD() const{ return (_serverFD); }
 std::string	Bot::get_buffer() const { return (_buffer); }
-bool Bot::get_running() const { return (_running); } 
 bool Bot::get_logged() const { return (_logged); }
 std::string Bot::get_nickname() const { return (_nickname); }
-
-void Bot::set_serverFD(int serverFD)
-{
-	_serverFD = serverFD;
-}
 
 void Bot::set_running(bool running)
 {
 	_running = running;
+}
+
+void Bot::set_serverFD(int serverFD)
+{
+	_serverFD = serverFD;
 }
 
 void Bot::set_logged(bool logged)
@@ -39,6 +51,15 @@ void Bot::set_logged(bool logged)
 void Bot::set_nickname(std::string nick)
 {
 	_nickname = nick;
+}
+
+Bot& Bot::operator=(const Bot& rhs) {
+	_running = rhs._running;
+	_serverFD = rhs._serverFD;
+	_buffer = rhs._buffer;
+	_logged = rhs._logged;
+	_nickname = rhs._nickname;
+	return *this;
 }
 
 void Bot::append_buffer(char* buffer) {
@@ -72,7 +93,6 @@ bool Bot::send_message(std::string message)
 	len = i + 2;
 
 	std::cout << "\033[1;31msend: \033[0m";
-	//std::cout << "sending: ";
 	std::cout << buffer;
 
 	ret = send(_serverFD, buffer, len, 0);
@@ -136,9 +156,6 @@ void Bot::ft_split_parameter(Message &msg)
             startpoint = position;
         }
     }
-    msg.set_nb_parameter(nb);
-    // std::cout << "Split function " << msg.get_nb_parameter() << std::endl;
-
     return ;
 }
 
@@ -161,14 +178,12 @@ Message *Bot::ft_create_message(std::string str)
     position = str.find(' ', position);
     str_to_pass = str.substr(startpoint, position - startpoint);
     msg->set_command(str_to_pass);
-    msg->set_nb_parameter(0);
     if (position != std::string::npos)
     {
         position++;
         startpoint = position;
         position = str.length();
         str_to_pass = str.substr(startpoint, position - startpoint);
- //       std::cout << str_to_pass << std::endl;
         msg->set_parameter(str_to_pass);
         position++;
         startpoint = position;
@@ -190,7 +205,6 @@ void Bot::do_command(Message &msg)
 	// }
 	// std::cout << "msg.get_prefix(): " << msg.get_prefix() << std::endl;
 	// std::cout << "msg.get_target_nickname(): " << msg.get_target_nickname() << std::endl;
-	//msg tab[1] -> 
 
 	if (msg.get_command() == "433" || msg.get_command() == "431"
 	|| msg.get_command() == "432" || msg.get_command() == "484")
@@ -210,17 +224,32 @@ void Bot::do_command(Message &msg)
 		answer += "PRIVMSG ";
 		answer += msg.get_tab_parameter()[1];
 		answer += " Welcome ";
-		answer += msg.get_target_nickname();
+		if (msg.get_target_nickname() == "kdelport")
+			answer += "KIKI";
+		else if (msg.get_target_nickname() == "kzennoun")
+			answer += "KAKA";
+		else if (msg.get_target_nickname() == "rozhou")
+			answer += "RORO";
+		else
+			answer += msg.get_target_nickname();
 		send_message(answer);
 	}
 	else if (msg.get_command() == "PRIVMSG")
 	{
+		if (msg.get_tab_parameter().size() < 2)
+				return;
 		if (msg.get_tab_parameter()[1] == ":!join")
 		{
-			//msg.get_tab_parameter()[2]
+			if (msg.get_tab_parameter().size() < 3)
+				return;
 			answer = "";
 			answer += "JOIN ";
 			answer += msg.get_tab_parameter()[2];
+			if (msg.get_tab_parameter().size() > 3)
+			{
+				answer += " ";
+				answer += msg.get_tab_parameter()[3];
+			}
 			send_message(answer);
 		}
 		else if (msg.get_tab_parameter()[1] == ":!selfdestruct")
@@ -231,6 +260,8 @@ void Bot::do_command(Message &msg)
 	}
 	else if (msg.get_command() == "PART")
 	{
+		if (msg.get_tab_parameter().size() < 1)
+			return;
 		answer = "";
 		answer += "PRIVMSG ";
 		answer += msg.get_tab_parameter()[0];
@@ -240,6 +271,8 @@ void Bot::do_command(Message &msg)
 	}
 	else if (msg.get_command() == "KICK")
 	{
+		if (msg.get_tab_parameter().size() < 2)
+			return;
 		answer = "";
 		answer += "PRIVMSG ";
 		answer += msg.get_tab_parameter()[0];
@@ -265,18 +298,10 @@ std::vector<std::string> Bot::ft_split_message(std::string str)
         {
             tmp = str.substr(startpoint, position);
             std::string tmp = str.substr(startpoint, position);
-            // for (unsigned long i = 0; i < tmp.length(); i++)
-            // {
-            // 	std::cout << "11111 i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
-            // }
             if (position == std::string::npos)
             {
                 if (str.substr(startpoint, position).size() <= 0)
                     break;
-                // for (unsigned long i = 0; i < tmp.length(); i++)
-                // {
-                // 	std::cout << "22222i: " << i << "tmp[i]: " << tmp[i] << "| (int): " << (int) tmp[i] << std::endl;
-                // }    
                 msg_list.push_back(str.substr(startpoint, position));
                 break;
             }
@@ -295,13 +320,12 @@ bool Bot::do_parsing(std::string message)
 {
 	std::vector<Message*> msg;
 	std::vector<std::string> msg_list;
-	(void) message;
+
 	msg_list = ft_split_message(message);
 	for (size_t i = 0; i < msg_list.size(); i++)
 	{
 		msg.push_back(ft_create_message(msg_list[i]));
 	}
-//	std::cout << "msg size = " << msg.size() << std::endl;
 	for (size_t i = 0; i < msg.size(); i++)
 	{
 		do_command(*msg[i]);
