@@ -60,7 +60,6 @@ std::string build_message2(int num, Client &sender, std::string target, Channel 
 	}
 }
 
-
 std::string Server::print_numerics(int num, Client &sender, Client &receiver, Channel *channel, Message *message)
 {
 	(void) num;

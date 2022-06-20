@@ -37,7 +37,9 @@ Client::Client(int &fd) :
 	_away_msg(""), 
 	_buffer("")  {}
 	
-Client::~Client() {}
+Client::~Client() {
+	_channel.clear();
+}
 
 bool Client::operator==(const Client& rhs) {
 	return (get_nickname() == rhs.get_nickname());
@@ -91,39 +93,86 @@ void Client::set_hostname(std::string val) {
 	_hostname = val;
 }
 
-void Client::set_user_modes(std::string mode) {
+// void Client::set_user_modes(std::string mode) {
+// 	const std::string modes = "iswo";
+
+// 	if (mode.size() > 1) {
+// 		if (mode[0] == '+') {
+// 			for (size_t i = 1; i < mode.size(); i++) {
+// 				if (modes.find(mode[i]) != std::string::npos) {
+// 					if (_user_modes.find(mode[i]) != std::string::npos) {
+// 							ft_print_numerics(501);
+// 							continue;
+// 					} else {
+// 						ft_print_numerics(221); // RPL_UMODEIS
+// 						_user_modes.push_back(mode[i]);
+// 					}
+// 				} else
+// 					ft_print_numerics(472);
+// 			}
+// 		} else if (mode[0] == '-') {
+// 			for (size_t i = 1; i < mode.size(); i++) {
+// 						_user_modes.erase(_user_modes.find(mode[i]));
+// 						ft_print_numerics(221); // RPL_UMODEIS
+				
+// 				}
+// 			}
+// 		} else
+// 			std::cout << "Mode : error syntax" << std::endl;
+// 	} else
+// 		send_message(*sender, _server->print_numerics(221, *this, *this, NULL, NULL));
+// 		// ft_print_numerics(221); // RPL_CHANNELMODEIS (Si aucun mode n'est donné, renvoie juste les modes actuels)
+// }
+
+void Client::set_user_modes(std::string mode, Server &server) {
 	const std::string modes = "iswo";
+	std::string string_mode;
+	std::string output = "";
+	char symbol;
+
 	if (mode.size() > 1) {
-		if (mode[0] == '+') {
-			for (size_t i = 1; i < mode.size(); i++) {
-				if (modes.find(mode[i]) != std::string::npos) {
-					if (_user_modes.find(mode[i]) != std::string::npos) {
-							ft_print_numerics(501);
-							continue;
-					} else {
-						ft_print_numerics(221); // RPL_UMODEIS
+		if (mode[0] != '+' && mode[0] != '-')
+			std::cout << "Mode : error syntax" << std::endl;
+		else {
+			for (size_t i = 0; i < mode.size(); i++) {
+				if (mode[i] == '+' || mode[i] == '-') {
+					symbol = mode[i];
+					continue ;
+				}
+				if (symbol == '+') {
+					if (modes.find(mode[i]) != std::string::npos) {
 						_user_modes.push_back(mode[i]);
-					}
-				} else
-					ft_print_numerics(472);
-			}
-		} else if (mode[0] == '-') {
-			for (size_t i = 1; i < mode.size(); i++) {
-				if (modes.find(mode[i]) != std::string::npos) {
-					if (_user_modes.find(mode[i]) == std::string::npos) {
-							ft_print_numerics(501);
-							continue;
+						if (output.find("+") == std::string::npos)
+							output += "+";
+						output += mode[i];
 					} else {
+						string_mode += mode[i];
+						send_message(*this, build_message2(472, *this, string_mode, NULL));
+						string_mode = "";
+					}
+				} else if (symbol == '-') {
+					if (modes.find(mode[i]) != std::string::npos) {
+						if (_user_modes.find(mode[i]) == std::string::npos)
+							continue ;
 						_user_modes.erase(_user_modes.find(mode[i]));
-						ft_print_numerics(221); // RPL_UMODEIS
+						if (output.find("-") == std::string::npos)
+							output += "-";
+						output += mode[i];
+					} else {
+						string_mode += mode[i];
+						send_message(*this, build_message2(472, *this, string_mode, NULL));
+						string_mode = "";
 					}
 				}
 			}
-		} else
-			std::cout << "Mode : error syntax" << std::endl;
-	} else
-		ft_print_numerics(221); // RPL_CHANNELMODEIS (Si aucun mode n'est donné, renvoie juste les modes actuels)
+			if (mode.size() > 0) {
+				send_message(*this, build_command_message(_nickname, output, _nickname, "MODE"));
+			}
+		}
+	} else		
+		send_message(*this, server.print_numerics(221, *this, *this, NULL, NULL));
 }
+
 
 void Client::set_fd(int val) {
 	_fd = val;

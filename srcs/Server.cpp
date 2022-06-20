@@ -31,8 +31,10 @@ Server::Server(const Server &server):
 Server::~Server() {
 	for (size_t i = 0; i < _clients.size(); i++)
 		delete _clients[i];
+	_clients.clear();
 	for (size_t i = 0; i < _channels.size(); i++)
 		delete _channels[i];
+	_channels.clear();
 }
 
 std::string Server::get_network_name() const { return (_network_name); }

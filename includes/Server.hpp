@@ -101,7 +101,7 @@ class Server {
 
 		void command_MODE_CHAN(Client *sender, Message &message);
 
-		void command_MODE_USER(Client *sender, Message &message);
+		void command_MODE_USER(Client *sender, Message &message, Server &server);
 
 		void command_AWAY(Client &client, Message &message);
 		void command_PRIVMSG(Client &sender, Message &msg, Server &server, int is_notice);

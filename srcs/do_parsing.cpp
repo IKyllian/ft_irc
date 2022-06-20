@@ -118,7 +118,7 @@ std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() <
 		if (msg.get_tab_parameter()[0].size() > 0 && (msg.get_tab_parameter()[0][0] == '#' || msg.get_tab_parameter()[0][0] == '@'))
 			server.command_MODE_CHAN(sender, msg);
 		else
-			server.command_MODE_USER(sender, msg);
+			server.command_MODE_USER(sender, msg, server);
 	}
 	else if (msg.get_command() == "PRIVMSG")
 	{

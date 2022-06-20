@@ -21,7 +21,7 @@ class Channel {
 		Channel(const Channel &channel);
 		~Channel();
 
-		bool operator==(const Channel &channel);
+		// bool operator==(const Channel &channel);
 
 		std::vector<std::string>::iterator search_user_invite(std::string name);
 		std::vector<std::string>::iterator search_user_ban(std::string name);
