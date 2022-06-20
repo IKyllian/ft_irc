@@ -93,37 +93,6 @@ void Client::set_hostname(std::string val) {
 	_hostname = val;
 }
 
-// void Client::set_user_modes(std::string mode) {
-// 	const std::string modes = "iswo";
-
-// 	if (mode.size() > 1) {
-// 		if (mode[0] == '+') {
-// 			for (size_t i = 1; i < mode.size(); i++) {
-// 				if (modes.find(mode[i]) != std::string::npos) {
-// 					if (_user_modes.find(mode[i]) != std::string::npos) {
-// 							ft_print_numerics(501);
-// 							continue;
-// 					} else {
-// 						ft_print_numerics(221); // RPL_UMODEIS
-// 						_user_modes.push_back(mode[i]);
-// 					}
-// 				} else
-// 					ft_print_numerics(472);
-// 			}
-// 		} else if (mode[0] == '-') {
-// 			for (size_t i = 1; i < mode.size(); i++) {
-// 						_user_modes.erase(_user_modes.find(mode[i]));
-// 						ft_print_numerics(221); // RPL_UMODEIS
-				
-// 				}
-// 			}
-// 		} else
-// 			std::cout << "Mode : error syntax" << std::endl;
-// 	} else
-// 		send_message(*sender, _server->print_numerics(221, *this, *this, NULL, NULL));
-// 		// ft_print_numerics(221); // RPL_CHANNELMODEIS (Si aucun mode n'est donné, renvoie juste les modes actuels)
-// }
-
 void Client::set_user_modes(std::string mode, Server &server) {
 	const std::string modes = "iswo";
 	std::string string_mode;
@@ -172,7 +141,6 @@ void Client::set_user_modes(std::string mode, Server &server) {
 	} else		
 		send_message(*this, server.print_numerics(221, *this, *this, NULL, NULL));
 }
-
 
 void Client::set_fd(int val) {
 	_fd = val;
