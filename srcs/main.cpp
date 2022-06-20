@@ -300,7 +300,8 @@ int main(int ac, char **av)
 
 					}
 					std::cout << "Removing Client: " << server.get_clients()[j]->get_nickname() << std::endl;
-					server.get_clients().erase(server.get_clients().begin() + j); // !!!! Check pour delete !!!!!
+					delete *(server.get_clients().begin() + j);
+					server.get_clients().erase(server.get_clients().begin() + j);
 				}
 			}
 	} // end main loop
