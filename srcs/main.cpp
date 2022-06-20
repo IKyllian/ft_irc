@@ -301,8 +301,14 @@ int main(int ac, char **av)
 						}
 
 					}
+<<<<<<< HEAD
 					std::cout << "\033[1;34m" << "Removing Client: " << server.get_clients()[j]->get_nickname() <<  "\033[0m" << std::endl;
 					server.get_clients().erase(server.get_clients().begin() + j); // !!!! Check pour delete !!!!!
+=======
+					std::cout << "Removing Client: " << server.get_clients()[j]->get_nickname() << std::endl;
+					delete *(server.get_clients().begin() + j);
+					server.get_clients().erase(server.get_clients().begin() + j);
+>>>>>>> b81bd45b81dd64ac77c260c0ac6881b112e204a5
 				}
 			}
 	} // end main loop

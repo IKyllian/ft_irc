@@ -5,6 +5,7 @@
 #include "ft_irc.hpp"
 
 class Channel;
+class Server;
 
 class Client {
 	public :
@@ -39,7 +40,7 @@ class Client {
 		void set_username(std::string val);
 		void set_realname(std::string val);
 		void set_hostname(std::string val);
-		void set_user_modes(std::string mode);
+		void set_user_modes(std::string mode, Server &server);
 		void set_fd(int val);
 		void set_logged(bool val);
 		void set_registered(bool val);

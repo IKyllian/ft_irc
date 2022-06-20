@@ -31,7 +31,14 @@ Server::Server(const Server &server):
 	_password(server._password),
 	_using_password(server._using_password){}
 
-Server::~Server() {}
+Server::~Server() {
+	for (size_t i = 0; i < _clients.size(); i++)
+		delete _clients[i];
+	_clients.clear();
+	for (size_t i = 0; i < _channels.size(); i++)
+		delete _channels[i];
+	_channels.clear();
+}
 
 
 Server& Server::operator=(const Server& rhs)
