@@ -33,7 +33,7 @@ class Channel {
 		std::vector<std::string> &get_invite_list();
 		std::map<Client*, std::string>::iterator get_user(Client* client);
 		std::string get_channel_modes() const;
-		std::string get__mode_arguments() const;
+		std::string get_mode_arguments() const;
 		std::string get_password() const;
 		std::string get_topic() const;
 		int get_user_limit() const;
@@ -55,7 +55,8 @@ class Channel {
 		void 	unban_user(std::string name);
 		int 	unset_mode(Client *sender, char mode, std::string parameter = std::string());
 		void 	unset_user_mode(Client *sender, char mode, std::string parameter);
-		void 	erase_mode_arguments(std::string arg);
+		void 	erase_mode_arguments(char mode);
+		void 	add_mode_arguments(char mode, std::string parameter);
 	
 		void 	print_users();
 

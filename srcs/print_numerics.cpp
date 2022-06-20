@@ -90,7 +90,6 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string ban_timeSet = "22222";
 	//              MESSAGE VAR             //
  	std::string mask = "channel";
-	std::string mode_arguments = "mode arguments";   //??? Je sais pas c'est quoi...                    Je sais pas si c'est dans message
 	//	update 16/05
 	std::string subject = "sujet";
 	std::string target = "target";
@@ -175,6 +174,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string client_count;
 	std::string channel_topic;
 	std::string mode_string;
+	std::string mode_arguments;
 	//PAS DANS LA CLASSE
 	std::string channel_creationTime;
 	std::string channel_whoSetTopic;
@@ -190,6 +190,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		client_count = "ERROR channel not set";
 		channel_topic = "ERROR channel not set";
 		mode_string = "ERROR channel not set";
+		mode_arguments = "ERROR channel not set";
 		//PAS DANS LA CLASSE
 		channel_creationTime = "ERROR channel not set";
 		channel_whoSetTopic = "ERROR channel not set";
@@ -207,6 +208,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		client_count = std::to_string((*channel).get_users().size());
 		channel_topic = (*channel).get_topic();
 		mode_string = (*channel).get_channel_modes();
+		mode_arguments = (*channel).get_mode_arguments();
 		//PAS DANS LA CLASSE
 		channel_creationTime = "123";
 		channel_whoSetTopic = "acasunno";

@@ -32,9 +32,33 @@ std::vector<std::string>::iterator Channel::search_user_ban(std::string name) {
 	return (it);
 }
 
-void 	Channel::erase_mode_arguments(std::string arg) {
-	(void)arg;
-};
+void 	Channel::erase_mode_arguments(char mode) {
+	std::string str;
+	std::ostringstream convert;
+
+	if (mode == 'k')
+		_mode_arguments.erase(_mode_arguments.find(_password), _password.size());
+	else {
+		convert << _user_limit;
+		str = convert.str();
+		_mode_arguments.erase(_mode_arguments.find(str), str.size());
+	}
+}
+
+void 	Channel::add_mode_arguments(char mode, std::string parameter) {
+	if (mode == 'k') {
+		if (_channel_modes.find(mode) != std::string::npos)
+			erase_mode_arguments('k');
+		_mode_arguments += parameter;
+		_mode_arguments += " ";
+	} else {
+		if (_channel_modes.find(mode) != std::string::npos)
+			erase_mode_arguments('l');
+		_mode_arguments += parameter;
+		_mode_arguments += " ";
+	}
+
+}
 
 std::string									Channel::get_name() const { return (_name); }
 std::map<Client*, std::string>				&Channel::get_users() { return (_users); }
@@ -42,7 +66,7 @@ std::vector<std::string>					&Channel::get_users_ban() { return (_users_ban); };
 std::vector<std::string>					&Channel::get_invite_list() { return (_invite_list); };
 std::map<Client*, std::string>::iterator	Channel::get_user(Client* client) { return (_users.find(client)); }
 std::string									Channel::get_channel_modes() const { return (_channel_modes); }
-std::string 								Channel::get__mode_arguments() const { return (_mode_arguments); };
+std::string 								Channel::get_mode_arguments() const { return (_mode_arguments); };
 std::string 								Channel::get_password() const { return (_password); }
 std::string 								Channel::get_topic() const { return (topic); };
 int 										Channel::get_user_limit() const { return (_user_limit); }
@@ -119,7 +143,7 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 }
 
 int Channel::set_mode(Client *sender, char mode, std::string parameter) {
-	size_t nb;
+	int nb;
 
 	if (mode == 'o') {
 		if (parameter == "") {
@@ -149,11 +173,11 @@ int Channel::set_mode(Client *sender, char mode, std::string parameter) {
 			}
 		}
 		std::istringstream(parameter) >> nb;
-		if (nb > SIZE_MAX)
+		if (nb > INT_MAX)
 			send_message(*sender, build_message2(461, *sender, "MODE", this));
 		else {
+			add_mode_arguments(mode, parameter);
 			set_user_limit(nb);
-			_mode_arguments += parameter;
 		}
 	} else if (mode == 'b') {
 		if (parameter == "") {
@@ -179,8 +203,8 @@ int Channel::set_mode(Client *sender, char mode, std::string parameter) {
 			return (-1);
 		}
 		else {
+			add_mode_arguments(mode, parameter);
 			set_password(parameter);
-			_mode_arguments += parameter;
 		}
 	}
 	if (_channel_modes.find(mode) == std::string::npos)
@@ -212,14 +236,11 @@ int Channel::unset_mode(Client *sender, char mode, std::string parameter) {
 		else
 			unset_user_mode(sender, mode, parameter);
 	} else if (mode == 'k') {
-		if (parameter == "") {
-			send_message(*sender, build_message2(461, *sender, "MODE", this));
-			return (-1);
-		}
-		else {
-			set_password();
-			_channel_modes.erase(_channel_modes.find(mode), 1);
-		}
+		erase_mode_arguments('k');
+		set_password();
+	} else if (mode == 'l') {
+		erase_mode_arguments('l');
+		_user_limit = 0;
 	}
 	if (_channel_modes.find(mode) != std::string::npos)
 		_channel_modes.erase(_channel_modes.find(mode), 1);
@@ -251,22 +272,25 @@ void Channel::set_channel_modes(Client *sender, std::vector<std::string> paramet
 							ret = set_mode(sender, mode[i], params[i - 1]);
 						else
 							ret = set_mode(sender, mode[i]);
-						if (ret > 0)
-							send_message(*sender, build_command_message(sender->get_nickname(), "", get_name(), "MODE", parameters, params));
+						if (ret > 0) {
+							for (std::map<Client*, std::string>::iterator it = get_users().begin(); it != get_users().end(); it++)
+								send_message(*(it->first), build_command_message(sender->get_nickname(), "", get_name(), "MODE", parameters, params));
+						}
 					} else {
 						string_mode += mode[i];
 						send_message(*sender, build_message2(472, *sender, string_mode, this));
 						string_mode = "";
 					}
 				} else if (symbol == '-') {
-					std::cout << "Channel mode = " << _channel_modes << std::endl;
 					if (modes.find(mode[i]) != std::string::npos) {
 						if (params.size() > 0 && i - 1 < params.size())
 							ret = unset_mode(sender, mode[i], params[i - 1]);
 						else
 							ret = unset_mode(sender, mode[i]);
-						if (ret > 0)
-							send_message(*sender, build_command_message(sender->get_nickname(), "", get_name(), "MODE", parameters, params));
+						if (ret > 0) {
+							for (std::map<Client*, std::string>::iterator it = get_users().begin(); it != get_users().end(); it++)
+								send_message(*(it->first), build_command_message(sender->get_nickname(), "", get_name(), "MODE", parameters, params));
+						}
 					} else {
 						string_mode += mode[i];
 						send_message(*sender, build_message2(472, *sender, string_mode, this));
@@ -301,7 +325,7 @@ void Channel::unset_user_mode(Client *sender, char mode, std::string parameter) 
 		send_message(*sender, build_message2(401, *sender, parameter, this));
 	else {
 		if (it->second.find(mode) != std::string::npos)
-			it->second.erase(_channel_modes.find(mode), 1);
+			it->second.erase(it->second.find(mode), 1);
 	}
 }
 
