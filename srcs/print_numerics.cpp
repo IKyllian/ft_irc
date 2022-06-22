@@ -144,7 +144,6 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		return (str_num + " " + client_name + RPL_ENDOFWHOIS(user_nick));
 		
 	case 319:
-		// Potentiellement prefix sur channel_name
 		return (str_num + " " + client_name + RPL_WHOISCHANNELS(user_nick, channel_name));
 
 	case 321:
@@ -176,9 +175,6 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 
 	case 366:
 		return (str_num + " " + client_name + RPL_ENDOFNAMES(channel_name));
-		
-	// case 401:
-	// 	return (str_num + " " + client_name + ERR_NOSUCHNICK(user_nick));
 		
 	case 402:
 		return (str_num + " " + client_name + ERR_NOSUCHSERVER(servername));
