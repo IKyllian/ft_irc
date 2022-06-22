@@ -79,6 +79,7 @@ class Server {
 		void command_WHO(Client &client, Message &message);
 		void command_WHOIS(Client &client, Message &message);
 		void command_QUIT(Client &client, Message &message);
+		void command_QUIT(Client &client);
 
 	private :
 		std::string _network_name;
