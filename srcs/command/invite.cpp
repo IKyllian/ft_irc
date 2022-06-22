@@ -15,7 +15,7 @@ void Server::command_INVITE(Client *sender, Message &message) {
 			return ;
 		}
 		if ((*channel_it)->get_users().find(sender)->second.find("o") == std::string::npos) {
-			send_message(*sender, print_numerics(482, message.get_sender(), message.get_receiver(), NULL, &message));  // ERR_CHANOPRIVSNEEDED (482)
+			send_message(*sender, print_numerics(482, message.get_sender(), message.get_receiver(), *channel_it, &message));  // ERR_CHANOPRIVSNEEDED (482)
 		} else {
 			client_it = get_client(message.get_tab_parameter()[0]);
 			if (client_it != _clients.end() && (*channel_it)->get_users().find(*client_it) != (*channel_it)->get_users().end())

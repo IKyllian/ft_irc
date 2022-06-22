@@ -21,7 +21,7 @@ class Server {
 		Server(const Server &server);
 		~Server();
 
-		Server& Server::operator=(const Server& rhs);
+		Server& operator=(const Server& rhs);
 
 		std::string get_network_name() const;
 		std::string get_hostname() const;

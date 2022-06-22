@@ -33,12 +33,12 @@ std::string build_message2(int num, Client &sender, std::string target, Channel 
 
 	if (num == 401)
 		return ":" + sender.get_fullidentity() + " 401 " + target + " :No such nick/channel";
-	else if (num == 402)
-		return ":" + sender.get_fullidentity() + " 402 " + target + " :No such channel";
 	else if (num == 472)
 		return ":" + sender.get_fullidentity() + " 472 " + target + " :is unknown mode char to me";
 	else if (num == 461)
 		return ":" + sender.get_fullidentity() + " 461 " + target + " :Not enough parameters";
+	else if (num == 403)
+		return ":" + sender.get_fullidentity() + " 403 " + target + " :No such channel";
 	else {
 		for (std::map<Client*, std::string>::iterator it = channel->get_users().begin(); it != channel->get_users().end(); it++) {
 			if ((*it).second.size() > 0) {
@@ -74,9 +74,9 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string null = "";//305 306 321 323 337 412 431 462 501 502 because why the fuck not
 
 	std::string user_flags = "H*";//352 H for present, G for gone, OPTIONAL * for server operator, member prefix, usermode
-	std::string banMask = "Banmask";//367
-	std::string banner_nick = "Ikyllian";//367
-	std::string ban_timeSet = "22222";//367
+	// std::string banMask = "Banmask";//367
+	// std::string banner_nick = "Ikyllian";//367
+	// std::string ban_timeSet = "22222";//367
 	std::string	mode_char = "modechar";//472
 
 	//              user VAR               //
@@ -186,14 +186,8 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	case 366:
 		return (str_num + " " + client_name + RPL_ENDOFNAMES(channel_name));
 		
-	case 367:
-		return (str_num + " " + client_name + RPL_BANLIST(channel_name, banMask, banner_nick, ban_timeSet));
-
-	case 368:
-		return (str_num + " " + client_name + RPL_ENDOFBANLIST(channel_name));
-
-	case 401:
-		return (str_num + " " + client_name + ERR_NOSUCHNICK(user_nick));
+	// case 401:
+	// 	return (str_num + " " + client_name + ERR_NOSUCHNICK(user_nick));
 		
 	case 402:
 		return (str_num + " " + client_name + ERR_NOSUCHSERVER(servername));
@@ -236,9 +230,6 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 
 	case 471:
 		return (str_num + " " + client_name + ERR_CHANNELISFULL(channel_name));
-		
-	case 472:
-		return (str_num + " " + client_name + ERR_UNKNOWNMODE(mode_char));
 		
 	case 473:
 		return (str_num + " " + client_name + ERR_INVITEONLYCHAN(channel_name));

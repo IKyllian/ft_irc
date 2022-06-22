@@ -1,8 +1,11 @@
 #include "../includes/Client.hpp"
 
-Client::Client() : _realname (""), _logged(false), _away(false) {}
-Client::Client(std::string nickname) : _nickname(nickname), _logged(false), _away(false) {};
-Client::Client(const Client &client) :
+//Client::Client() : _realname (""), _logged(false), _away(false) {}
+//Client::Client(std::string nickname) : _nickname(nickname), _logged(false), _away(false) {};
+//Client::Client(const Client &client) :
+Client::Client() : _realname (""), _user_modes("+"), _logged(false), _away(false) {}
+Client::Client(std::string nickname) : _nickname(nickname), _user_modes("+"), _logged(false), _away(false) {};
+Client::Client(const Client &client) : 
 	_channel(client._channel),
 	_nickname(client._nickname),
 	_username(client._username),
@@ -28,7 +31,7 @@ Client::Client(int &fd) :
 	_username("*"), 
 	_realname(""),
 	_hostname("*"), 
-	_user_modes(""), 
+	_user_modes("+"), 
 	_fd(fd), 
 	_logged(false), 
 	_registered(false), 

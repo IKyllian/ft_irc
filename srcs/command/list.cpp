@@ -9,9 +9,6 @@ void Server::command_LIST(Message &message) {
 		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++) {
 			if ((*channel_it)->get_channel_modes().find('s') != std::string::npos)
 				continue ;
-			// } else if ((*channel_it)->get_channel_modes().find('m') != std::string::npos) {
-			// 	send_message(message.get_sender(), print_numerics(322, message.get_sender(), message.get_receiver(), (*channel_it), &message)); //Print without Topic
-			// } else
 				send_message(message.get_sender(), print_numerics(322, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 		}
 	} else {
@@ -20,13 +17,12 @@ void Server::command_LIST(Message &message) {
 			if (channels_string[i].size() > 0 && channels_string[i][0] != '#' && channels_string[i][0] != '&')
 				continue ;
 			channel_it = get_channel(channels_string[i]);
-			if (channel_it == _channels.end())
-				send_message(message.get_sender(), print_numerics(402, message.get_sender(), message.get_receiver(), NULL, &message));
+			if (channel_it == _channels.end()) {
+				send_message(message.get_sender(), build_message2(403, message.get_sender(), channels_string[i], NULL));
+				continue ;
+			}
 			if ((*channel_it)->get_channel_modes().find('s') != std::string::npos)
 				continue ;
-			// } else if ((*channel_it)->get_channel_modes().find('m') != std::string::npos) {
-			// 	send_message(message.get_sender(), print_numerics(322, message.get_sender(), message.get_receiver(), (*channel_it), &message)); //Print without Topic
-			// } else
 				send_message(message.get_sender(), print_numerics(322, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 		}
 	}

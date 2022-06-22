@@ -14,7 +14,7 @@ class Message {
 		Message(const Message &message);
 		~Message();
 
-		Message& Message::operator=(const Message& rhs);
+		Message& operator=(const Message& rhs);
 
 		Client 						&get_sender() const;
 		Client 						&get_receiver() const;

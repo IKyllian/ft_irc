@@ -13,17 +13,17 @@ void Server::command_TOPIC(Client *client, Message &message) {
 			return ;
 	channel_it = get_channel(message.get_tab_parameter()[0]);	
 	if (channel_it == _channels.end()) {
-		send_message(*client, print_numerics(403, message.get_sender(), message.get_receiver(), NULL, &message));
+		send_message(*client, build_message2(403, *client, message.get_tab_parameter()[0], NULL));
 		return ;
 	}
 	client_it = (*channel_it)->get_users().find(client);
 	if (client_it == (*channel_it)->get_users().end()) {
-		send_message(*client, print_numerics(442, message.get_sender(), message.get_receiver(), NULL, &message));
+		send_message(*client, print_numerics(442, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 		return ;
 	}
 	if ((*channel_it)->get_channel_modes().find("t") != std::string::npos) {
 		if ((*channel_it)->get_users().find(client)->second.find("o") == std::string::npos) {
-			send_message(*client, print_numerics(482, message.get_sender(), message.get_receiver(), NULL, &message));
+			send_message(*client, print_numerics(482, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 			return ;
 		}
 	}

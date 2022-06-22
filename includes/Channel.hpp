@@ -21,7 +21,7 @@ class Channel {
 		Channel(const Channel &channel);
 		~Channel();
 
-		Channel& Channel::operator=(const Channel& rhs);
+		Channel& operator=(const Channel& rhs);
 
 		std::vector<std::string>::iterator search_user_invite(std::string name);
 		std::vector<std::string>::iterator search_user_ban(std::string name);

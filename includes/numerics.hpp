@@ -116,10 +116,10 @@
 #define ERR_BADCHANMASK(channel)(" " + channel + " :Bad Channel Mask")																																					// 476						
 #define ERR_NOPRIVILEGES(NULL)(NULL + " :Permission Denied- You're not an IRC operator")																																			// 481								
 #define ERR_CHANOPRIVSNEEDED(channel)(" " + channel + " :You're not channel operator")																																	// 482										
-#define ERR_CANTKILLSERVER(NULL)(NULL + " :You cant kill a server!")																																								// 483			
+#define ERR_CANTKILLSERVER(NULL)(NULL + " :You can't kill a server!")																																								// 483			
 #define ERR_NOOPERHOST(NULL)(NULL + " :No O-lines for your host")																																									// 491		
 #define ERR_UMODEUNKNOWNFLAG(NULL)(NULL + " :Unknown MODE flag")																																									// 501		
-#define ERR_USERSDONTMATCH(NULL)(NULL + " :Cant change mode for other users")																																						// 502					
+#define ERR_USERSDONTMATCH(NULL)(NULL + " :Can't change mode for other users")																																						// 502					
 #define ERR_HELPNOTFOUND(subject)(" " + subject + " :No help available on this topic")																																	// 524										
 #define ERR_INVALIDKEY(target_chan)(" " + target_chan + " :Key is not well-formed")																																		// 525									
 #define ERR_STARTTLS(NULL)(NULL + " :STARTTLS failed (Wrong moon phase)")																																					// 691						

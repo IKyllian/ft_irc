@@ -15,7 +15,7 @@ class Client {
 		Client(int &fd);
 		~Client();
 
-		Client& Client::operator=(const Client& rhs);
+		Client& operator=(const Client& rhs);
 		bool operator==(const Client& rhs);
 
 		std::string get_nickname() const;
