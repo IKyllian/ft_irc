@@ -41,13 +41,13 @@ bool	check_wildcards(Channel &channel, Message &msg)
 {
 	size_t  wildcard_pos;
 
-	std::cout << "enter check wildcard" << std::endl;
-	std::cout << "channel name. = " << channel.get_name() << std::endl;
+	// std::cout << "enter check wildcard" << std::endl;
+	// std::cout << "channel name. = " << channel.get_name() << std::endl;
 	if (channel.get_name() == msg.get_tab_parameter()[0])
 		return (true);
 	else if ((wildcard_pos = msg.get_tab_parameter()[0].find("*")) != std::string::npos)
 	{
-		std::cout << "wildcard = " << wildcard_pos << std::endl << "Size tab = " << msg.get_tab_parameter()[0].size() << std::endl;
+		//std::cout << "wildcard = " << wildcard_pos << std::endl << "Size tab = " << msg.get_tab_parameter()[0].size() << std::endl;
 		if (wildcard_pos == 0)
 		{
 			if (channel.get_name().substr(channel.get_name().size() - (msg.get_tab_parameter()[0].size()  - 1)) == msg.get_tab_parameter()[0].substr(1))
@@ -79,8 +79,8 @@ void	Server::command_WHO(Client &sender, Message &msg)
 	//bool same_channel = false;
 	bool channel_found = false;
 
-	std::cout << "nb parameter = " << msg.get_nb_parameter() << std::endl;
-	std::cout << "nb client = " << this->_clients.size() << std::endl;
+	// std::cout << "nb parameter = " << msg.get_nb_parameter() << std::endl;
+	// std::cout << "nb client = " << this->_clients.size() << std::endl;
 	if (msg.get_nb_parameter() == 0 || (msg.get_nb_parameter() == 1 && (msg.get_tab_parameter()[0] == "0" || msg.get_tab_parameter()[0] == "*")))
 	{
 		for (size_t i = 0; i < this->_clients.size(); i++)
@@ -111,13 +111,13 @@ void	Server::command_WHO(Client &sender, Message &msg)
 	}
 	else
 	{
-		std::cout << "nb parameter = " << msg.get_nb_parameter() << std::endl;
-		std::cout << "nb channels = " << this->get_channels().size() << std::endl;
+		// std::cout << "nb parameter = " << msg.get_nb_parameter() << std::endl;
+		// std::cout << "nb channels = " << this->get_channels().size() << std::endl;
 		for (size_t i = 0; i < this->get_channels().size(); i++)
 		{
 			if (check_wildcards(*this->get_channels()[i], msg)) //Check possible wildcards
 			{
-				std::cout << "found channel" << std::endl;
+				//std::cout << "found channel" << std::endl;
 				std::map<Client*, std::string>::iterator it = this->get_channels()[i]->get_users().begin();
 				for(; it != this->get_channels()[i]->get_users().end(); it++)
 				{

@@ -193,7 +193,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		return (str_num + " " + client_name + ERR_NOSUCHSERVER(servername));
 		
 	case 403:
-		return (str_num + " " + client_name + ERR_NOSUCHCHANNEL(no_such_channel);
+		return (str_num + " " + client_name + ERR_NOSUCHCHANNEL(no_such_channel));
 		
 	case 404:
 		return (str_num + " " + client_name + ERR_CANNOTSENDTOCHAN(channel_name));

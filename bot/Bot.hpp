@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 12:04:18 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/20 15:03:42 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/22 12:29:11 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Bot
 		void set_logged(bool logged);
 		void set_nickname(std::string nick);
 
-		Bot& Bot::operator=(const Bot& rhs);
+		Bot& operator=(const Bot& rhs);
 
 		void append_buffer(char* buffer);
 		std::string extract_command(size_t pos);

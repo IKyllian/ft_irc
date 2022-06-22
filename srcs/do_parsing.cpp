@@ -50,8 +50,8 @@ static void do_command(Server &server, Client *sender, Message &msg)
 	else if (msg.get_command() == "JOIN")
 	{
 		server.command_JOIN(sender, msg, server);
-		for (size_t i = 0; i < sender->get_channel().size(); i++)
-        	std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
+		// for (size_t i = 0; i < sender->get_channel().size(); i++)
+        // 	std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
 	}
 	else if (msg.get_command() == "PART")
 	{
@@ -180,8 +180,8 @@ void do_parsing(Server &server, Client *sender, std::string message)
 	std::vector<std::string> msg_list;
 
 //	std::cout << "###inside do_parsing " << message << std::endl;
-	for (size_t i = 0; i < sender->get_channel().size(); i++)
-        std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
+	// for (size_t i = 0; i < sender->get_channel().size(); i++)
+    //     std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
 	msg_list = ft_split_message(message);
 	for (size_t i = 0; i < msg_list.size(); i++)
 	{

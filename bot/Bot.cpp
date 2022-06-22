@@ -27,6 +27,8 @@ Bot::Bot(const Bot &src):
 	_logged(src._logged),
 	_nickname(src._nickname) {}
 
+Bot::~Bot() {}
+
 bool Bot::get_running() const { return (_running); } 
 int Bot::get_serverFD() const{ return (_serverFD); }
 std::string	Bot::get_buffer() const { return (_buffer); }

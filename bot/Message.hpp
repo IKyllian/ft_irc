@@ -22,7 +22,7 @@ class Message {
 		void set_command(std::string &val);
 		void set_parameter(std::string &val);
 
-		Message& Message::operator=(const Message& rhs);
+		Message& operator=(const Message& rhs);
 
 		std::string get_target_nickname() const;
 

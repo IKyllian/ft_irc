@@ -211,7 +211,7 @@ int main(int ac, char **av)
 
 	while (running)
 	{
-		std::cout << "Waiting on poll()..." << std::endl;
+		//std::cout << "Waiting on poll()..." << std::endl;
 		ret = poll( &server.get_fds()[0], server.get_fds().size(), TIMEOUT);
 
 		if (ret < 0)
