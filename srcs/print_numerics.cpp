@@ -82,12 +82,14 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	//              user VAR               //
 	std::string realname =  sender.get_realname();
 	std::string user_modes = sender.get_user_modes();
-	std::string away_message = sender.get_away_msg();
 	std::string full_identity = sender.get_fullidentity();
-	std::string username = sender.get_username();;
+	std::string username = sender.get_username();
 
 	std::string client_name = sender.get_nickname();
 	std::string user_nick = sender.get_nickname();
+	
+	std::string receiver_nick = receiver.get_nickname();
+	std::string away_message = receiver.get_away_msg();
 
 	//              SERVER VAR             //
 	std::string network_name = get_network_name();
@@ -129,7 +131,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		return (str_num + " " + client_name + RPL_UMODEIS(user_modes));
 
 	case 301:
-		return (str_num + " " + client_name + RPL_AWAY(user_nick, away_message));
+		return (str_num + " " + client_name + RPL_AWAY(receiver_nick, away_message));
 	
 	case 305:
 		return (str_num + " " + client_name + RPL_UNAWAY(null));

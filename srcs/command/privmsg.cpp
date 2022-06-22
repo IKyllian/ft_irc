@@ -13,10 +13,10 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, in
 
     switch (msg.get_nb_parameter()) {
         case 0:
-            send_message(sender, ft_print_numerics(411));
+            send_message(sender, build_response(411, sender, sender, NULL, &msg));
             break;
         case 1:
-            send_message(sender, ft_print_numerics(412));
+            send_message(sender, build_response(412, sender, sender, NULL, &msg));
             break;
         default:
             targets = parse_comma(msg.get_tab_parameter()[0]);
@@ -41,7 +41,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, in
                 }
                 if (client_it != _clients.end()) {
                     if ((*client_it)->get_away())
-                        send_message(sender, server.print_numerics(301, sender, *(*client_it), NULL, &msg));
+                        send_message(sender, server.build_response(301, sender, *(*client_it), NULL, &msg));
                     if (is_notice)
                        send_message(*(*client_it), build_command_message(sender.get_nickname(), "", (*client_it)->get_nickname(), "NOTICE", msg.get_tab_parameter()));
                     else
@@ -53,17 +53,17 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, in
                     if ((*channel_it)->get_users_ban().size() > 0 && ban_user_it != (*channel_it)->get_users_ban().end())
                         continue ;
                     if ((*channel_it)->get_channel_modes().find("n") != std::string::npos && (*channel_it)->get_user(&sender) == (*channel_it)->get_users().end()) {
-                        send_message(sender, server.print_numerics(404, sender, *(*client_it), (*channel_it), &msg));
+                        send_message(sender, server.build_response(404, sender, *(*client_it), (*channel_it), &msg));
                         continue ;
                     }
                     for (std::map<Client *, std::string>::iterator it = (*channel_it)->get_users().begin(); it != (*channel_it)->get_users().end(); it++) {
                         if (chan != "") {
                             if (chan.find("@") != std::string::npos && chan.find("@") < chan.find("#") && ((*it).second.find("o") == std::string::npos)) {   
-                                send_message(sender, server.print_numerics(404, sender, *(*client_it), (*channel_it), &msg));
+                                send_message(sender, server.build_response(404, sender, *(*client_it), (*channel_it), &msg));
                                 continue ;
                             }
                             else if (chan.find("+") != std::string::npos && chan.find("+") < chan.find("#") && ((*it).second.find("v") == std::string::npos && (*it).second.find("o") == std::string::npos)) {
-                                send_message(sender, server.print_numerics(404, sender, *(*client_it), (*channel_it), &msg));
+                                send_message(sender, server.build_response(404, sender, *(*client_it), (*channel_it), &msg));
                                 continue ;
                             } else {
                                 if (sender.get_nickname() != (*it).first->get_nickname()) {

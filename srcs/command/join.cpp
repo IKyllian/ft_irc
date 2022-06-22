@@ -6,7 +6,7 @@ void Server::command_JOIN(Client *client, Message &message, Server &server) {
 	std::vector<Channel*>::iterator	channel_it;
 
 	if (message.get_tab_parameter().size() < 1) {
-		send_message(*client, print_numerics(461, *client, *client, NULL, &message));
+		send_message(*client, build_response(461, *client, *client, NULL, &message));
 		return ;
 	}
 	channels_string = parse_comma(message.get_tab_parameter()[0]);

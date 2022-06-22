@@ -128,7 +128,7 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 			if (_users_ban.end() == user_ban_it) {
 				if (_channel_modes.find('k') != std::string::npos) {
 					if (key != _password) {
-						send_message(*client, _server->print_numerics(475, *client, *client, NULL, &message));
+						send_message(*client, _server->build_response(475, *client, *client, NULL, &message));
 						return ;
 					}
 				}
@@ -161,11 +161,11 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 					send_message(*client, _server->build_response(366, *client, *client, this, &message));
 				}
 			} else
-				send_message(*client, _server->print_numerics(474, *client, *client, NULL, &message));
+				send_message(*client, _server->build_response(474, *client, *client, NULL, &message));
 		} else
-			send_message(*client, _server->print_numerics(471, *client, *client, NULL, &message));
+			send_message(*client, _server->build_response(471, *client, *client, NULL, &message));
 	} else
-		send_message(*client, _server->print_numerics(443, *client, *client, this, &message));
+		send_message(*client, _server->build_response(443, *client, *client, this, &message));
 }
 
 int Channel::set_mode(Client *sender, char mode, std::string parameter) {
@@ -331,7 +331,7 @@ void Channel::set_channel_modes(Client *sender, std::vector<std::string> paramet
 			}
 		}
 	} else
-		send_message(*sender, _server->print_numerics(324, *sender, *sender, this, NULL));
+		send_message(*sender, _server->build_response(324, *sender, *sender, this, NULL));
 }
 
 void Channel::set_user_mode(Client *sender, char mode, std::string parameter) {

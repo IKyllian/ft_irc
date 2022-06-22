@@ -6,7 +6,7 @@ void Server::command_TOPIC(Client *client, Message &message) {
 	std::string topic;
 
 	if (message.get_tab_parameter().size() < 1) {
-		send_message(*client, print_numerics(461, message.get_sender(), message.get_receiver(), NULL, &message));
+		send_message(*client, build_response(461, message.get_sender(), message.get_receiver(), NULL, &message));
 		return ;
 	}
 	if (message.get_tab_parameter()[0].size() > 0 && message.get_tab_parameter()[0][0] != '#' && message.get_tab_parameter()[0][0] != '&')
@@ -18,12 +18,12 @@ void Server::command_TOPIC(Client *client, Message &message) {
 	}
 	client_it = (*channel_it)->get_users().find(client);
 	if (client_it == (*channel_it)->get_users().end()) {
-		send_message(*client, print_numerics(442, message.get_sender(), message.get_receiver(), (*channel_it), &message));
+		send_message(*client, build_response(442, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 		return ;
 	}
 	if ((*channel_it)->get_channel_modes().find("t") != std::string::npos) {
 		if ((*channel_it)->get_users().find(client)->second.find("o") == std::string::npos) {
-			send_message(*client, print_numerics(482, message.get_sender(), message.get_receiver(), (*channel_it), &message));
+			send_message(*client, build_response(482, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 			return ;
 		}
 	}
@@ -40,17 +40,17 @@ void Server::command_TOPIC(Client *client, Message &message) {
 		}
 		for (std::map<Client*, std::string>::iterator it2 = (*channel_it)->get_users().begin(); it2 != (*channel_it)->get_users().end(); it2++) {
 			if ((*channel_it)->get_topic() == "")
-				send_message(*(it2->first), print_numerics(331, message.get_sender(), message.get_receiver(), (*channel_it), &message)); // RPL_NOTOPIC (332)
+				send_message(*(it2->first), build_response(331, message.get_sender(), message.get_receiver(), (*channel_it), &message)); // RPL_NOTOPIC (332)
 			else
-				send_message(*(it2->first), print_numerics(332, message.get_sender(), message.get_receiver(), (*channel_it), &message)); // RPL_TOPIC (332)
+				send_message(*(it2->first), build_response(332, message.get_sender(), message.get_receiver(), (*channel_it), &message)); // RPL_TOPIC (332)
 		}
 	}
 	else {
 		for (std::map<Client*, std::string>::iterator it2 = (*channel_it)->get_users().begin(); it2 != (*channel_it)->get_users().end(); it2++) {
 			if ((*channel_it)->get_topic() == "")
-				send_message(*(it2->first), print_numerics(331, message.get_sender(), message.get_receiver(), (*channel_it), &message)); // RPL_NOTOPIC (332)
+				send_message(*(it2->first), build_response(331, message.get_sender(), message.get_receiver(), (*channel_it), &message)); // RPL_NOTOPIC (332)
 			else
-				send_message(*(it2->first), print_numerics(332, message.get_sender(), message.get_receiver(), (*channel_it), &message)); // RPL_TOPIC (332)
+				send_message(*(it2->first), build_response(332, message.get_sender(), message.get_receiver(), (*channel_it), &message)); // RPL_TOPIC (332)
 		}
 	}
 }
