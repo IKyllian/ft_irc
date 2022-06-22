@@ -4,18 +4,14 @@
 
 static void do_command(Server &server, Client *sender, Message &msg)
 {
-	/*(void)server;
-	(void)receiver;*/
-//std::cout << "###inside do_command: msg.get_command() = " << msg.get_command() << std::endl;
-	if (msg.get_command() == "CAP")
-	{
+std::cout << "log: " << sender->get_logged() << " cmd " << msg.get_command() << std::endl;
+	if (!sender->get_logged() && !( msg.get_command() == "NICK" || msg.get_command() == "USER" || msg.get_command() == "PASS" ) )
+		{
+std::cout << "proc" << std::endl;
+		return;
+		}
 
-	}
-	else if (msg.get_command() == "AUTHENTICATE")
-	{
-		//  do_AUTHENTICATE();
-	}
-	else if (msg.get_command() == "PASS")
+	if (msg.get_command() == "PASS")
 	{
 		server.command_PASSWORD(msg.get_sender(), msg);
 	}
@@ -31,27 +27,13 @@ static void do_command(Server &server, Client *sender, Message &msg)
 	{
 		send_message(*sender,  server.build_response(*sender, "PONG " + sender->get_hostname() + " :" + msg.get_parameter()));
 	}
-	else if (msg.get_command() == "PONG")
-	{
-		//  do_PONG();
-	}
-	else if (msg.get_command() == "OPER")
-	{
-		//  do_OPER();
-	}
 	else if (msg.get_command() == "QUIT")
 	{
 		server.command_QUIT(msg.get_sender(), msg);
 	}
-	else if (msg.get_command() == "ERROR")
-	{
-		//  do_ERROR();
-	}
 	else if (msg.get_command() == "JOIN")
 	{
 		server.command_JOIN(sender, msg, server);
-		// for (size_t i = 0; i < sender->get_channel().size(); i++)
-        // 	std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
 	}
 	else if (msg.get_command() == "PART")
 	{
@@ -77,42 +59,6 @@ static void do_command(Server &server, Client *sender, Message &msg)
 	{
 		server.command_KICK(sender, msg);
 	}
-	else if (msg.get_command() == "MOTD")
-	{
-		//  do_MOTD();
-	}
-	else if (msg.get_command() == "VERSION")
-	{
-		//  do_VERSION();
-	}
-	else if (msg.get_command() == "ADMIN")
-	{
-		//  do_ADMIN();
-	}
-	else if (msg.get_command() == "CONNECT")
-	{
-		//  do_CONNECT();
-	}
-	else if (msg.get_command() == "LUSERS")
-	{
-		//  do_LUSERS();
-	}
-	else if (msg.get_command() == "TIME")
-	{
-		//  do_TIME();
-	}
-	else if (msg.get_command() == "STATS")
-	{
-		//  do_STATS();
-	}
-	else if (msg.get_command() == "HELP")
-	{
-		// PAS FAIT
-	}
-	else if (msg.get_command() == "INFO")
-	{
-		//  do_INFO();
-	}
 	else if (msg.get_command() == "MODE")
 	{
 		if (msg.get_tab_parameter()[0].size() > 0 && (msg.get_tab_parameter()[0][0] == '#' || msg.get_tab_parameter()[0][0] == '@'))
@@ -136,37 +82,9 @@ static void do_command(Server &server, Client *sender, Message &msg)
 	{
 		server.command_WHOIS(*sender, msg);
 	}
-	else if (msg.get_command() == "WHOWAS")
-	{
-		//  do_WHOWAS();
-	}
-	else if (msg.get_command() == "KILL")
-	{
-		//  do_KILL();
-	}
-	else if (msg.get_command() == "RESTART")
-	{
-		//  do_RESTART();
-	}
-	else if (msg.get_command() == "SQUIT")
-	{
-		//  do_SQUIT();
-	}
 	else if (msg.get_command() == "AWAY")
 	{
 		server.command_AWAY(*sender, msg);
-	}
-	else if (msg.get_command() == "LINKS")
-	{
-		//  do_LINKS();
-	}
-	else if (msg.get_command() == "USERHOST")
-	{
-		//  do_USERHOST();
-	}
-	else if (msg.get_command() == "WALLOPS")
-	{
-		//  do_WALLOPS();
 	}
 	else
 	{
@@ -179,29 +97,16 @@ void do_parsing(Server &server, Client *sender, std::string message)
 	std::vector<Message*> msg;
 	std::vector<std::string> msg_list;
 
-//	std::cout << "###inside do_parsing " << message << std::endl;
-	// for (size_t i = 0; i < sender->get_channel().size(); i++)
-    //     std::cout << "channel names = " << sender->get_channel()[i]->get_name() << std::endl;
 	msg_list = ft_split_message(message);
 	for (size_t i = 0; i < msg_list.size(); i++)
 	{
 		msg.push_back(ft_create_message(msg_list[i]));
 	}
-//	std::cout << "msg size = " << msg.size() << std::endl;
 	for (size_t i = 0; i < msg.size(); i++)
 	{
 		msg[i]->set_sender(sender);
 		msg[i]->set_receiver(sender);
 		do_command(server, sender, *msg[i]);
-		// std::cout << "prefix = " << msg[i]->get_prefix() << std::endl;
-		// std::cout << "command = " << msg[i]->get_command() << std::endl;
-		// std::cout << "parameter = " << msg[i]->get_parameter() << std::endl;
-		// std::cout << "first = " << msg[i]->get_nb_parameter() << std::endl;
-		// for (int j = 0; j < msg[i]->get_nb_parameter(); j++)
-		//     std::cout << "splited parameter = " << msg[i]->get_tab_parameter()[j] << std::endl;   
-		// std::cout << std::endl;
-		//fill_message(*msg[i]);
-
 	}
 	for (size_t i = 0; i < msg.size(); i++)
 		delete msg[i];

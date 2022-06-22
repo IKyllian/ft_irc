@@ -232,7 +232,7 @@ int main(int ac, char **av)
 
 			if(server.get_fds()[i].revents != POLLIN)
 			{
-				std::cerr << "Connection severed fd: " << server.get_fds()[i].revents << std::endl;
+				std::cerr << "Connection severed revent: " << server.get_fds()[i].revents << std::endl;
 				if (i == 0)
 				{
 					running = false;
