@@ -50,8 +50,6 @@ std::string build_message2(int num, Client &sender, std::string target, Channel 
 
 std::string Server::print_numerics(int num, Client &sender, Client &receiver, Channel *channel, Message *message)
 {
-	(void) receiver;
-
 	std::string str_num;
   	std::stringstream ss;  
 
@@ -175,7 +173,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 
 	case 366:
 		return (str_num + " " + client_name + RPL_ENDOFNAMES(channel_name));
-		
+
 	case 402:
 		return (str_num + " " + client_name + ERR_NOSUCHSERVER(servername));
 		
