@@ -18,12 +18,12 @@ void Server::command_TOPIC(Client *client, Message &message) {
 	}
 	client_it = (*channel_it)->get_users().find(client);
 	if (client_it == (*channel_it)->get_users().end()) {
-		send_message(*client, print_numerics(442, message.get_sender(), message.get_receiver(), NULL, &message));
+		send_message(*client, print_numerics(442, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 		return ;
 	}
 	if ((*channel_it)->get_channel_modes().find("t") != std::string::npos) {
 		if ((*channel_it)->get_users().find(client)->second.find("o") == std::string::npos) {
-			send_message(*client, print_numerics(482, message.get_sender(), message.get_receiver(), NULL, &message));
+			send_message(*client, print_numerics(482, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 			return ;
 		}
 	}

@@ -138,7 +138,8 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 					else
 						_users.insert(std::pair<Client*, std::string>(client, ""));
 					client->get_channel().push_back(this);
-					send_message(*client, build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
+					for (std::map<Client*, std::string>::iterator it = get_users().begin(); it != get_users().end(); it++)
+						send_message(*(it->first), build_command_message(client->get_nickname(), "", get_name(), "JOIN"));
 					if (topic.size() > 0)
 						send_message(*client, _server->build_response(332, *client, *client, this, &message));
 					for (std::map<Client*, std::string>::iterator it2 = get_users().begin(); it2 != get_users().end(); it2++)
