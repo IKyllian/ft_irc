@@ -34,7 +34,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, in
                 }
                 if (client_it == _clients.end() && channel_it == _channels.end()) {
                     if (targets[i].size() > 0 && (targets[i][0] == '#' || targets[i][0] == '&'))
-                        send_message(msg.get_sender(), build_message2(402, msg.get_sender(), targets[i]));
+                        send_message(msg.get_sender(), build_message2(403, msg.get_sender(), targets[i]));
                     else
                         send_message(msg.get_sender(), build_message2(401, msg.get_sender(), targets[i]));
                     continue ;

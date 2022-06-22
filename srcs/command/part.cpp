@@ -16,7 +16,7 @@ void Server::command_PART(Client *client, Message &message) {
 			continue ;
 		channel_it = get_channel(channels_string[i]);
 		if (channel_it == _channels.end()) {
-			send_message(*client, print_numerics(403, *client, *client, NULL, &message)); // Probleme avec channel sur print numerics
+			send_message(*client, build_message2(403, *client, channels_string[i], NULL));
 			continue ;
 		}
 		for (it = (*channel_it)->get_users().begin(); it != (*channel_it)->get_users().end(); it++) {

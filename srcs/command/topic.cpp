@@ -13,7 +13,7 @@ void Server::command_TOPIC(Client *client, Message &message) {
 			return ;
 	channel_it = get_channel(message.get_tab_parameter()[0]);	
 	if (channel_it == _channels.end()) {
-		send_message(*client, print_numerics(403, message.get_sender(), message.get_receiver(), NULL, &message));
+		send_message(*client, build_message2(403, *client, message.get_tab_parameter()[0], NULL));
 		return ;
 	}
 	client_it = (*channel_it)->get_users().find(client);

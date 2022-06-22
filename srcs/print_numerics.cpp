@@ -33,12 +33,12 @@ std::string build_message2(int num, Client &sender, std::string target, Channel 
 
 	if (num == 401)
 		return ":" + sender.get_fullidentity() + " 401 " + target + " :No such nick/channel";
-	else if (num == 402)
-		return ":" + sender.get_fullidentity() + " 402 " + target + " :No such channel";
 	else if (num == 472)
 		return ":" + sender.get_fullidentity() + " 472 " + target + " :is unknown mode char to me";
 	else if (num == 461)
 		return ":" + sender.get_fullidentity() + " 461 " + target + " :Not enough parameters";
+	else if (num == 403)
+		return ":" + sender.get_fullidentity() + " 403 " + target + " :No such channel";
 	else {
 		for (std::map<Client*, std::string>::iterator it = channel->get_users().begin(); it != channel->get_users().end(); it++) {
 			if ((*it).second.size() > 0) {
