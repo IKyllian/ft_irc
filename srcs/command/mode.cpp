@@ -34,15 +34,9 @@ void Server::command_MODE_USER(Client *sender, Message &message, Server &server)
 	if (message.get_tab_parameter().size() == 1) {
 		send_message(*sender, build_response(221, *sender, *sender, NULL, &message));
 	} else if (message.get_tab_parameter().size() > 1) {
-		client_it = get_client(message.get_tab_parameter()[0]);
-		if (client_it == _clients.end()) {
-			send_message(*sender, build_message2(401, *sender, message.get_tab_parameter()[0], NULL));
-			return ;
-		} else if (sender->get_nickname() != (*client_it)->get_nickname()) {
+		if (sender->get_nickname() != message.get_tab_parameter()[0])
 			send_message(*sender, build_response(502, *sender, *sender, NULL, &message));
-			return ;
-		} else {
-			(*client_it)->set_user_modes(message.get_tab_parameter()[1], server);
-		}
+		else
+			sender->set_user_modes(message.get_tab_parameter()[1], server);
 	}
 }
