@@ -18,16 +18,14 @@ void Server::command_INVITE(Client *sender, Message &message) {
 			send_message(*sender, print_numerics(482, message.get_sender(), message.get_receiver(), *channel_it, &message));  // ERR_CHANOPRIVSNEEDED (482)
 		} else {
 			client_it = get_client(message.get_tab_parameter()[0]);
-			if (client_it != _clients.end() && (*channel_it)->get_users().find(*client_it) != (*channel_it)->get_users().end())
-				return ;
 			(*channel_it)->add_invite(message.get_tab_parameter()[0]);
-			//A revoir
-			for (std::map<Client*, std::string>::iterator it2 = (*channel_it)->get_users().begin(); it2 != (*channel_it)->get_users().end(); it2++)
-				send_message(*(it2->first), print_numerics(336, message.get_sender(), message.get_receiver(), (*channel_it), &message));
+			for (std::vector<std::string>::iterator it2 = (*channel_it)->get_invite_list().begin(); it2 != (*channel_it)->get_invite_list().end(); it2++)
+					send_message(*sender, print_numerics(336, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 			send_message(*sender, print_numerics(337, message.get_sender(), message.get_receiver(), (*channel_it), &message));
-			send_message(*sender, build_command_message(sender->get_nickname(), message.get_tab_parameter()[0], (*channel_it)->get_name(), "INVITE"));
-			if (client_it != _clients.end())
+			if (client_it != _clients.end()) {
 				send_message(*(*client_it), build_command_message(sender->get_nickname(), (*client_it)->get_nickname(), (*channel_it)->get_name(), "INVITE"));
+			}
+			send_message(*sender, build_command_message(sender->get_nickname(), message.get_tab_parameter()[0], (*channel_it)->get_name(), "INVITE"));
 		}
 	}
 }
