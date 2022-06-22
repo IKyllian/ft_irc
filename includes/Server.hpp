@@ -105,8 +105,4 @@ class Server {
 		bool _nick_isvalid(std::string nick) const;
 };
 
-bool send_message(Server &server, Message &msg_data, std::string header, std::string message, std::string msgnum);
-bool send_message(Client &client, std::string message);
-std::string build_message2(int num, Client &sender, std::string target, Channel *channel = NULL);
-
 #endif

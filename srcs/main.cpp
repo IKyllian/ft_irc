@@ -1,7 +1,5 @@
 #include "../includes/ft_irc.hpp"
 
-#define TIMEOUT			1800000 // 180000 = 3 minutes
-
 int handle_incoming_message(Server& server, int fd)
 {
 	int				ret;
