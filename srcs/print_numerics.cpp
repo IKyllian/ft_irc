@@ -61,7 +61,12 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	std::string hopcount = "0";
 	std::string null = "";
 
-	std::string user_flags = "H*";//352 H for present, G for gone, OPTIONAL * for server operator, member prefix, usermode
+	std::string user_flags;//352 H for present, G for gone, OPTIONAL * for server operator, member prefix, usermode
+	if (sender.get_away() == true)
+		user_flags = "G";
+	else
+		user_flags = "H";
+
 
 	//              user VAR               //
 	std::string realname =  sender.get_realname();
