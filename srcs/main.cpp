@@ -246,7 +246,6 @@ int main(int ac, char **av)
 						if (server.get_clients()[j]->get_fd() == server.get_fds()[k].fd)
 						{
 							std::cout << "\033[1;34m" << "Closing fd " << server.get_fds()[k].fd << "\033[0m" << std::endl;
-//ajouter ici QUIT
 							close(server.get_fds()[k].fd);
 							server.get_fds().erase(server.get_fds().begin() + k);
 
@@ -254,7 +253,7 @@ int main(int ac, char **av)
 
 					}
 					std::cout << "\033[1;34m" << "Removing Client: " << server.get_clients()[j]->get_nickname() <<  "\033[0m" << std::endl;
-//server.command_QUIT(server.get_clients()[j]);
+					server.command_QUIT(*(server.get_clients()[j]));
 					delete *(server.get_clients().begin() + j);
 					server.get_clients().erase(server.get_clients().begin() + j);
 
