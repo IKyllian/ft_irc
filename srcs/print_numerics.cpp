@@ -54,9 +54,9 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 
 	std::string str_num;
   	std::stringstream ss;  
-  
+
   	ss << num;  
-  	ss >> str_num;  
+  	ss >> str_num;
 
 	std::string hopcount = "0";
 	std::string null = "";
@@ -76,9 +76,6 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 
 	std::string client_name = sender.get_nickname();
 	std::string user_nick = sender.get_nickname();
-	
-	std::string receiver_nick = receiver.get_nickname();
-	std::string away_message = receiver.get_away_msg();
 
 	//              SERVER VAR             //
 	std::string network_name = get_network_name();
@@ -119,8 +116,11 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 	case 221:
 		return (str_num + " " + client_name + RPL_UMODEIS(user_modes));
 
-	case 301:
+	case 301: {
+		std::string receiver_nick = receiver.get_nickname();
+		std::string away_message = receiver.get_away_msg();
 		return (str_num + " " + client_name + RPL_AWAY(receiver_nick, away_message));
+	}
 	
 	case 305:
 		return (str_num + " " + client_name + RPL_UNAWAY(null));
@@ -187,6 +187,7 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
 		return (str_num + " " + client_name + ERR_NOSUCHCHANNEL(no_such_channel));
 		
 	case 404:
+		std::cout << "QWEQWEQWEQWEQw" << std::endl;
 		return (str_num + " " + client_name + ERR_CANNOTSENDTOCHAN(channel_name));
 
 	case 411:

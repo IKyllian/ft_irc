@@ -20,7 +20,7 @@ void Server::command_JOIN(Client *client, Message &message, Server &server) {
 			_channels.push_back(new Channel(channels_string[i], &server));
 			channel_it = get_channel(channels_string[i]);
 		}
-		if (keys.size() > 0 && i < keys.size() - 1)
+		if (keys.size() > 0 && i < keys.size())
 			(*channel_it)->set_user(client, message, keys[i]);
 		else
 			(*channel_it)->set_user(client, message);

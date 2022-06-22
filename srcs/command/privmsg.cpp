@@ -51,7 +51,7 @@ void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, in
                     if ((*channel_it)->get_users_ban().size() > 0 && ban_user_it != (*channel_it)->get_users_ban().end())
                         continue ;
                     if ((*channel_it)->get_channel_modes().find("n") != std::string::npos && (*channel_it)->get_user(&sender) == (*channel_it)->get_users().end()) {
-                        send_message(sender, server.build_response(404, sender, *(*client_it), (*channel_it), &msg));
+                        send_message(sender, server.build_response(404, sender, sender, (*channel_it), &msg));
                         continue ;
                     }
                     for (std::map<Client *, std::string>::iterator it = (*channel_it)->get_users().begin(); it != (*channel_it)->get_users().end(); it++) {

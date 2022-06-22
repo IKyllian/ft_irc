@@ -4,7 +4,7 @@ void Server::command_LIST(Message &message) {
 	std::vector<std::string>		channels_string;
 	std::vector<Channel*>::iterator	channel_it;
 
-	send_message(message.get_sender(), build_response(321, message.get_sender(), message.get_receiver(), NULL, &message));	// RPL_LISTSTART (Pas sûr de devoir l'envoyer)
+	send_message(message.get_sender(), build_response(321, message.get_sender(), message.get_receiver(), NULL, &message));
 	if (message.get_tab_parameter().size() < 1) {
 		for (channel_it = _channels.begin(); channel_it != _channels.end(); channel_it++) {
 			if ((*channel_it)->get_channel_modes().find('s') != std::string::npos)
@@ -26,5 +26,5 @@ void Server::command_LIST(Message &message) {
 				send_message(message.get_sender(), build_response(322, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 		}
 	}
-	send_message(message.get_sender(), build_response(323, message.get_sender(), message.get_receiver(), NULL, &message));	// RPL_LISTEND (Ce que l'on envoie a la fin de la commande LIST)
+	send_message(message.get_sender(), build_response(323, message.get_sender(), message.get_receiver(), NULL, &message));
 }
