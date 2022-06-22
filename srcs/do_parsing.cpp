@@ -4,12 +4,8 @@
 
 static void do_command(Server &server, Client *sender, Message &msg)
 {
-std::cout << "log: " << sender->get_logged() << " cmd " << msg.get_command() << std::endl;
 	if (!sender->get_logged() && !( msg.get_command() == "NICK" || msg.get_command() == "USER" || msg.get_command() == "PASS" ) )
-		{
-std::cout << "proc" << std::endl;
 		return;
-		}
 
 	if (msg.get_command() == "PASS")
 	{

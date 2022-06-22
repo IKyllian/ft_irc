@@ -57,7 +57,6 @@ class Channel {
 		void 	unset_user_mode(Client *sender, char mode, std::string parameter);
 		void 	erase_mode_arguments(char mode);
 		void 	add_mode_arguments(char mode, std::string parameter);
-	
 		void 	print_users();
 
 	private :

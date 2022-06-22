@@ -22,28 +22,7 @@
 #include <cstdio>
 
 #define TIMEOUT			1800000 // 180000 = 3 minutes
-//#define HOSTNAME		"kikaro.42.fr"
 
-
-void debug_print_client(Client &client)
-{
-	std::cout << std::boolalpha
-	<< "nickname " << client.get_nickname() 
-	// << " username " << client.get_username()
-	// << " realname " << client.get_realname()
-	// << " hostname " << client.get_hostname()
-	// << " usermodes " << client.get_user_modes()
-	<< " fd " << client.get_fd()
-	// << " logged " << client.get_logged()
-	// << " registered " << client.get_registered()
-	// << " auth " << client.get_authentified()
-	// << " has nick " << client.get_hasnick()
-	// << " away " << client.get_away()
-	<< " quitting " << client.get_quitting()
-	// << " away msg " << client.get_away_msg()
-	// << " buffer " << client.get_buffer()
-	<< std::endl;
-}
 
 int handle_incoming_message(Server& server, int fd)
 {
@@ -101,7 +80,7 @@ void display_cpp_ver()
 bool init_socket(Server &server, char** av)
 {
 	struct sockaddr_in	addr;
-	int 				on = 1; //TODO learn more about on
+	int 				on = 1;
 	int					ret, serverFD;
 	struct pollfd		fd;
 
@@ -188,7 +167,6 @@ bool init_server(Server &server, int ac, char** av)
 	return true;	
 }
 
-
 int main(int ac, char **av)
 {
 	display_cpp_ver();
@@ -211,9 +189,7 @@ int main(int ac, char **av)
 
 	while (running)
 	{
-		//std::cout << "Waiting on poll()..." << std::endl;
 		ret = poll( &server.get_fds()[0], server.get_fds().size(), TIMEOUT);
-
 		if (ret < 0)
 		{
 			perror("  poll() failed");
@@ -261,7 +237,6 @@ int main(int ac, char **av)
 					if (fd.fd < 0)
 						break;
 
-			//		std::cout << "New incomig connection - fd:" << fd.fd << " IP: " << userIP << std::endl;
 					std::cout << "\033[1;34m" << "New incomig connection - fd:" << fd.fd << " IP: " << userIP << "\033[0m" << std::endl;
 					fd.events = POLLIN;
 					server.get_fds().push_back(fd);
@@ -271,7 +246,6 @@ int main(int ac, char **av)
 			}
 			else // client fd
 			{
-//				std::cout << "Descriptor " << server.get_fds()[i].fd << " is readable" << std::endl;
 				while (true)
 				{	
 					ret = handle_incoming_message(server, server.get_fds()[i].fd);
@@ -282,9 +256,9 @@ int main(int ac, char **av)
 						(*server.get_client_by_fd(server.get_fds()[i].fd))->set_quitting(true);
 						break;
 					}
-				} //end while reading incoming message		
+				}		
 			}
-		} // end checking all fds in pollfd vector
+		}
 			for (j = 0; j < server.get_clients().size(); j++)
 			{
 				if (server.get_clients()[j]->get_quitting())
@@ -302,9 +276,9 @@ int main(int ac, char **av)
 
 					}
 					std::cout << "\033[1;34m" << "Removing Client: " << server.get_clients()[j]->get_nickname() <<  "\033[0m" << std::endl;
+//server.command_QUIT(server.get_clients()[j]);
 					delete *(server.get_clients().begin() + j);
-					//server.command_QUIT(server.get_clients()[j], message);
-					server.get_clients().erase(server.get_clients().begin() + j); // !!!! Check pour delete !!!!!
+					server.get_clients().erase(server.get_clients().begin() + j);
 
 				}
 			}

@@ -23,5 +23,4 @@ void Server::command_NAMES(Message &message) {
 			send_message(message.get_sender(), build_response(366, message.get_sender(), message.get_receiver(), (*channel_it), &message));
 		}
 	}
-	// send_message(message.get_sender(), build_response(366, message.get_sender(), message.get_receiver(), NULL, &message)); // RPL_ENDOFNAMES (366) 
 }

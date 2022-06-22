@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 12:04:18 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/22 12:29:11 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/22 14:30:40 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 #include "Message.hpp"
 
 #include <iostream>
-#include <sys/socket.h>
+#include <string>
 #include <vector>
+#include <sys/socket.h>
 #include <unistd.h>
 
 class Bot

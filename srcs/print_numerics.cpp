@@ -15,13 +15,6 @@ std::string Server::build_response(Client &sender, std::string str)
 	return ":" + sender.get_fullidentity() + " " + str;
 }
 
-std::string ft_print_numerics(/*User &user, Server &server, Channel &channel, Message &message*/ int nb_message)
-{
-	(void) nb_message;
-	std::cout << "Nb message = " << nb_message << std::endl;
-	return "fonction juste pour que ca compile en attendant d'avoir tout modif";
-}
-
 std::string build_message2(int num, Client &sender, std::string target, Channel *channel) {
 	std::string str;
 	std::string symbol;
@@ -70,14 +63,10 @@ std::string Server::print_numerics(int num, Client &sender, Client &receiver, Ch
   	ss << num;  
   	ss >> str_num;  
 
-	std::string hopcount = "0";//352 nb of intermediate server 
-	std::string null = "";//305 306 321 323 337 412 431 462 501 502 because why the fuck not
+	std::string hopcount = "0";
+	std::string null = "";
 
 	std::string user_flags = "H*";//352 H for present, G for gone, OPTIONAL * for server operator, member prefix, usermode
-	// std::string banMask = "Banmask";//367
-	// std::string banner_nick = "Ikyllian";//367
-	// std::string ban_timeSet = "22222";//367
-	std::string	mode_char = "modechar";//472
 
 	//              user VAR               //
 	std::string realname =  sender.get_realname();

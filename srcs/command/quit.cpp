@@ -20,10 +20,8 @@ void Server::command_QUIT(Client &sender, Message &msg)
         else
             send_message(*get_clients()[i], ":" + sender.get_fullidentity() + " ERROR :" + sender.get_nickname() + " is exiting the network");
     }
-    std::cout << "channel size = " << sender.get_channel().size() << std::endl;
     for (size_t i = 0; i < sender.get_channel().size(); i++)
     {
-        // std::cout << "channel names = " << sender.get_channel()[i]->get_name() << std::endl;
         if (i + 1 != sender.get_channel().size())
             quit_channel = quit_channel + (&sender)->get_channel()[i]->get_name() +  ",";
         else
@@ -32,10 +30,8 @@ void Server::command_QUIT(Client &sender, Message &msg)
     }
     if (sender.get_channel().size() > 0)
     {
-        std::cout << "quit_channel = " << quit_channel << std::endl;
         tmp.set_parameter(quit_channel);
         ft_split_parameter(tmp);
-        std::cout << "tmp = " << tmp.get_tab_parameter()[0] << std::endl;
         command_PART(&sender, tmp);
     }
 }

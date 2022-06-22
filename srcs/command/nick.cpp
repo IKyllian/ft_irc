@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 13:25:54 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/22 14:10:46 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/22 14:40:24 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 void Server::command_NICK(Client &client, Message &message) {
 
 	std::string answer;
-
-	// TODO rajouter password check
-	// if (!client.get_authentified())
-	// {
-	// 	return;
-	// }
 
 	if (message.get_tab_parameter().size() == 0)
 	{
@@ -56,8 +50,6 @@ void Server::command_NICK(Client &client, Message &message) {
 	}
 	else 
 	{
-	//	send_message(client, ":" + client.get_fullidentity() + " NICK " + message.get_tab_parameter()[0]);
-
 		for (unsigned long i = 0; i < get_clients().size(); i++)
 		{
 			send_message(*(get_clients()[i]), ":" + client.get_fullidentity() + " NICK " + message.get_tab_parameter()[0]);

@@ -41,13 +41,10 @@ bool	check_wildcards(Channel &channel, Message &msg)
 {
 	size_t  wildcard_pos;
 
-	// std::cout << "enter check wildcard" << std::endl;
-	// std::cout << "channel name. = " << channel.get_name() << std::endl;
 	if (channel.get_name() == msg.get_tab_parameter()[0])
 		return (true);
 	else if ((wildcard_pos = msg.get_tab_parameter()[0].find("*")) != std::string::npos)
 	{
-		//std::cout << "wildcard = " << wildcard_pos << std::endl << "Size tab = " << msg.get_tab_parameter()[0].size() << std::endl;
 		if (wildcard_pos == 0)
 		{
 			if (channel.get_name().substr(channel.get_name().size() - (msg.get_tab_parameter()[0].size()  - 1)) == msg.get_tab_parameter()[0].substr(1))
@@ -76,48 +73,22 @@ bool	check_wildcards(Channel &channel, Message &msg)
 
 void	Server::command_WHO(Client &sender, Message &msg)
 {
-	//bool same_channel = false;
 	bool channel_found = false;
 
-	// std::cout << "nb parameter = " << msg.get_nb_parameter() << std::endl;
-	// std::cout << "nb client = " << this->_clients.size() << std::endl;
 	if (msg.get_nb_parameter() == 0 || (msg.get_nb_parameter() == 1 && (msg.get_tab_parameter()[0] == "0" || msg.get_tab_parameter()[0] == "*")))
 	{
 		for (size_t i = 0; i < this->_clients.size(); i++)
 		{
-			// if (this->_clients[i]->get_user_modes().find("i") == std::string::npos)
-			// {
-			// 	for (size_t j = 0; j < sender.get_channel().size(); j++)
-			// 	{
-			// 		for (size_t k = 0; k < this->_clients[i]->get_channel().size(); k++)
-			// 		{
-			// 			if (sender.get_channel()[j] == this->_clients[i]->get_channel()[k])
-			// 			{
-			// 				same_channel = true;
-			// 				break;
-			// 			}
-			// 		}
-			// 		if (same_channel == true)
-			// 			break;
-			// 	}
-			// 	std::cout << "same channel = " << same_channel << std::endl;
-			// 	if (same_channel == false)
-			// 	{
 			send_message(sender,":" +  sender.get_fullidentity() + " " + print_numerics(352, *_clients[i], sender, NULL, &msg));
-			//	}
-			//}
 		}
 		send_message(sender,build_response(315, sender, sender, NULL, &msg));
 	}
 	else
 	{
-		// std::cout << "nb parameter = " << msg.get_nb_parameter() << std::endl;
-		// std::cout << "nb channels = " << this->get_channels().size() << std::endl;
 		for (size_t i = 0; i < this->get_channels().size(); i++)
 		{
-			if (check_wildcards(*this->get_channels()[i], msg)) //Check possible wildcards
+			if (check_wildcards(*this->get_channels()[i], msg))
 			{
-				//std::cout << "found channel" << std::endl;
 				std::map<Client*, std::string>::iterator it = this->get_channels()[i]->get_users().begin();
 				for(; it != this->get_channels()[i]->get_users().end(); it++)
 				{
@@ -138,13 +109,11 @@ void	Server::command_WHO(Client &sender, Message &msg)
 				return ;
 			}
 		}
-		std::cout << "no Channel found" << std::endl;
 		for (size_t i = 0; i < this->_clients.size(); i++)
 		{
 			if (this->_clients[i]->get_user_modes().find("i") == std::string::npos)
 			{
-				//  Potentiellement d'autres truc (users' host, server, realname and nickname)
-				if (check_wildcards(*this->_clients[i], msg))               //Check possible wildcards
+				if (check_wildcards(*this->_clients[i], msg))
 				{
 					if (sender.get_channel().size() > 0)
 						send_message(sender,build_response(352, *this->_clients[i], sender, sender.get_channel()[0], &msg));

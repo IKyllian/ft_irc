@@ -1,8 +1,5 @@
 #include "../includes/Client.hpp"
 
-//Client::Client() : _realname (""), _logged(false), _away(false) {}
-//Client::Client(std::string nickname) : _nickname(nickname), _logged(false), _away(false) {};
-//Client::Client(const Client &client) :
 Client::Client() : _realname (""), _user_modes("+"), _logged(false), _away(false) {}
 Client::Client(std::string nickname) : _nickname(nickname), _user_modes("+"), _logged(false), _away(false) {};
 Client::Client(const Client &client) : 
@@ -21,10 +18,6 @@ Client::Client(const Client &client) :
 	_quitting(client._quitting),
 	_away_msg(client._away_msg),
 	_buffer(client._buffer) {}
-
-// Client::Client(const Client *client) {
-// 	*this = client;
-// }
 
 Client::Client(int &fd) : 
 	_nickname("*"), 
@@ -45,7 +38,6 @@ Client::Client(int &fd) :
 Client::~Client() {
 	_channel.clear();
 }
-
 
 Client& Client::operator=(const Client& rhs)
 {
@@ -72,10 +64,6 @@ bool Client::operator==(const Client& rhs) {
 	return (get_nickname() == rhs.get_nickname());
 };
 
-// bool Client::operator<(const Client &rhs) const {
-// 	return (get_nickname() < rhs.get_nickname());
-// }
-//:<nickname>@<username>!<hostname>
 std::string 			Client::get_nickname() const { return (_nickname); }
 std::string 			Client::get_username() const { return (_username); }
 std::string 			Client::get_realname() const { return (_realname); }
@@ -211,17 +199,6 @@ std::string Client::extract_command(size_t pos) {
 
 	command = _buffer.substr(0, pos + 2);
 	_buffer = _buffer.substr(pos + 2, - 1);
-
-// std::cout << "######commamnd:" << std::endl;
-// 	for (unsigned long k = 0; k < command.length(); k++)
-// 	{
-// 		std::cout << "i: " << k << " command[k]: " << command[k] << " (int): " << (int) command[k] << std::endl;
-// 	}
-// std::cout << "######buffer:" << std::endl;
-// 	for (unsigned long k = 0; k < _buffer.length(); k++)
-// 	{
-// 		std::cout << "i: " << k << " _buffer[k]: " << _buffer[k] << " (int): " << (int) _buffer[k] << std::endl;
-// 	}
 
 	return command;
 }

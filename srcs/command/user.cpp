@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rozhou <rozhou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 14:50:32 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/14 12:39:07 by rozhou           ###   ########.fr       */
+/*   Updated: 2022/06/22 14:41:23 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@
 void Server::command_USER(Client &client, Message &message)
 {
 	std::string answer;
-
-	//TODO rajouter password check
-	// if (!client.get_authentified())
-	// {
-	// 	return;
-	// }
 
 	if (message.get_tab_parameter().size() < 4)
 	{

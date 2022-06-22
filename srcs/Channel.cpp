@@ -117,7 +117,7 @@ void Channel::set_topic(std::string new_topic) {
 		topic = new_topic;
 }
 
-void Channel::set_user(Client* client, Message &message, std::string key) { // Fonction qui sert a add un user au channel
+void Channel::set_user(Client* client, Message &message, std::string key) {
 	std::map<Client*, std::string>::iterator user_it = get_user(client);
 	std::vector<std::string>::iterator user_ban_it;
 	std::vector<std::string>::iterator user_invite_it;
@@ -134,7 +134,7 @@ void Channel::set_user(Client* client, Message &message, std::string key) { // F
 				}
 				if (_channel_modes.find('i') != std::string::npos) {
 					user_invite_it = search_user_invite(client->get_nickname());
-					if (user_invite_it != _invite_list.end()) { // Check si le user a recu une invitation
+					if (user_invite_it != _invite_list.end()) {
 						_users.insert(std::pair<Client*, std::string>(client, ""));
 						client->get_channel().push_back(this);
 						_invite_list.erase(user_invite_it);

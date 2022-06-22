@@ -9,7 +9,6 @@
 #include "Channel.hpp"
 #include "ft_irc.hpp"
 
-
 class Channel;
 class Client;
 class Message;

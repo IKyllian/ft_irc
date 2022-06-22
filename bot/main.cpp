@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 15:19:22 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/18 15:58:44 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/06/22 14:34:25 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,17 @@
 #include <sys/types.h>
 #include <sys/socket.h>	
 #include <netinet/in.h>
-#include <unistd.h>
 #include <netdb.h>
 #include <strings.h>
 #include <unistd.h>
-//temp
-#include <sys/socket.h>	
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <istream>
 #include <poll.h>	
-#include <sys/types.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <iostream>
-#include <string>
 #include <cerrno>
 #include <sstream>
-
 #include <vector>
 #include <map>
 #include <cstdio>
-//temp end
+
 
 void display_cpp_ver()
 {
@@ -49,12 +37,6 @@ void display_cpp_ver()
     else if (__cplusplus == 199711L) std::cout << "C++98\n";
     else std::cout << "pre-standard C++\n";
 }
-
-// args
-// av[1] username
-// av[2] IP
-// av[3] port
-// av[4] password(optional)
 
 int main(int ac, char **av)
 {
@@ -97,7 +79,6 @@ int main(int ac, char **av)
 	bot.set_running(true);
 
 	ret = fcntl(serverFD, F_SETFL, O_NONBLOCK);
-//std::cout << "fcntl ret: " << ret << std::endl;
 	if (ret == -1)
 	{
 		perror("fcntl() failed");
@@ -105,15 +86,12 @@ int main(int ac, char **av)
 		return (-1);
 	}
 
-
-
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
     bcopy((char *)server->h_addr, (char *)&addr.sin_addr.s_addr, server->h_length);
 	addr.sin_port = htons(atoi(av[3]));
 
 	ret = connect (serverFD, (struct sockaddr *) &addr, sizeof(addr));
-//std::cout << "connect ret: " << ret << std::endl;
 	if (ret < 0 && errno != EINPROGRESS)
 	{
         perror("connect() failed");

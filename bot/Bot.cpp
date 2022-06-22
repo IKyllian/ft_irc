@@ -124,14 +124,9 @@ int Bot::handle_incoming_message()
 	}while(ret > 0);
 	pos = get_buffer().rfind("\r\n");
 	if (pos == std::string::npos || pos >= get_buffer().length())
-	{
-		// std::cout << " command incomplete, storing: " << std::endl 
-		// 		<< get_buffer() << std::endl;
 		return ret;
-	}
 	message = extract_command(pos);	
 	std::cout << "\033[1;32mrecv: \033[0m" << message;
-	
 	do_parsing(message);
 	return ret;
 }
@@ -198,15 +193,6 @@ Message *Bot::ft_create_message(std::string str)
 void Bot::do_command(Message &msg)
 {
 	std::string answer;
-
-	// std::cout << "msg.get_command(): " << msg.get_command() << std::endl;
-	// // std::cout << "size " << msg.get_tab_parameter().size() << std::endl;
-	// for (unsigned long i = 0; i < msg.get_tab_parameter().size(); i++)
-	// {
-	// 	std::cout << "msg tab[" << i << "]: " << msg.get_tab_parameter()[i] << std::endl;
-	// }
-	// std::cout << "msg.get_prefix(): " << msg.get_prefix() << std::endl;
-	// std::cout << "msg.get_target_nickname(): " << msg.get_target_nickname() << std::endl;
 
 	if (msg.get_command() == "433" || msg.get_command() == "431"
 	|| msg.get_command() == "432" || msg.get_command() == "484")
