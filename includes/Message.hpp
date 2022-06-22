@@ -1,10 +1,7 @@
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include "Client.hpp"
+#include "ft_irc.hpp"
 
 class Client;
 

@@ -1,5 +1,4 @@
 #include "../includes/Message.hpp"
-#include "../includes/ft_irc.hpp"
 
 std::vector<std::string> ft_split_message(std::string str)
 {

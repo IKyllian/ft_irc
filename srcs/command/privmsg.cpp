@@ -1,6 +1,4 @@
 #include "../../includes/Server.hpp"
-#include "../../includes/Channel.hpp"
-#include "../../includes/ft_irc.hpp"
 
 void    Server::command_PRIVMSG(Client &sender, Message &msg, Server &server, int is_notice)
 {

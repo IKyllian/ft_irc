@@ -1,6 +1,4 @@
 #include "../includes/ft_irc.hpp"
-#include "../includes/Server.hpp"
-
 
 static void do_command(Server &server, Client *sender, Message &msg)
 {

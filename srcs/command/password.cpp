@@ -1,19 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   password.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/05 17:05:19 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/13 16:24:10 by kzennoun         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/Server.hpp"
-#include "../../includes/Message.hpp"
-#include "../../includes/Client.hpp"
-#include "../../includes/ft_irc.hpp"
 
 void Server::command_PASSWORD(Client &client, Message &message)
 {

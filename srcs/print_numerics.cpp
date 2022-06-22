@@ -1,9 +1,4 @@
-#include "../includes/numerics.hpp"
 #include "../includes/ft_irc.hpp"
-#include "../includes/Server.hpp"
-#include "../includes/Client.hpp"
-#include "../includes/Message.hpp"
-#include "../includes/Channel.hpp"
 
 std::string Server::build_response(int num, Client &sender, Client &receiver, Channel *channel, Message *message)
 {

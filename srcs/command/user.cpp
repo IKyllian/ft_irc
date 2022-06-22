@@ -1,19 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   user.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/03 14:50:32 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/06/22 14:41:23 by kzennoun         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/Server.hpp"
-#include "../../includes/Message.hpp"
-#include "../../includes/Client.hpp"
-#include "../../includes/ft_irc.hpp"
 
 void Server::command_USER(Client &client, Message &message)
 {

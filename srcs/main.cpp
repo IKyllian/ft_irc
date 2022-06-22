@@ -1,28 +1,6 @@
-
-#include "../includes/Client.hpp"
-#include "../includes/Channel.hpp"
-#include "../includes/Server.hpp"
-
-#include <sys/socket.h>	
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <istream>
-#include <poll.h>	
-#include <sys/types.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <iostream>
-#include <string>
-#include <cerrno>
-#include <sstream>
-
-#include <vector>
-#include <map>
-#include <cstdio>
+#include "../includes/ft_irc.hpp"
 
 #define TIMEOUT			1800000 // 180000 = 3 minutes
-
 
 int handle_incoming_message(Server& server, int fd)
 {

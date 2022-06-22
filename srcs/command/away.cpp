@@ -1,5 +1,4 @@
 #include "../../includes/Server.hpp"
-#include "../../includes/ft_irc.hpp"
 
 void    Server::command_AWAY(Client &sender, Message &msg)
 {

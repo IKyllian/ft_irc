@@ -1,4 +1,4 @@
-#include "../../includes/ft_irc.hpp"
+#include "../../includes/Server.hpp"
 
 void Server::command_MODE_CHAN(Client *sender, Message &message) {
 	std::vector<Channel*>::iterator	channel_it;

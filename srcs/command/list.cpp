@@ -1,4 +1,4 @@
-#include "../../includes/ft_irc.hpp"
+#include "../../includes/Server.hpp"
 
 void Server::command_LIST(Message &message) {
 	std::vector<std::string>		channels_string;

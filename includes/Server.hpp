@@ -1,12 +1,6 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-#include <set>
-#include <iostream>
-#include <vector>
-#include "Message.hpp"
-#include "Client.hpp"
-#include "Channel.hpp"
 #include "ft_irc.hpp"
 
 class Channel;

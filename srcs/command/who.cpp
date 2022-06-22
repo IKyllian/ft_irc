@@ -1,5 +1,4 @@
 #include "../../includes/Server.hpp"
-#include "../../includes/ft_irc.hpp"
 
 bool	check_wildcards(Client &client, Message &msg)
 {

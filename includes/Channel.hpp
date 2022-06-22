@@ -1,14 +1,7 @@
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 
-#include <map>
-#include <vector>
-#include <iostream>
-#include "Client.hpp"
 #include "ft_irc.hpp"
-#include "Server.hpp"
-#include "Message.hpp"
-#include <sstream> // pour convertir string en int 
 
 class Client;
 class Message;
@@ -71,7 +64,5 @@ class Channel {
 		std::vector<std::string> _invite_list;
 		Server *_server;
 };
-
-std::vector<std::string> parse_comma(std::string parameter);
 
 #endif

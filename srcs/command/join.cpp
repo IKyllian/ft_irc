@@ -1,4 +1,4 @@
-#include "../../includes/ft_irc.hpp"
+#include "../../includes/Server.hpp"
 
 void Server::command_JOIN(Client *client, Message &message, Server &server) {
 	std::vector<std::string>		channels_string;
@@ -20,9 +20,9 @@ void Server::command_JOIN(Client *client, Message &message, Server &server) {
 			_channels.push_back(new Channel(channels_string[i], &server));
 			channel_it = get_channel(channels_string[i]);
 		}
-		if (keys.size() - 1 > i) // A check
-			(*channel_it)->set_user(client, message);
-		else
+		if (keys.size() > 0 && i < keys.size() - 1)
 			(*channel_it)->set_user(client, message, keys[i]);
+		else
+			(*channel_it)->set_user(client, message);
 	}
 }
