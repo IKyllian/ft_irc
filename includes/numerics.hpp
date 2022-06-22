@@ -25,7 +25,7 @@
 #define RPL_GLOBALUSERS(u, m)(" " + u + " " + m + " :Current global users " + u + ", max " + m)																															// 266
 #define RPL_WHOISCERTFP(nick, fingerprint)(" " + nick + " :has client certificate fingerprint " + fingerprint)																											// 276
 #define RPL_NONE(NULL)(NULL + "Undefined format")																																													// 300
-#define RPL_AWAY(nick, message)(" " + nick + " :" + message)																																							// 301
+#define RPL_AWAY(nick, message)(" " + nick + " " + message)																																							// 301
 #define RPL_USERHOST(reply)(" :" + reply)																																												// 302
 #define RPL_UNAWAY(NULL)(NULL + " :You are no longer marked as being away")																																						// 305
 #define RPL_NOWAWAY(NULL)(NULL + " :You have been marked as being away")																																							// 306

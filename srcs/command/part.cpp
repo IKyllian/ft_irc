@@ -7,7 +7,7 @@ void Server::command_PART(Client *client, Message &message) {
 	int ret;
 
 	if (message.get_tab_parameter().size() < 1) {
-		send_message(*client, print_numerics(461, *client, *client, NULL, &message));
+		send_message(*client, build_response(461, *client, *client, NULL, &message));
 		return ;
 	}
 	channels_string = parse_comma(message.get_tab_parameter()[0]);
@@ -24,7 +24,7 @@ void Server::command_PART(Client *client, Message &message) {
 			break ;
 		}
 		if ((*channel_it)->get_users().end() == it)
-			send_message(*client, print_numerics(442, *client, *client, (*channel_it), &message));
+			send_message(*client, build_response(442, *client, *client, (*channel_it), &message));
 		else {
 			for (std::map<Client*, std::string>::iterator it2 = (*channel_it)->get_users().begin(); it2 != (*channel_it)->get_users().end(); it2++)
 				send_message(*(it2->first), build_command_message(client->get_nickname(), "", (*channel_it)->get_name(), "PART"));
